@@ -1,37 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rúbrica</title>
-
-<!-- Manifest y configuración PWA -->
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#5aa9ff">
-
-<!-- Enlaces a estilos de la aplicación -->
-<link rel="stylesheet" href="styles.css">
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rúbrica — Editor + Evaluación (nota 0–10)</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <!-- App -->
+  <div id="app-root"></div>
 
-<!-- Contenido principal de la aplicación -->
-<div id="app"></div>
+  <!-- HTML injected dynamically for maintainability -->
+  <script>
+  // Inyectamos el HTML principal para mantener un index limpio.
+  document.getElementById('app-root').outerHTML = `<div class=\"app\">\n  <header class=\"header\">\n    <h1>Rúbrica — Editor + Evaluación (nota 0–10)</h1>\n    <div class=\"meta\">\n      <div class=\"stack\">\n        <label>Plantilla de rúbrica\n          <div class=\"row\">\n            <select id=\"templateSelect\"></select>\n            <button id=\"editRubricBtn\" class=\"ghost\" title=\"Editar plantilla\">Editar</button>\n            <button id=\"newRubricBtn\" class=\"ghost\" title=\"Nueva plantilla\">Nueva</button>\n            <button id=\"dupRubricBtn\" class=\"ghost\" title=\"Duplicar plantilla actual\">Duplicar</button>\n          </div>\n        </label>\n      </div>\n      <div class=\"stack\">\n        <label>Alumno/a\n          <div class=\"row\">\n            <select id=\"studentSelect\">\n              <option value=\"\">— Selecciona de la lista —</option>\n            </select>\n            <input id=\"studentName\" type=\"text\" placeholder=\"...o escribe el nombre\" autocomplete=\"name\" />\n          </div>\n        </label>\n        <div class=\"row\">\n          <button id=\"prevBtn\" class=\"ghost\" title=\"Anterior (guarda si hay cambios)\">⟵ Anterior</button>\n          <button id=\"nextBtn\" title=\"Siguiente (guarda actual)\">Siguiente ⟶</button>\n        </div>\n      </div>\n      <div class=\"stack sm\">\n        <label>Fecha\n          <input id=\"dateInput\" type=\"date\" />\n        </label>\n        <div class=\"row\">\n          <button id=\"settingsBtn\" class=\"ghost\" title=\"Ajustes (alumnos, Sheets)\">Ajustes</button>\n          <button id=\"resetBtn\" class=\"ghost\" title=\"Borrar selección del alumno actual\">Reiniciar</button>\n        </div>\n      </div>\n    </div>\n  </header>\n\n  <section class=\"table-wrap\">\n    <table class=\"rubric\" aria-describedby=\"helpText\">\n      <thead id=\"rubricHead\"></thead>\n      <tbody id=\"rubricBody\"></tbody>\n    </table>\n    <p id=\"helpText\" class=\"help\">\n      Cada botón muestra número, etiqueta y una micro-explicación (resumen). Pasa el cursor o toca para leer el tooltip completo.\n    </p>\n  </section>\n\n  <section class=\"results\">\n    <div class=\"kpi\">\n      <div class=\"kpi-item\"><span>Nota (0–10)</span><strong id=\"totalPoints\">0</strong></div>\n      <div class=\"kpi-item\"><span>%</span><strong id=\"percent\">0%</strong></div>\n      <div class=\"kpi-item\"><span>Nivel</span><strong id=\"level\">—</strong></div>\n    </div>\n    <div class=\"actions\">\n      <button id=\"saveBtn\" title=\"Guardar alumno actual\">Guardar</button>\n      <button id=\"exportAllBtn\" class=\"ghost\" title=\"Descargar CSV (todos los guardados)\">Exportar TODO</button>\n      <button id=\"exportSummaryBtn\" class=\"ghost\" title=\"Descargar CSV (resumen por alumno)\">Exportar RESUMEN</button>\n      <button id=\"syncBtn\" title=\"Sincronizar TODO a Google Sheets (Apps Script)\">Sincronizar Sheets</button>\n      <button id=\"printBtn\" class=\"ghost\" title=\"Imprimir o guardar como PDF\">Imprimir/PDF</button>\n    </div>\n  </section>\n\n  <section class=\"obs\">\n    <label for=\"obsInput\">Observaciones</label>\n    <textarea id=\"obsInput\" rows=\"3\" placeholder=\"Evidencias, conductas observadas, acuerdos, etc.\"></textarea>\n  </section>\n\n  <dialog id=\"descriptorModal\" aria-modal=\"true\">\n    <form method=\"dialog\">\n      <h3 id=\"modalTitle\">Descriptores</h3>\n      <div id=\"modalBody\" class=\"modal-body\"></div>\n      <menu>\n        <button value=\"cancel\" class=\"ghost\">Cerrar</button>\n      </menu>\n    </form>\n  </dialog>\n\n  <dialog id=\"settingsModal\" aria-modal=\"true\">\n    <form method=\"dialog\" id=\"settingsForm\">\n      <h3>Ajustes</h3>\n      <div class=\"modal-body\">\n        <h4>Listado de alumnos</h4>\n        <p>Opción A — desde Google Sheets (CSV publicado):</p>\n        <label>URL CSV\n          <input id=\"csvUrlInput\" type=\"url\" placeholder=\"https://docs.google.com/spreadsheets/d/e/.../pub?output=csv\">\n        </label>\n        <label>Nombre de columna con el alumno/a\n          <input id=\"nameColumnInput\" type=\"text\" placeholder=\"Nombre, Alumno, Apellidos y nombre...\">\n        </label>\n        <div class=\"row\">\n          <button id=\"loadCsvBtn\" type=\"button\">Cargar alumnos</button>\n          <span id=\"csvStatus\" class=\"status\" role=\"status\" aria-live=\"polite\"></span>\n        </div>\n\n        <p style=\"margin-top:10px\">Opción B — pegar lista manual (una persona por línea):</p>\n        <textarea id=\"manualRoster\" rows=\"6\" placeholder=\"Nombre 1&#10;Nombre 2&#10;...\"></textarea>\n        <div class=\"row\">\n          <button id=\"loadManualBtn\" type=\"button\" class=\"ghost\">Cargar desde texto</button>\n        </div>\n\n        <hr>\n        <h4>Google Sheets (escritura)</h4>\n        <p>Pega el <strong>URL del Web App</strong> de tu Apps Script:</p>\n        <label>URL Web App (Apps Script)\n          <input id=\"gsEndpointInput\" type=\"url\" placeholder=\"https://script.google.com/macros/s/AKfycb.../exec\">\n        </label>\n        <p class=\"muted\">Se enviará tanto el formato <em>largo</em> como el <em>resumen</em>.</p>\n      </div>\n      <menu>\n        <button value=\"cancel\" class=\"ghost\">Cerrar</button>\n      </menu>\n    </form>\n  </dialog>\n\n  <dialog id=\"builderModal\" aria-modal=\"true\">\n    <form method=\"dialog\" id=\"builderForm\">\n      <h3>Editor de rúbrica</h3>\n      <div class=\"modal-body\">\n        <label>Nombre de la plantilla\n          <input id=\"rubricNameInput\" type=\"text\" placeholder=\"p.ej. EF — Convivencia y Seguridad\">\n        </label>\n\n        <div id=\"rowsContainer\" class=\"rows-container\"></div>\n\n        <div class=\"row\" style=\"margin-top:8px; gap:8px;\">\n          <button id=\"addRowBtn\" type=\"button\" class=\"ghost\">+ Añadir indicador</button>\n          <button id=\"pasteRubricBtn\" type=\"button\">📥 Pegar desde texto</button>\n          <span class=\"muted\">Cada indicador tiene descriptores para 4–3–2–1 y un peso.</span>\n        </div>\n      </div>\n      <menu>\n        <button id=\"deleteTemplateBtn\" value=\"delete\" class=\"ghost\" style=\"margin-right:auto;color:#c23333\">Eliminar plantilla</button>\n        <button id=\"saveTemplateBtn\" value=\"save\">Guardar</button>\n        <button value=\"cancel\" class=\"ghost\">Cerrar</button>\n      </menu>\n    </form>\n  </dialog>\n\n  <dialog id=\"pasteModal\" aria-modal=\"true\">\n    <form method=\"dialog\" id=\"pasteForm\">\n      <h3>Pegar rúbrica desde texto</h3>\n      <div class=\"modal-body\">\n        <p>Pega la rúbrica tal como te la dio ChatGPT, Gemini, etc. Ejemplos admitidos:</p>\n        <ul>\n          <li><em>Formato A:</em> Título del indicador y luego 4 líneas (4→3→2→1).</li>\n          <li><em>Formato B:</em> Título + líneas “4 – … / 3 – … / 2 – … / 1 – …”.</li>\n        </ul>\n        <label>Texto de la rúbrica\n          <textarea id=\"pasteInput\" rows=\"10\" placeholder=\"Indicador&#10;4 – Excelente&#10;3 – Adecuado&#10;2 – Básico&#10;1 – A mejorar\"></textarea>\n        </label>\n\n        <div class=\"import-controls\">\n          <label><input type=\"checkbox\" id=\"detectPrefixed\" checked> Detectar líneas con prefijo <code>4–/3–/2–/1–</code></label>\n          <label>Peso por defecto <input id=\"defaultWeight\" type=\"number\" min=\"0\" step=\"0.25\" value=\"1\"></label>\n          <small class=\"muted\">También puedes indicar peso en el título: <code>| peso=1.5</code>, <code>(peso 1.5)</code>, <code>peso: 1.5</code>.</small>\n        </div>\n\n        <div class=\"row\">\n          <button id=\"previewPasteBtn\" type=\"button\" class=\"ghost\">Vista previa</button>\n          <span id=\"pasteStatus\" class=\"status\" role=\"status\" aria-live=\"polite\"></span>\n        </div>\n\n        <div id=\"pastePreview\" class=\"preview\"></div>\n      </div>\n      <menu>\n        <button id=\"pasteReplaceBtn\" value=\"replace\">Reemplazar plantilla</button>\n        <button id=\"pasteAddBtn\" value=\"add\" class=\"ghost\">Añadir a plantilla</button>\n        <button value=\"cancel\" class=\"ghost\">Cerrar</button>\n      </menu>\n    </form>\n  </dialog>\n\n  <footer class=\"footer\">\n    <small>Rúbrica editable (plantillas), roster de alumnos, nota 0–10, exportación CSV y sincronización a Google Sheets.</small>\n  </footer>\n</div>`;
+  </script>
 
-<!-- Lógica de la aplicación -->
-<script src="app.js"></script>
-
-<!-- Registro del Service Worker para PWA -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js');
-    });
-  }
-</script>
-
+  <script src="app.js"></script>
 </body>
 </html>

@@ -283,3 +283,73 @@ printBtn.addEventListener("click", ()=> window.print());
 /* ==== Init ==== */
 function init(){ const cfg=getSettings(); if(cfg.csvUrl && cfg.nameColumn){ fetchCSV(cfg.csvUrl).then(text=>{ const rows=parseCSV(text); const headers=rows[0].map(h=>h.trim()); const idx=headers.findIndex(h=>h.toLowerCase()===cfg.nameColumn); if(idx>=0){ const names=rows.slice(1).map(r=>(r[idx]||"").trim()).filter(Boolean); fillStudentSelect(names); } }).catch(()=>{}); } if(cfg.gsEndpoint) gsEndpointInput.value=cfg.gsEndpoint; dateInput.valueAsDate=new Date(); refreshTemplateSelect(); buildRubricTable(); }
 init();
+// ============================
+// UNDO / REDO MEJORADO
+// ============================
+
+let historyStack = [];
+let futureStack = [];
+let isRestoring = false;
+
+// Guardar estado
+function saveState() {
+  if (isRestoring) return;
+
+  const app = document.getElementById("app-root");
+  if (!app) return;
+
+  const state = app.innerHTML;
+
+  // Evitar duplicados seguidos
+  if (historyStack.length === 0 || historyStack[historyStack.length - 1] !== state) {
+    historyStack.push(state);
+    if (historyStack.length > 50) historyStack.shift(); // límite
+    futureStack = [];
+  }
+}
+
+// Undo
+function undo() {
+  if (historyStack.length > 1) {
+    isRestoring = true;
+
+    const current = historyStack.pop();
+    futureStack.push(current);
+
+    const previous = historyStack[historyStack.length - 1];
+    document.getElementById("app-root").innerHTML = previous;
+
+    isRestoring = false;
+  }
+}
+
+// Redo
+function redo() {
+  if (futureStack.length > 0) {
+    isRestoring = true;
+
+    const next = futureStack.pop();
+    historyStack.push(next);
+
+    document.getElementById("app-root").innerHTML = next;
+
+    isRestoring = false;
+  }
+}
+
+// Guardar estado inicial al cargar
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    saveState();
+  }, 800);
+});
+
+// Guardar cambios automáticamente (clicks)
+document.addEventListener("click", () => {
+  setTimeout(saveState, 100);
+});
+
+// Guardar también en inputs
+document.addEventListener("input", () => {
+  setTimeout(saveState, 200);
+})

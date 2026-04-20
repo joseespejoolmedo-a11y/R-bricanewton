@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rúbrica</title>
+
+<link rel="stylesheet" href="styles.css">
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Botones flotantes */
+.undo-redo {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 9999;
+}
+
+.undo-redo button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  font-size: 20px;
+  background: #007aff;
+  color: white;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="app-root"></div>
+
+<!-- Botones -->
+<div class="undo-redo">
+  <button onclick="undo()">↶</button>
+  <button onclick="redo()">↷</button>
+</div>
+
+<script src="app.js"></script>
+
+<script>
+// Historial simple
+let history = [];
+let future = [];
+
+function saveState() {
+  const state = document.getElementById("app-root").innerHTML;
+  history.push(state);
+  future = [];
+}
+
+function undo() {
+  if (history.length > 0) {
+    const current = document.getElementById("app-root").innerHTML;
+    future.push(current);
+    document.getElementById("app-root").innerHTML = history.pop();
+  }
+}
+
+function redo() {
+  if (future.length > 0) {
+    const current = document.getElementById("app-root").innerHTML;
+    history.push(current);
+    document.getElementById("app-root").innerHTML = future.pop();
+  }
+}
+</script>
+
+</body>
+</html>

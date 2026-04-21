@@ -1,129 +1,275 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rúbrica EF</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <div class="topbar">
-    <h1>Rúbrica EF</h1>
-    <div class="top-actions">
-      <button id="undoBtn" title="Deshacer">↶</button>
-      <button id="redoBtn" title="Rehacer">↷</button>
-      <button id="resetBtn" class="ghost">Reiniciar</button>
-      <button id="exportBtn">Exportar CSV</button>
-    </div>
-  </div>
+const state = {
+  respeto: 0,
+  esfuerzo: 0,
+  cooperacion: 0,
+  tecnica: 0,
+  notes: "",
+  studentName: "",
+  date: "",
+  savedRows: []
+};
 
-  <main class="wrap">
-    <section class="panel">
-      <div class="grid grid-3">
-        <label>
-          Alumno/a
-          <input id="studentName" type="text" placeholder="Nombre y apellidos" />
-        </label>
+let historyStack = [];
+let futureStack = [];
+let restoring = false;
 
-        <label>
-          Fecha
-          <input id="dateInput" type="date" />
-        </label>
+const critKeys = ["respeto", "esfuerzo", "cooperacion", "tecnica"];
 
-        <label>
-          Nota final
-          <input id="finalScore" type="text" value="0" readonly />
-        </label>
-      </div>
-    </section>
+const studentNameEl = document.getElementById("studentName");
+const dateInputEl = document.getElementById("dateInput");
+const notesEl = document.getElementById("notes");
+const finalScoreEl = document.getElementById("finalScore");
+const resultsTableBody = document.querySelector("#resultsTable tbody");
 
-    <section class="panel">
-      <h2>Indicadores</h2>
+document.getElementById("undoBtn").addEventListener("click", undo);
+document.getElementById("redoBtn").addEventListener("click", redo);
+document.getElementById("resetBtn").addEventListener("click", resetForm);
+document.getElementById("saveBtn").addEventListener("click", saveEvaluation);
+document.getElementById("exportBtn").addEventListener("click", exportCSV);
 
-      <div class="rubric-row">
-        <div class="crit">
-          <strong>Respeto / juego limpio</strong>
-          <small>Silencio, respeto de turnos, lenguaje adecuado, cuidado del material.</small>
-        </div>
-        <div class="scores" data-crit="respeto">
-          <button data-value="1">1</button>
-          <button data-value="2">2</button>
-          <button data-value="3">3</button>
-          <button data-value="4">4</button>
-        </div>
-      </div>
+studentNameEl.addEventListener("input", () => {
+  state.studentName = studentNameEl.value;
+  saveHistory();
+});
 
-      <div class="rubric-row">
-        <div class="crit">
-          <strong>Esfuerzo / persistencia</strong>
-          <small>Ritmo, continuidad, implicación y constancia en la tarea.</small>
-        </div>
-        <div class="scores" data-crit="esfuerzo">
-          <button data-value="1">1</button>
-          <button data-value="2">2</button>
-          <button data-value="3">3</button>
-          <button data-value="4">4</button>
-        </div>
-      </div>
+dateInputEl.addEventListener("input", () => {
+  state.date = dateInputEl.value;
+  saveHistory();
+});
 
-      <div class="rubric-row">
-        <div class="crit">
-          <strong>Cooperación / roles</strong>
-          <small>Ayuda al grupo, cumple su papel y colabora correctamente.</small>
-        </div>
-        <div class="scores" data-crit="cooperacion">
-          <button data-value="1">1</button>
-          <button data-value="2">2</button>
-          <button data-value="3">3</button>
-          <button data-value="4">4</button>
-        </div>
-      </div>
+notesEl.addEventListener("input", () => {
+  state.notes = notesEl.value;
+  saveHistory();
+});
 
-      <div class="rubric-row">
-        <div class="crit">
-          <strong>Técnica y seguridad</strong>
-          <small>Ejecución correcta, postura segura y uso adecuado del material.</small>
-        </div>
-        <div class="scores" data-crit="tecnica">
-          <button data-value="1">1</button>
-          <button data-value="2">2</button>
-          <button data-value="3">3</button>
-          <button data-value="4">4</button>
-        </div>
-      </div>
-    </section>
+document.querySelectorAll(".scores").forEach(group => {
+  group.addEventListener("click", e => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
 
-    <section class="panel">
-      <label>
-        Observaciones
-        <textarea id="notes" rows="5" placeholder="Escribe aquí observaciones..."></textarea>
-      </label>
-    </section>
+    const crit = group.dataset.crit;
+    const value = Number(btn.dataset.value);
 
-    <section class="panel">
-      <div class="save-row">
-        <button id="saveBtn">Guardar evaluación</button>
-      </div>
-      <div class="table-wrap">
-        <table id="resultsTable">
-          <thead>
-            <tr>
-              <th>Alumno/a</th>
-              <th>Fecha</th>
-              <th>Respeto</th>
-              <th>Esfuerzo</th>
-              <th>Cooperación</th>
-              <th>Técnica</th>
-              <th>Nota</th>
-              <th>Observaciones</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-  </main>
+    state[crit] = value;
+    updateScoreButtons();
+    updateFinalScore();
+    saveHistory();
+  });
+});
 
-  <script src="app.js"></script>
-</body>
-</html>
+function updateScoreButtons() {
+  document.querySelectorAll(".scores").forEach(group => {
+    const crit = group.dataset.crit;
+    const selected = state[crit];
+
+    group.querySelectorAll("button").forEach(btn => {
+      btn.classList.toggle("active", Number(btn.dataset.value) === selected);
+    });
+  });
+}
+
+function updateFinalScore() {
+  const total = critKeys.reduce((sum, key) => sum + state[key], 0);
+  const nota10 = ((total / 16) * 10).toFixed(1);
+  finalScoreEl.value = nota10;
+}
+
+function renderTable() {
+  resultsTableBody.innerHTML = "";
+
+  state.savedRows.forEach(row => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${escapeHtml(row.studentName)}</td>
+      <td>${escapeHtml(row.date)}</td>
+      <td>${row.respeto}</td>
+      <td>${row.esfuerzo}</td>
+      <td>${row.cooperacion}</td>
+      <td>${row.tecnica}</td>
+      <td>${row.finalScore}</td>
+      <td>${escapeHtml(row.notes)}</td>
+    `;
+    resultsTableBody.appendChild(tr);
+  });
+}
+
+function saveEvaluation() {
+  if (!state.studentName.trim()) {
+    alert("Escribe el nombre del alumno/a.");
+    return;
+  }
+
+  const row = {
+    studentName: state.studentName.trim(),
+    date: state.date || "",
+    respeto: state.respeto,
+    esfuerzo: state.esfuerzo,
+    cooperacion: state.cooperacion,
+    tecnica: state.tecnica,
+    finalScore: finalScoreEl.value,
+    notes: state.notes.trim()
+  };
+
+  state.savedRows.push(row);
+  persistSavedRows();
+  renderTable();
+  alert("Evaluación guardada.");
+}
+
+function resetForm() {
+  state.respeto = 0;
+  state.esfuerzo = 0;
+  state.cooperacion = 0;
+  state.tecnica = 0;
+  state.notes = "";
+  state.studentName = "";
+  state.date = "";
+
+  studentNameEl.value = "";
+  dateInputEl.value = "";
+  notesEl.value = "";
+
+  updateScoreButtons();
+  updateFinalScore();
+  saveHistory();
+}
+
+function exportCSV() {
+  if (!state.savedRows.length) {
+    alert("No hay datos guardados.");
+    return;
+  }
+
+  const headers = [
+    "Alumno/a",
+    "Fecha",
+    "Respeto",
+    "Esfuerzo",
+    "Cooperación",
+    "Técnica",
+    "Nota",
+    "Observaciones"
+  ];
+
+  const rows = state.savedRows.map(row => [
+    row.studentName,
+    row.date,
+    row.respeto,
+    row.esfuerzo,
+    row.cooperacion,
+    row.tecnica,
+    row.finalScore,
+    row.notes
+  ]);
+
+  const csv = [headers, ...rows]
+    .map(r => r.map(csvEscape).join(","))
+    .join("\n");
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "rubrica_ef.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function csvEscape(value) {
+  const text = String(value ?? "");
+  return `"${text.replace(/"/g, '""')}"`;
+}
+
+function escapeHtml(text) {
+  return String(text ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function saveHistory() {
+  if (restoring) return;
+
+  const snapshot = JSON.stringify({
+    respeto: state.respeto,
+    esfuerzo: state.esfuerzo,
+    cooperacion: state.cooperacion,
+    tecnica: state.tecnica,
+    notes: state.notes,
+    studentName: state.studentName,
+    date: state.date
+  });
+
+  if (historyStack.length && historyStack[historyStack.length - 1] === snapshot) {
+    return;
+  }
+
+  historyStack.push(snapshot);
+  if (historyStack.length > 100) historyStack.shift();
+  futureStack = [];
+}
+
+function undo() {
+  if (historyStack.length <= 1) return;
+
+  restoring = true;
+  const current = historyStack.pop();
+  futureStack.push(current);
+  const previous = JSON.parse(historyStack[historyStack.length - 1]);
+  applySnapshot(previous);
+  restoring = false;
+}
+
+function redo() {
+  if (!futureStack.length) return;
+
+  restoring = true;
+  const next = futureStack.pop();
+  historyStack.push(next);
+  applySnapshot(JSON.parse(next));
+  restoring = false;
+}
+
+function applySnapshot(snapshot) {
+  state.respeto = snapshot.respeto;
+  state.esfuerzo = snapshot.esfuerzo;
+  state.cooperacion = snapshot.cooperacion;
+  state.tecnica = snapshot.tecnica;
+  state.notes = snapshot.notes;
+  state.studentName = snapshot.studentName;
+  state.date = snapshot.date;
+
+  studentNameEl.value = state.studentName;
+  dateInputEl.value = state.date;
+  notesEl.value = state.notes;
+
+  updateScoreButtons();
+  updateFinalScore();
+}
+
+function persistSavedRows() {
+  localStorage.setItem("rubricaEF_savedRows", JSON.stringify(state.savedRows));
+}
+
+function loadSavedRows() {
+  try {
+    const raw = localStorage.getItem("rubricaEF_savedRows");
+    if (raw) state.savedRows = JSON.parse(raw);
+  } catch (e) {
+    state.savedRows = [];
+  }
+}
+
+function init() {
+  dateInputEl.valueAsDate = new Date();
+  state.date = dateInputEl.value;
+  loadSavedRows();
+  renderTable();
+  updateScoreButtons();
+  updateFinalScore();
+  saveHistory();
+}
+
+init();

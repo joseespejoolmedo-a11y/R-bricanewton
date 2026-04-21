@@ -24,25 +24,31 @@
       --shadow:0 8px 28px rgba(0,0,0,.06);
       --radius:18px;
     }
+
     *{box-sizing:border-box}
+
     body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       background:var(--bg);
       color:var(--ink);
     }
+
     .app{
       max-width:1380px;
       margin:0 auto;
       padding:18px 14px 36px;
     }
+
     h1{
       text-align:center;
       margin:10px 0 8px;
       font-size:24px;
       line-height:1.2;
     }
+
     .emoji{margin-right:.35rem}
+
     .panel{
       background:var(--card);
       border:1px solid var(--line);
@@ -51,18 +57,22 @@
       padding:16px 20px;
       margin:14px 0;
     }
+
     .row{
       display:flex;
       gap:14px;
       align-items:center;
       flex-wrap:wrap;
     }
+
     .row.between{justify-content:space-between}
+
     .label{
       font-size:18px;
       font-weight:700;
       min-width:max-content;
     }
+
     .field, select, input[type="text"], input[type="number"], textarea{
       border:1px solid var(--line);
       background:#fff;
@@ -72,7 +82,9 @@
       outline:none;
       color:var(--ink);
     }
+
     select, input[type="text"], input[type="number"]{height:58px}
+
     textarea{
       width:100%;
       min-height:108px;
@@ -81,7 +93,9 @@
       font-size:17px;
       line-height:1.35;
     }
+
     .field.grow, .grow{flex:1 1 280px}
+
     .btn{
       border:none;
       border-radius:22px;
@@ -93,6 +107,7 @@
       transition:.15s ease;
       white-space:nowrap;
     }
+
     .btn:hover{transform:translateY(-1px)}
     .btn.blue{background:var(--blue-soft); color:#304090}
     .btn.green{background:var(--green); color:#fff}
@@ -100,6 +115,7 @@
     .btn.orange{background:var(--orange); color:#171717}
     .btn.gray{background:var(--graybtn); color:#32405f}
     .btn.big{padding:16px 28px; font-size:18px}
+
     .hint{
       text-align:center;
       color:var(--muted);
@@ -108,17 +124,20 @@
       margin-top:6px;
       line-height:1.25;
     }
+
     .subhint{
       color:var(--muted);
       font-size:15px;
       margin-top:8px;
       line-height:1.3;
     }
+
     .section-title{
       font-size:18px;
       font-weight:900;
       margin:8px 0 10px;
     }
+
     .actions{
       display:flex;
       gap:14px;
@@ -126,35 +145,41 @@
       margin-top:10px;
       align-items:center;
     }
+
     .cards{
       display:grid;
       grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:14px;
-      margin-top:14px;
+      gap:10px;
+      margin-top:10px;
     }
+
     .card{
       background:#fff;
       border:1px solid var(--line);
-      border-radius:22px;
-      padding:18px 18px 14px;
+      border-radius:18px;
+      padding:14px 14px 10px;
       box-shadow:var(--shadow);
-      min-height:126px;
+      min-height:100px;
     }
+
     .card h3{
-      margin:0 0 14px;
-      font-size:20px;
-      line-height:1.15;
+      margin:0 0 10px;
+      font-size:16px;
+      line-height:1.1;
     }
+
     .card .big{
-      font-size:28px;
+      font-size:20px;
       font-weight:900;
       margin-bottom:2px;
     }
+
     .card .small{
       color:var(--muted);
-      font-size:14px;
+      font-size:12px;
       font-weight:700;
     }
+
     .table-wrap{
       overflow:auto;
       margin-top:14px;
@@ -162,74 +187,93 @@
       border:1px solid var(--line);
       border-radius:22px;
       box-shadow:var(--shadow);
+      max-height:none;
     }
+
     table{
       width:100%;
-      min-width:980px;
+      min-width:760px;
       border-collapse:separate;
       border-spacing:0;
     }
+
     thead th{
       position:sticky;
       top:0;
       background:#fff;
       z-index:1;
+      font-size:12px;
+      padding:8px 6px;
     }
+
     th,td{
       border-bottom:1px solid var(--line);
-      padding:12px 10px;
+      padding:7px 6px;
       text-align:center;
       vertical-align:middle;
-      font-size:15px;
+      font-size:12px;
     }
+
     th:first-child, td:first-child{
       text-align:left;
       position:sticky;
       left:0;
       background:#fff;
       z-index:1;
-      min-width:230px;
+      min-width:170px;
     }
+
     thead th:first-child{z-index:2}
+
     .th-ind .w{
       display:block;
       color:var(--muted);
-      font-size:13px;
-      margin-top:2px;
+      font-size:10px;
+      margin-top:1px;
       font-weight:700;
     }
+
     .cell-score{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      width:52px;
-      height:42px;
-      border-radius:14px;
+      width:36px;
+      height:30px;
+      border-radius:10px;
       border:1px solid var(--line);
       background:#fff;
-      font-weight:900;
+      font-weight:800;
       cursor:pointer;
       user-select:none;
+      font-size:12px;
     }
+
     .score-0{background:#fff; color:#8a8f98}
     .score-1{background:#ffe3e3; color:#973535}
     .score-2{background:#fff2cc; color:#7a5b00}
     .score-3{background:#dcecff; color:#1e4f8f}
     .score-4{background:#dff5e3; color:#1f6a2d}
+
     .student-name{
-      font-weight:800;
+      font-weight:700;
+      font-size:12px;
+      line-height:1.15;
     }
+
     .toolbar-spacer{
       height:2px;
       background:transparent;
     }
+
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
     .muted{color:var(--muted)}
+
     .divider{
       height:1px;
       background:var(--line);
       margin:14px 0 8px;
     }
+
     .pill-note{
       display:inline-block;
       margin-top:4px;
@@ -240,6 +284,7 @@
       color:#4b5563;
       font-weight:700;
     }
+
     .modal-backdrop{
       position:fixed;
       inset:0;
@@ -250,6 +295,7 @@
       z-index:9999;
       padding:16px;
     }
+
     .modal{
       background:#fff;
       border-radius:20px;
@@ -259,8 +305,10 @@
       box-shadow:0 18px 60px rgba(0,0,0,.2);
       padding:18px;
     }
+
     .modal h3{margin:0 0 10px}
     .modal p{line-height:1.45}
+
     .modal .close{
       float:right;
       margin-top:-4px;
@@ -274,6 +322,7 @@
       display:flex;
       gap:8px;
     }
+
     .small-btn{
       width:52px;
       height:52px;
@@ -288,10 +337,12 @@
 
     @media (max-width:980px){
       .cards{grid-template-columns:1fr}
+
       .undo-redo-fixed{
         top:10px;
         right:10px;
       }
+
       .small-btn{
         width:46px;
         height:46px;
@@ -493,8 +544,7 @@
     try {
       const raw = localStorage.getItem(LS_KEY);
       if (!raw) return defaultData();
-      const parsed = JSON.parse(raw);
-      return parsed;
+      return JSON.parse(raw);
     } catch {
       return defaultData();
     }
@@ -571,17 +621,11 @@
   }
 
   function parseStudents(text) {
-    return text
-      .split(/\n+/)
-      .map(s => s.trim())
-      .filter(Boolean);
+    return text.split(/\n+/).map(s => s.trim()).filter(Boolean);
   }
 
   function parseIndicators(text) {
-    return text
-      .split(/\n|,/)
-      .map(s => s.trim())
-      .filter(Boolean);
+    return text.split(/\n|,/).map(s => s.trim()).filter(Boolean);
   }
 
   function parseWeights(text, count) {
@@ -822,19 +866,17 @@
   function studentStats(student, r) {
     let sumWeighted = 0;
     let sumWeights = 0;
-    let answered = 0;
 
     r.indicators.forEach((ind, i) => {
       const w = Number(r.weights[i] || 0);
       const v = Number(r.scores?.[student]?.[ind] ?? 0);
       sumWeighted += v * w;
       sumWeights += w;
-      if (v > 0) answered++;
     });
 
     const avg04 = sumWeights ? sumWeighted / sumWeights : 0;
     const avg10 = avg04 * 2.5;
-    return { avg04, avg10, answered };
+    return { avg04, avg10 };
   }
 
   function renderSummary() {

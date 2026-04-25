@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rúbrica EF (editable sin perder datos)</title>
+  <title>Rúbrica EF compacta</title>
+
   <style>
     :root{
       --bg:#f6f7fb;
@@ -14,15 +15,11 @@
       --blue:#4f7cff;
       --blue-soft:#e9efff;
       --green:#4caf50;
-      --green-soft:#e8f8ea;
       --red:#e96b6b;
       --red-soft:#fdecec;
       --orange:#e7a63b;
-      --orange-soft:#fff3df;
-      --yellow:#f2c94c;
       --graybtn:#eef1f7;
-      --shadow:0 8px 28px rgba(0,0,0,.06);
-      --radius:18px;
+      --shadow:0 4px 14px rgba(0,0,0,.05);
     }
 
     *{box-sizing:border-box}
@@ -35,164 +32,174 @@
     }
 
     .app{
-      max-width:1380px;
+      max-width:1500px;
       margin:0 auto;
-      padding:18px 14px 36px;
+      padding:4px 5px 10px;
     }
 
     h1{
       text-align:center;
-      margin:10px 0 8px;
-      font-size:24px;
-      line-height:1.2;
+      margin:1px 0 2px;
+      font-size:13px;
+      line-height:1;
     }
 
-    .emoji{margin-right:.35rem}
+    .emoji{margin-right:.15rem}
 
     .panel{
       background:var(--card);
       border:1px solid var(--line);
-      border-radius:32px;
+      border-radius:10px;
       box-shadow:var(--shadow);
-      padding:16px 20px;
-      margin:14px 0;
+      padding:4px 6px;
+      margin:3px 0;
     }
 
     .row{
       display:flex;
-      gap:14px;
+      gap:3px;
       align-items:center;
       flex-wrap:wrap;
+      justify-content:center;
     }
 
-    .row.between{justify-content:space-between}
+    .row.between{justify-content:center}
 
     .label{
-      font-size:18px;
-      font-weight:700;
+      font-size:9px;
+      font-weight:800;
       min-width:max-content;
     }
 
-    .field, select, input[type="text"], input[type="number"], textarea{
+    .field,
+    select,
+    input[type="text"],
+    input[type="number"],
+    textarea{
       border:1px solid var(--line);
       background:#fff;
-      border-radius:22px;
-      padding:14px 18px;
-      font-size:16px;
+      border-radius:7px;
+      padding:3px 5px;
+      font-size:8px;
       outline:none;
       color:var(--ink);
     }
 
-    select, input[type="text"], input[type="number"]{height:58px}
+    select,
+    input[type="text"],
+    input[type="number"]{
+      height:22px;
+    }
 
     textarea{
       width:100%;
-      min-height:108px;
+      min-height:30px;
       resize:vertical;
-      border-radius:22px;
-      font-size:17px;
-      line-height:1.35;
+      border-radius:7px;
+      font-size:8px;
+      line-height:1.05;
     }
 
-    .field.grow, .grow{flex:1 1 280px}
+    .field.grow,
+    .grow{
+      flex:1 1 120px;
+    }
 
     .btn{
       border:none;
-      border-radius:22px;
-      padding:14px 22px;
-      font-size:17px;
+      border-radius:7px;
+      padding:3px 5px;
+      font-size:8px;
       font-weight:800;
       cursor:pointer;
-      box-shadow:none;
-      transition:.15s ease;
       white-space:nowrap;
+      line-height:1;
     }
 
-    .btn:hover{transform:translateY(-1px)}
+    .btn:hover{transform:none}
     .btn.blue{background:var(--blue-soft); color:#304090}
     .btn.green{background:var(--green); color:#fff}
     .btn.red{background:var(--red-soft); color:#b03636}
     .btn.orange{background:var(--orange); color:#171717}
     .btn.gray{background:var(--graybtn); color:#32405f}
-    .btn.big{padding:16px 28px; font-size:18px}
+    .btn.big{padding:4px 6px; font-size:8px}
 
     .hint{
       text-align:center;
       color:var(--muted);
-      font-size:17px;
+      font-size:8px;
       font-weight:700;
-      margin-top:6px;
-      line-height:1.25;
+      margin-top:1px;
+      line-height:1;
     }
 
     .subhint{
-      color:var(--muted);
-      font-size:15px;
-      margin-top:8px;
-      line-height:1.3;
+      display:none;
     }
 
     .section-title{
-      font-size:18px;
+      font-size:9px;
       font-weight:900;
-      margin:8px 0 10px;
+      margin:3px 0 2px;
     }
 
     .actions{
       display:flex;
-      gap:14px;
+      gap:3px;
       flex-wrap:wrap;
-      margin-top:10px;
+      margin-top:3px;
       align-items:center;
+      justify-content:center;
     }
 
     .cards{
       display:grid;
       grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:10px;
-      margin-top:10px;
+      gap:3px;
+      margin-top:3px;
     }
 
     .card{
       background:#fff;
       border:1px solid var(--line);
-      border-radius:18px;
-      padding:14px 14px 10px;
+      border-radius:8px;
+      padding:4px 5px;
       box-shadow:var(--shadow);
-      min-height:100px;
+      min-height:38px;
     }
 
     .card h3{
-      margin:0 0 10px;
-      font-size:16px;
-      line-height:1.1;
+      margin:0 0 2px;
+      font-size:8px;
+      line-height:1;
     }
 
     .card .big{
-      font-size:20px;
+      font-size:11px;
       font-weight:900;
-      margin-bottom:2px;
+      line-height:1;
+      margin:0;
     }
 
     .card .small{
       color:var(--muted);
-      font-size:12px;
+      font-size:7px;
       font-weight:700;
+      line-height:1;
     }
 
     .table-wrap{
       overflow:auto;
-      margin-top:14px;
+      margin-top:3px;
       background:#fff;
       border:1px solid var(--line);
-      border-radius:22px;
+      border-radius:8px;
       box-shadow:var(--shadow);
-      max-height:none;
     }
 
     table{
       width:100%;
-      min-width:760px;
+      min-width:460px;
       border-collapse:separate;
       border-spacing:0;
     }
@@ -202,25 +209,28 @@
       top:0;
       background:#fff;
       z-index:1;
-      font-size:12px;
-      padding:8px 6px;
+      font-size:7px;
+      padding:2px 1px;
+      line-height:1;
     }
 
     th,td{
       border-bottom:1px solid var(--line);
-      padding:7px 6px;
+      padding:1px 1px;
       text-align:center;
       vertical-align:middle;
-      font-size:12px;
+      font-size:7px;
+      line-height:1;
     }
 
-    th:first-child, td:first-child{
+    th:first-child,
+    td:first-child{
       text-align:left;
       position:sticky;
       left:0;
       background:#fff;
       z-index:1;
-      min-width:170px;
+      min-width:62px;
     }
 
     thead th:first-child{z-index:2}
@@ -228,8 +238,8 @@
     .th-ind .w{
       display:block;
       color:var(--muted);
-      font-size:10px;
-      margin-top:1px;
+      font-size:6px;
+      margin-top:0;
       font-weight:700;
     }
 
@@ -237,15 +247,15 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      width:36px;
-      height:30px;
-      border-radius:10px;
+      width:16px;
+      height:14px;
+      border-radius:4px;
       border:1px solid var(--line);
       background:#fff;
       font-weight:800;
       cursor:pointer;
       user-select:none;
-      font-size:12px;
+      font-size:7px;
     }
 
     .score-0{background:#fff; color:#8a8f98}
@@ -256,13 +266,8 @@
 
     .student-name{
       font-weight:700;
-      font-size:12px;
-      line-height:1.15;
-    }
-
-    .toolbar-spacer{
-      height:2px;
-      background:transparent;
+      font-size:7px;
+      line-height:1;
     }
 
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
@@ -271,14 +276,14 @@
     .divider{
       height:1px;
       background:var(--line);
-      margin:14px 0 8px;
+      margin:3px 0 2px;
     }
 
     .pill-note{
       display:inline-block;
-      margin-top:4px;
-      padding:4px 10px;
-      font-size:13px;
+      margin-top:2px;
+      padding:2px 5px;
+      font-size:7px;
       border-radius:999px;
       background:#f3f4f6;
       color:#4b5563;
@@ -293,64 +298,102 @@
       align-items:center;
       justify-content:center;
       z-index:9999;
-      padding:16px;
+      padding:8px;
     }
 
     .modal{
       background:#fff;
-      border-radius:20px;
-      width:min(760px,100%);
+      border-radius:12px;
+      width:min(680px,100%);
       max-height:82vh;
       overflow:auto;
       box-shadow:0 18px 60px rgba(0,0,0,.2);
-      padding:18px;
+      padding:10px;
     }
 
-    .modal h3{margin:0 0 10px}
-    .modal p{line-height:1.45}
+    .modal h3{
+      margin:0 0 6px;
+      font-size:11px;
+    }
+
+    .modal p{
+      line-height:1.15;
+      font-size:10px;
+    }
 
     .modal .close{
       float:right;
-      margin-top:-4px;
+      margin-top:-2px;
     }
 
     .undo-redo-fixed{
       position:fixed;
-      top:14px;
-      right:14px;
+      top:2px;
+      right:2px;
       z-index:10000;
       display:flex;
-      gap:8px;
+      gap:2px;
     }
 
     .small-btn{
-      width:52px;
-      height:52px;
+      width:22px;
+      height:22px;
       padding:0;
-      border-radius:16px;
-      font-size:24px;
+      border-radius:6px;
+      font-size:11px;
       line-height:1;
       display:flex;
       align-items:center;
       justify-content:center;
     }
 
-    @media (max-width:980px){
-      .cards{grid-template-columns:1fr}
+    #courseSelect{
+      max-width:88px !important;
+    }
 
-      .undo-redo-fixed{
-        top:10px;
-        right:10px;
+    #rubricSelect{
+      max-width:140px !important;
+    }
+
+    #newCourseInput,
+    #newRubricInput{
+      max-width:95px !important;
+      flex:0 1 95px !important;
+    }
+
+    #copyCourseSelect{
+      max-width:90px !important;
+    }
+
+    #copyRubricSelect{
+      max-width:140px !important;
+    }
+
+    #studentsInput,
+    #indicatorsInput,
+    #descriptionsInput{
+      min-height:30px !important;
+    }
+
+    @media (max-width:980px){
+      .cards{
+        grid-template-columns:repeat(3, minmax(0,1fr));
+      }
+
+      th:first-child,
+      td:first-child{
+        min-width:58px;
       }
 
       .small-btn{
-        width:46px;
-        height:46px;
-        font-size:22px;
+        width:20px;
+        height:20px;
+        font-size:10px;
       }
     }
   </style>
 </head>
+
 <body>
 
 <div class="undo-redo-fixed">
@@ -359,14 +402,14 @@
 </div>
 
 <div class="app">
-  <h1><span class="emoji">📋</span>Rubrica EF (editable sin perder datos)</h1>
+  <h1><span class="emoji">📋</span>Rúbrica EF</h1>
 
   <div class="panel">
     <div class="row">
       <div class="label">Curso</div>
       <select id="courseSelect" class="grow" style="max-width:260px"></select>
       <button class="btn blue" id="renameCourseBtn">Renombrar</button>
-      <input id="newCourseInput" class="grow" type="text" placeholder="Nuevo curso (ej: 2º ESO B)" />
+      <input id="newCourseInput" class="grow" type="text" placeholder="Nuevo curso" />
       <button class="btn green" id="addCourseBtn">Añadir</button>
       <button class="btn red" id="deleteCourseBtn">Eliminar</button>
     </div>
@@ -377,7 +420,7 @@
       <div class="label">Rúbrica</div>
       <select id="rubricSelect" class="grow" style="max-width:410px"></select>
       <button class="btn blue" id="renameRubricBtn">Renombrar</button>
-      <input id="newRubricInput" class="grow" type="text" placeholder="Nueva rúbrica (ej: Baloncesto)" />
+      <input id="newRubricInput" class="grow" type="text" placeholder="Nueva rúbrica" />
       <button class="btn green" id="addRubricBtn">Añadir</button>
     </div>
     <div class="actions">
@@ -388,59 +431,52 @@
 
   <div class="panel">
     <div class="row">
-      <div class="label">Copiar rúbrica desde otro curso</div>
-      <select id="copyCourseSelect" style="max-width:220px"></select>
-      <select id="copyRubricSelect" class="grow" style="max-width:380px"></select>
-      <button class="btn blue" id="copyWithoutScoresBtn">Copiar SIN notas</button>
-    </div>
-    <div class="actions">
-      <button class="btn orange" id="copyWithScoresBtn">Copiar CON notas</button>
+      <div class="label">Copiar</div>
+      <select id="copyCourseSelect"></select>
+      <select id="copyRubricSelect" class="grow"></select>
+      <button class="btn blue" id="copyWithoutScoresBtn">SIN notas</button>
+      <button class="btn orange" id="copyWithScoresBtn">CON notas</button>
     </div>
   </div>
 
   <div class="hint">
-    ✅ Para editar SIN perder notas: cambia alumnado/indicadores/pesos y pulsa Aplicar cambios.<br>
-    ⚠️ Crear / Rehacer crea la tabla desde cero (lo normal al principio).
+    ✅ Edita y pulsa Aplicar cambios. ⚠️ Rehacer crea la tabla desde cero.
   </div>
 
   <div class="divider"></div>
 
-  <div class="section-title">Alumnado (uno por línea)</div>
+  <div class="section-title">Alumnado</div>
   <textarea id="studentsInput" placeholder="Un alumno por línea"></textarea>
-  <div class="subhint">Puedes reordenar / añadir / quitar. Luego pulsa <b>Aplicar cambios</b>.</div>
 
-  <div class="section-title" style="margin-top:18px">Indicadores (por comas o uno por línea)</div>
+  <div class="section-title">Indicadores</div>
   <textarea id="indicatorsInput" placeholder="PARTICIPACIÓN, ESFUERZO, ATENCIÓN"></textarea>
-  <div class="subhint">Puedes añadir/quitar/reordenar. Se conservan notas por coincidencia del <b>nombre del indicador</b>.</div>
 
-  <div class="section-title" style="margin-top:18px">Pesos/ponderación % (opcional)</div>
+  <div class="section-title">Pesos %</div>
   <input id="weightsInput" type="text" class="grow field" placeholder="20,20,20,20,20" />
-  <div class="subhint">Si no suman 100, se normalizan. Cambiar pesos NO borra notas.</div>
 
-  <div class="section-title" style="margin-top:18px">Descripciones por indicador (opcional) — tooltip</div>
+  <div class="section-title">Descripciones</div>
   <textarea id="descriptionsInput" placeholder="Indicador | 1: ... ; 2: ... ; 3: ... ; 4: ..."></textarea>
-  <div class="subhint">Formato: <b>Indicador | 1: ... ; 2: ... ; 3: ... ; 4: ...</b> (una línea por indicador).<br>Pulsación larga sobre una celda → muestra descripción.</div>
 
-  <div class="actions" style="margin-top:18px">
-    <button class="btn big" style="background:var(--blue);color:#fff" id="rebuildBtn">Crear / Rehacer (desde cero)</button>
-    <button class="btn big" style="background:var(--orange);color:#111" id="applyBtn">Aplicar cambios (sin perder notas)</button>
+  <div class="actions">
+    <button class="btn big" style="background:var(--blue);color:#fff" id="rebuildBtn">Rehacer</button>
+    <button class="btn big" style="background:var(--orange);color:#111" id="applyBtn">Aplicar cambios</button>
     <button class="btn big gray" id="saveTextsBtn">Guardar textos</button>
     <button class="btn big green" id="exportCsvBtn">Exportar CSV</button>
   </div>
 
   <div class="cards">
     <div class="card">
-      <h3>Media clase (0–4) ponderada</h3>
+      <h3>Media 0–4</h3>
       <div class="big" id="avg04">0.00</div>
-      <div class="small">según pesos</div>
+      <div class="small">ponderada</div>
     </div>
     <div class="card">
-      <h3>Nota media clase (/10)</h3>
+      <h3>Nota /10</h3>
       <div class="big" id="avg10">0.00</div>
-      <div class="small">de 0 a 10</div>
+      <div class="small">media clase</div>
     </div>
     <div class="card">
-      <h3>% celdas evaluadas</h3>
+      <h3>% evaluado</h3>
       <div class="big" id="progressPct">0%</div>
       <div class="small">progreso</div>
     </div>
@@ -465,7 +501,6 @@
 <script>
 (() => {
   const LS_KEY = "rubrica_ef_editable_db_v1";
-
   const $ = sel => document.querySelector(sel);
 
   const els = {
@@ -551,7 +586,6 @@
   }
 
   let db = loadDB();
-
   let undoStack = [];
   let redoStack = [];
   let restoringHistory = false;
@@ -604,6 +638,7 @@
         db.courses["2C"] = { rubrics: {} };
       }
     }
+
     const rubrics = db.courses[db.currentCourse].rubrics;
     if (!rubrics[db.currentRubric]) {
       const firstRubric = Object.keys(rubrics)[0];
@@ -641,6 +676,7 @@
     if (arr.length < count) {
       while (arr.length < count) arr.push(arr[arr.length - 1] || 1);
     }
+
     if (arr.length > count) arr = arr.slice(0, count);
 
     const sum = arr.reduce((a,b) => a+b, 0);
@@ -656,17 +692,21 @@
     for (const line of lines) {
       const parts = line.split("|");
       if (parts.length < 2) continue;
+
       const indicator = parts[0].trim();
       const rest = parts.slice(1).join("|");
 
       const levels = {1:"",2:"",3:"",4:""};
       const regex = /([1-4])\s*:\s*([^;]+)(?:;|$)/g;
       let m;
+
       while ((m = regex.exec(rest)) !== null) {
         levels[m[1]] = m[2].trim();
       }
+
       out[indicator] = levels;
     }
+
     return out;
   }
 
@@ -679,11 +719,13 @@
 
   function fillSelectors() {
     const courses = Object.keys(db.courses);
+
     els.courseSelect.innerHTML = courses.map(c =>
       `<option value="${escapeHtml(c)}" ${c === db.currentCourse ? "selected" : ""}>${escapeHtml(c)}</option>`
     ).join("");
 
     const rubrics = Object.keys(db.courses[db.currentCourse].rubrics);
+
     els.rubricSelect.innerHTML = rubrics.map(r =>
       `<option value="${escapeHtml(r)}" ${r === db.currentRubric ? "selected" : ""}>${escapeHtml(r)}</option>`
     ).join("");
@@ -698,6 +740,7 @@
   function fillCopyRubrics() {
     const c = els.copyCourseSelect.value || db.currentCourse;
     const rubrics = Object.keys(db.courses[c]?.rubrics || {});
+
     els.copyRubricSelect.innerHTML = rubrics.map(r =>
       `<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`
     ).join("");
@@ -725,12 +768,14 @@
     rubricTemplateFromTexts(r);
 
     r.scores = {};
+
     for (const student of r.students) {
       r.scores[student] = {};
       for (const indicator of r.indicators) {
         r.scores[student][indicator] = 0;
       }
     }
+
     saveDB();
     renderAll();
   }
@@ -738,12 +783,15 @@
   function applyChangesKeepScores() {
     const r = currentRubricObj();
     const oldScores = structuredCloneSafe(r.scores || {});
+
     saveTextsIntoCurrentRubric();
     rubricTemplateFromTexts(r);
 
     const newScores = {};
+
     for (const student of r.students) {
       newScores[student] = {};
+
       for (const indicator of r.indicators) {
         if (oldScores[student] && typeof oldScores[student][indicator] !== "undefined") {
           newScores[student][indicator] = oldScores[student][indicator];
@@ -752,6 +800,7 @@
         }
       }
     }
+
     r.scores = newScores;
     saveDB();
     renderAll();
@@ -773,11 +822,13 @@
         <th>Nota<br><span class="w">/10</span></th>
       </tr>
     `;
+
     els.thead.innerHTML = head;
 
     const body = r.students.map(student => {
       const cells = r.indicators.map(ind => {
         const score = Number(r.scores?.[student]?.[ind] ?? 0);
+
         return `
           <td>
             <div class="cell-score score-${score}" data-student="${escapeAttr(student)}" data-indicator="${escapeAttr(ind)}" data-score="${score}">
@@ -788,6 +839,7 @@
       }).join("");
 
       const stats = studentStats(student, r);
+
       return `
         <tr>
           <td><span class="student-name">${escapeHtml(student)}</span></td>
@@ -806,19 +858,24 @@
 
   function bindCellEvents() {
     const cells = els.tbody.querySelectorAll(".cell-score");
+
     cells.forEach(cell => {
       cell.addEventListener("click", () => {
         const student = cell.dataset.student;
         const indicator = cell.dataset.indicator;
         const r = currentRubricObj();
+
         const current = Number(r.scores[student][indicator] || 0);
         const next = (current + 1) % 5;
+
         r.scores[student][indicator] = next;
+
         saveDB();
         renderTable();
       });
 
       let pressTimer = null;
+
       const start = () => {
         pressTimer = setTimeout(() => {
           const student = cell.dataset.student;
@@ -826,6 +883,7 @@
           showTooltip(indicator, student);
         }, 450);
       };
+
       const clear = () => {
         if (pressTimer) clearTimeout(pressTimer);
         pressTimer = null;
@@ -835,6 +893,7 @@
       cell.addEventListener("pointerup", clear);
       cell.addEventListener("pointerleave", clear);
       cell.addEventListener("pointercancel", clear);
+
       cell.addEventListener("contextmenu", e => {
         e.preventDefault();
         showTooltip(cell.dataset.indicator, cell.dataset.student);
@@ -847,11 +906,14 @@
     const score = Number(r.scores?.[student]?.[indicator] ?? 0);
     const descMap = r.descriptions[indicator] || {};
     const txt = score >= 1 ? (descMap[String(score)] || "Sin descripción para este nivel.") : "Esta celda aún no tiene nivel asignado.";
+
     els.tooltipTitle.textContent = `${indicator} — ${student}`;
+
     els.tooltipBody.innerHTML = `
       <p><b>Nivel actual:</b> ${score}</p>
       <p>${escapeHtml(txt)}</p>
     `;
+
     els.tooltipModalBackdrop.style.display = "flex";
   }
 
@@ -860,7 +922,9 @@
   });
 
   els.tooltipModalBackdrop.addEventListener("click", (e) => {
-    if (e.target === els.tooltipModalBackdrop) els.tooltipModalBackdrop.style.display = "none";
+    if (e.target === els.tooltipModalBackdrop) {
+      els.tooltipModalBackdrop.style.display = "none";
+    }
   });
 
   function studentStats(student, r) {
@@ -870,12 +934,14 @@
     r.indicators.forEach((ind, i) => {
       const w = Number(r.weights[i] || 0);
       const v = Number(r.scores?.[student]?.[ind] ?? 0);
+
       sumWeighted += v * w;
       sumWeights += w;
     });
 
     const avg04 = sumWeights ? sumWeighted / sumWeights : 0;
     const avg10 = avg04 * 2.5;
+
     return { avg04, avg10 };
   }
 
@@ -891,8 +957,10 @@
 
     for (const student of r.students) {
       const stats = studentStats(student, r);
+
       classWeightedSum += stats.avg04;
       classCount++;
+
       for (const ind of r.indicators) {
         const v = Number(r.scores?.[student]?.[ind] ?? 0);
         if (v > 0) filled++;
@@ -918,43 +986,62 @@
   function renameCourse() {
     const oldName = db.currentCourse;
     const newName = prompt("Nuevo nombre del curso:", oldName);
+
     if (!newName || newName.trim() === "" || newName.trim() === oldName) return;
+
     const clean = newName.trim();
+
     if (db.courses[clean]) return alert("Ya existe un curso con ese nombre.");
+
     db.courses[clean] = db.courses[oldName];
     delete db.courses[oldName];
     db.currentCourse = clean;
+
     saveDB();
     renderAll();
   }
 
   function addCourse() {
     const name = els.newCourseInput.value.trim();
+
     if (!name) return;
     if (db.courses[name]) return alert("Ese curso ya existe.");
+
     db.courses[name] = { rubrics: {} };
     db.currentCourse = name;
     db.currentRubric = "Nueva rúbrica";
+
     db.courses[name].rubrics[db.currentRubric] = {
-      texts: { studentsText:"", indicatorsText:"", weightsText:"", descriptionsText:"" },
+      texts: {
+        studentsText:"",
+        indicatorsText:"",
+        weightsText:"",
+        descriptionsText:""
+      },
       students: [],
       indicators: [],
       weights: [],
       descriptions: {},
       scores: {}
     };
+
     els.newCourseInput.value = "";
+
     saveDB();
     renderAll();
   }
 
   function deleteCourse() {
     const keys = Object.keys(db.courses);
+
     if (keys.length <= 1) return alert("Debe quedar al menos un curso.");
     if (!confirm(`¿Eliminar el curso "${db.currentCourse}"?`)) return;
+
     delete db.courses[db.currentCourse];
+
     db.currentCourse = Object.keys(db.courses)[0];
     db.currentRubric = Object.keys(db.courses[db.currentCourse].rubrics)[0];
+
     saveDB();
     renderAll();
   }
@@ -963,31 +1050,47 @@
     const course = db.courses[db.currentCourse];
     const oldName = db.currentRubric;
     const newName = prompt("Nuevo nombre de la rúbrica:", oldName);
+
     if (!newName || newName.trim() === "" || newName.trim() === oldName) return;
+
     const clean = newName.trim();
+
     if (course.rubrics[clean]) return alert("Ya existe una rúbrica con ese nombre.");
+
     course.rubrics[clean] = course.rubrics[oldName];
     delete course.rubrics[oldName];
     db.currentRubric = clean;
+
     saveDB();
     renderAll();
   }
 
   function addRubric() {
     const name = els.newRubricInput.value.trim();
+
     if (!name) return;
+
     const rubrics = db.courses[db.currentCourse].rubrics;
+
     if (rubrics[name]) return alert("Esa rúbrica ya existe.");
+
     rubrics[name] = {
-      texts: { studentsText:"", indicatorsText:"", weightsText:"", descriptionsText:"" },
+      texts: {
+        studentsText:"",
+        indicatorsText:"",
+        weightsText:"",
+        descriptionsText:""
+      },
       students: [],
       indicators: [],
       weights: [],
       descriptions: {},
       scores: {}
     };
+
     db.currentRubric = name;
     els.newRubricInput.value = "";
+
     saveDB();
     renderAll();
   }
@@ -996,11 +1099,16 @@
     const rubrics = db.courses[db.currentCourse].rubrics;
     const base = db.currentRubric;
     let newName = prompt("Nombre de la copia:", `${base} copia`);
+
     if (!newName || !newName.trim()) return;
+
     newName = newName.trim();
+
     if (rubrics[newName]) return alert("Ya existe una rúbrica con ese nombre.");
+
     rubrics[newName] = structuredCloneSafe(rubrics[base]);
     db.currentRubric = newName;
+
     saveDB();
     renderAll();
   }
@@ -1008,10 +1116,14 @@
   function deleteRubric() {
     const rubrics = db.courses[db.currentCourse].rubrics;
     const keys = Object.keys(rubrics);
+
     if (keys.length <= 1) return alert("Debe quedar al menos una rúbrica.");
     if (!confirm(`¿Eliminar la rúbrica "${db.currentRubric}"?`)) return;
+
     delete rubrics[db.currentRubric];
+
     db.currentRubric = Object.keys(rubrics)[0];
+
     saveDB();
     renderAll();
   }
@@ -1019,17 +1131,21 @@
   function copyRubric(withScores) {
     const fromCourse = els.copyCourseSelect.value;
     const fromRubric = els.copyRubricSelect.value;
+
     if (!fromCourse || !fromRubric) return;
 
     const src = db.courses[fromCourse]?.rubrics[fromRubric];
+
     if (!src) return alert("No se encuentra la rúbrica origen.");
 
     const clone = structuredCloneSafe(src);
 
     if (!withScores) {
       clone.scores = {};
+
       for (const student of clone.students || []) {
         clone.scores[student] = {};
+
         for (const ind of clone.indicators || []) {
           clone.scores[student][ind] = 0;
         }
@@ -1037,6 +1153,7 @@
     }
 
     db.courses[db.currentCourse].rubrics[db.currentRubric] = clone;
+
     saveDB();
     renderAll();
   }
@@ -1055,16 +1172,24 @@
     for (const student of r.students) {
       const vals = r.indicators.map(ind => Number(r.scores?.[student]?.[ind] ?? 0));
       const stats = studentStats(student, r);
-      rows.push([student, ...vals, stats.avg04.toFixed(2), stats.avg10.toFixed(2)]);
+
+      rows.push([
+        student,
+        ...vals,
+        stats.avg04.toFixed(2),
+        stats.avg10.toFixed(2)
+      ]);
     }
 
     const csv = rows.map(row => row.map(csvSafe).join(";")).join("\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
+
     a.href = url;
     a.download = `${db.currentCourse}__${db.currentRubric}.csv`;
     a.click();
+
     URL.revokeObjectURL(url);
   }
 
@@ -1135,5 +1260,6 @@
   saveHistory();
 })();
 </script>
+
 </body>
 </html>

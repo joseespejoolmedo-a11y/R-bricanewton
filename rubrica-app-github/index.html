@@ -32,38 +32,42 @@
     }
 
     .app{
-      max-width:1380px;
+      max-width:1480px;
       margin:0 auto;
-      padding:14px 12px 28px;
+      padding:14px 14px 28px;
     }
 
     h1{
       text-align:center;
-      margin:10px 0 8px;
+      margin:8px 0 12px;
       font-size:24px;
       line-height:1.15;
     }
 
     .emoji{margin-right:.35rem}
 
-    .panel{
+    .top-dashboard{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+    }
+
+    .top-line{
       background:var(--card);
       border:1px solid var(--line);
-      border-radius:28px;
+      border-radius:999px;
       box-shadow:var(--shadow);
-      padding:14px 18px;
-      margin:12px 0;
-    }
-
-    .row{
+      padding:10px 14px;
       display:flex;
-      gap:12px;
       align-items:center;
-      flex-wrap:wrap;
       justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      width:fit-content;
+      max-width:1180px;
     }
-
-    .row.between{justify-content:center}
 
     .label{
       font-size:18px;
@@ -79,7 +83,7 @@
       border:1px solid var(--line);
       background:#fff;
       border-radius:22px;
-      padding:12px 16px;
+      padding:10px 14px;
       font-size:15px;
       outline:none;
       color:var(--ink);
@@ -88,12 +92,11 @@
     select,
     input[type="text"],
     input[type="number"]{
-      height:52px;
+      height:46px;
     }
 
     textarea{
       width:100%;
-      min-height:95px;
       resize:vertical;
       border-radius:20px;
       font-size:16px;
@@ -102,13 +105,13 @@
 
     .field.grow,
     .grow{
-      flex:1 1 240px;
+      flex:1 1 220px;
     }
 
     .btn{
       border:none;
       border-radius:20px;
-      padding:12px 18px;
+      padding:11px 16px;
       font-size:15px;
       font-weight:800;
       cursor:pointer;
@@ -124,13 +127,90 @@
     .btn.gray{background:var(--graybtn); color:#32405f}
     .btn.big{padding:13px 20px; font-size:16px}
 
+    #courseSelect{
+      max-width:100px !important;
+    }
+
+    #rubricSelect{
+      min-width:260px;
+      max-width:340px !important;
+    }
+
+    #newCourseInput,
+    #newRubricInput{
+      max-width:240px !important;
+      flex:0 1 240px !important;
+    }
+
+    #copyCourseSelect{
+      max-width:100px !important;
+    }
+
+    #copyRubricSelect{
+      min-width:260px;
+      max-width:340px !important;
+    }
+
     .hint{
       text-align:center;
       color:var(--muted);
       font-size:16px;
       font-weight:700;
-      margin-top:8px;
+      margin:10px auto 12px;
       line-height:1.25;
+    }
+
+    .divider{
+      height:1px;
+      background:var(--line);
+      margin:14px 0 14px;
+    }
+
+    .editor-dashboard{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      align-items:start;
+      margin-top:8px;
+    }
+
+    .editor-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
+
+    .section-title{
+      font-size:20px;
+      font-weight:900;
+      margin:0 0 8px;
+    }
+
+    .editor-card textarea{
+      min-height:118px;
+    }
+
+    .weights-under{
+      margin-top:14px;
+    }
+
+    .weights-under input{
+      width:100%;
+    }
+
+    .descriptions-wide{
+      margin-top:16px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
+
+    .descriptions-wide textarea{
+      min-height:105px;
     }
 
     .subhint{
@@ -141,17 +221,11 @@
       line-height:1.25;
     }
 
-    .section-title{
-      font-size:20px;
-      font-weight:900;
-      margin:12px 0 8px;
-    }
-
     .actions{
       display:flex;
       gap:12px;
       flex-wrap:wrap;
-      margin-top:10px;
+      margin-top:16px;
       align-items:center;
       justify-content:center;
     }
@@ -160,7 +234,7 @@
       display:grid;
       grid-template-columns:repeat(3, minmax(0,1fr));
       gap:12px;
-      margin-top:12px;
+      margin-top:16px;
     }
 
     .card{
@@ -194,7 +268,7 @@
 
     .table-wrap{
       overflow:auto;
-      margin-top:12px;
+      margin-top:14px;
       background:#fff;
       border:1px solid var(--line);
       border-radius:20px;
@@ -277,23 +351,6 @@
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
     .muted{color:var(--muted)}
 
-    .divider{
-      height:1px;
-      background:var(--line);
-      margin:14px 0 8px;
-    }
-
-    .pill-note{
-      display:inline-block;
-      margin-top:4px;
-      padding:4px 10px;
-      font-size:13px;
-      border-radius:999px;
-      background:#f3f4f6;
-      color:#4b5563;
-      font-weight:700;
-    }
-
     .modal-backdrop{
       position:fixed;
       inset:0;
@@ -351,29 +408,16 @@
       justify-content:center;
     }
 
-    #courseSelect{
-      max-width:110px !important;
-    }
-
-    #rubricSelect{
-      max-width:280px !important;
-    }
-
-    #newCourseInput,
-    #newRubricInput{
-      max-width:260px !important;
-      flex:0 1 260px !important;
-    }
-
-    #copyCourseSelect{
-      max-width:120px !important;
-    }
-
-    #copyRubricSelect{
-      max-width:300px !important;
-    }
-
     @media (max-width:980px){
+      .editor-dashboard{
+        grid-template-columns:1fr;
+      }
+
+      .top-line{
+        width:100%;
+        border-radius:26px;
+      }
+
       .cards{
         grid-template-columns:1fr;
       }
@@ -393,6 +437,11 @@
       td:first-child{
         min-width:150px;
       }
+
+      #rubricSelect,
+      #copyRubricSelect{
+        min-width:180px;
+      }
     }
   </style>
 </head>
@@ -407,8 +456,9 @@
 <div class="app">
   <h1><span class="emoji">📋</span>Rúbrica EF</h1>
 
-  <div class="panel">
-    <div class="row">
+  <div class="top-dashboard">
+
+    <div class="top-line">
       <div class="label">Curso</div>
       <select id="courseSelect" class="grow"></select>
       <button class="btn blue" id="renameCourseBtn">Renombrar</button>
@@ -416,30 +466,25 @@
       <button class="btn green" id="addCourseBtn">Añadir</button>
       <button class="btn red" id="deleteCourseBtn">Eliminar</button>
     </div>
-  </div>
 
-  <div class="panel">
-    <div class="row">
+    <div class="top-line">
       <div class="label">Rúbrica</div>
       <select id="rubricSelect" class="grow"></select>
       <button class="btn blue" id="renameRubricBtn">Renombrar</button>
       <input id="newRubricInput" class="grow" type="text" placeholder="Nueva rúbrica" />
       <button class="btn green" id="addRubricBtn">Añadir</button>
-    </div>
-    <div class="actions">
       <button class="btn orange" id="duplicateRubricBtn">Duplicar</button>
       <button class="btn red" id="deleteRubricBtn">Eliminar</button>
     </div>
-  </div>
 
-  <div class="panel">
-    <div class="row">
-      <div class="label">Copiar</div>
+    <div class="top-line">
+      <div class="label">Copiar rúbrica desde otro curso</div>
       <select id="copyCourseSelect"></select>
       <select id="copyRubricSelect" class="grow"></select>
-      <button class="btn blue" id="copyWithoutScoresBtn">SIN notas</button>
-      <button class="btn orange" id="copyWithScoresBtn">CON notas</button>
+      <button class="btn blue" id="copyWithoutScoresBtn">Copiar SIN notas</button>
+      <button class="btn orange" id="copyWithScoresBtn">Copiar CON notas</button>
     </div>
+
   </div>
 
   <div class="hint">
@@ -448,21 +493,33 @@
 
   <div class="divider"></div>
 
-  <div class="section-title">Alumnado</div>
-  <textarea id="studentsInput" placeholder="Un alumno por línea"></textarea>
-  <div class="subhint">Puedes añadir, quitar o reordenar alumnado. Después pulsa Aplicar cambios.</div>
+  <div class="editor-dashboard">
 
-  <div class="section-title">Indicadores</div>
-  <textarea id="indicatorsInput" placeholder="PARTICIPACIÓN, ESFUERZO, ATENCIÓN"></textarea>
-  <div class="subhint">Se conservan notas si coincide el nombre del indicador.</div>
+    <div class="editor-card">
+      <div class="section-title">Alumnado</div>
+      <textarea id="studentsInput" placeholder="Un alumno por línea"></textarea>
+      <div class="subhint">Puedes añadir, quitar o reordenar alumnado. Después pulsa Aplicar cambios.</div>
+    </div>
 
-  <div class="section-title">Pesos %</div>
-  <input id="weightsInput" type="text" class="grow field" placeholder="20,20,20,20,20" />
-  <div class="subhint">Si no suman 100, se normalizan automáticamente.</div>
+    <div class="editor-card">
+      <div class="section-title">Indicadores</div>
+      <textarea id="indicatorsInput" placeholder="PARTICIPACIÓN, ESFUERZO, ATENCIÓN"></textarea>
+      <div class="subhint">Se conservan notas si coincide el nombre del indicador.</div>
 
-  <div class="section-title">Descripciones</div>
-  <textarea id="descriptionsInput" placeholder="Indicador | 1: ... ; 2: ... ; 3: ... ; 4: ..."></textarea>
-  <div class="subhint">Una línea por indicador. Mantén pulsada una celda para ver la descripción.</div>
+      <div class="weights-under">
+        <div class="section-title">Pesos %</div>
+        <input id="weightsInput" type="text" class="grow field" placeholder="20,20,20,20,20" />
+        <div class="subhint">Si no suman 100, se normalizan automáticamente.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="descriptions-wide">
+    <div class="section-title">Descripciones</div>
+    <textarea id="descriptionsInput" placeholder="Indicador | 1: ... ; 2: ... ; 3: ... ; 4: ..."></textarea>
+    <div class="subhint">Una línea por indicador. Mantén pulsada una celda para ver la descripción.</div>
+  </div>
 
   <div class="actions">
     <button class="btn big" style="background:var(--blue);color:#fff" id="rebuildBtn">Rehacer</button>

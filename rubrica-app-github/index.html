@@ -19,7 +19,7 @@
       --red-soft:#fdecec;
       --orange:#e7a63b;
       --graybtn:#eef1f7;
-      --shadow:0 4px 14px rgba(0,0,0,.05);
+      --shadow:0 6px 20px rgba(0,0,0,.055);
     }
 
     *{box-sizing:border-box}
@@ -32,32 +32,32 @@
     }
 
     .app{
-      max-width:1500px;
+      max-width:1380px;
       margin:0 auto;
-      padding:4px 5px 10px;
+      padding:14px 12px 28px;
     }
 
     h1{
       text-align:center;
-      margin:1px 0 2px;
-      font-size:13px;
-      line-height:1;
+      margin:10px 0 8px;
+      font-size:24px;
+      line-height:1.15;
     }
 
-    .emoji{margin-right:.15rem}
+    .emoji{margin-right:.35rem}
 
     .panel{
       background:var(--card);
       border:1px solid var(--line);
-      border-radius:10px;
+      border-radius:28px;
       box-shadow:var(--shadow);
-      padding:4px 6px;
-      margin:3px 0;
+      padding:14px 18px;
+      margin:12px 0;
     }
 
     .row{
       display:flex;
-      gap:3px;
+      gap:12px;
       align-items:center;
       flex-wrap:wrap;
       justify-content:center;
@@ -66,7 +66,7 @@
     .row.between{justify-content:center}
 
     .label{
-      font-size:9px;
+      font-size:18px;
       font-weight:800;
       min-width:max-content;
     }
@@ -78,9 +78,9 @@
     textarea{
       border:1px solid var(--line);
       background:#fff;
-      border-radius:7px;
-      padding:3px 5px;
-      font-size:8px;
+      border-radius:22px;
+      padding:12px 16px;
+      font-size:15px;
       outline:none;
       color:var(--ink);
     }
@@ -88,32 +88,32 @@
     select,
     input[type="text"],
     input[type="number"]{
-      height:22px;
+      height:52px;
     }
 
     textarea{
       width:100%;
-      min-height:30px;
+      min-height:95px;
       resize:vertical;
-      border-radius:7px;
-      font-size:8px;
-      line-height:1.05;
+      border-radius:20px;
+      font-size:16px;
+      line-height:1.25;
     }
 
     .field.grow,
     .grow{
-      flex:1 1 120px;
+      flex:1 1 240px;
     }
 
     .btn{
       border:none;
-      border-radius:7px;
-      padding:3px 5px;
-      font-size:8px;
+      border-radius:20px;
+      padding:12px 18px;
+      font-size:15px;
       font-weight:800;
       cursor:pointer;
       white-space:nowrap;
-      line-height:1;
+      line-height:1.1;
     }
 
     .btn:hover{transform:none}
@@ -122,32 +122,36 @@
     .btn.red{background:var(--red-soft); color:#b03636}
     .btn.orange{background:var(--orange); color:#171717}
     .btn.gray{background:var(--graybtn); color:#32405f}
-    .btn.big{padding:4px 6px; font-size:8px}
+    .btn.big{padding:13px 20px; font-size:16px}
 
     .hint{
       text-align:center;
       color:var(--muted);
-      font-size:8px;
+      font-size:16px;
       font-weight:700;
-      margin-top:1px;
-      line-height:1;
+      margin-top:8px;
+      line-height:1.25;
     }
 
     .subhint{
-      display:none;
+      display:block;
+      color:var(--muted);
+      font-size:15px;
+      margin-top:6px;
+      line-height:1.25;
     }
 
     .section-title{
-      font-size:9px;
+      font-size:20px;
       font-weight:900;
-      margin:3px 0 2px;
+      margin:12px 0 8px;
     }
 
     .actions{
       display:flex;
-      gap:3px;
+      gap:12px;
       flex-wrap:wrap;
-      margin-top:3px;
+      margin-top:10px;
       align-items:center;
       justify-content:center;
     }
@@ -155,51 +159,51 @@
     .cards{
       display:grid;
       grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:3px;
-      margin-top:3px;
+      gap:12px;
+      margin-top:12px;
     }
 
     .card{
       background:#fff;
       border:1px solid var(--line);
-      border-radius:8px;
-      padding:4px 5px;
+      border-radius:20px;
+      padding:14px 16px;
       box-shadow:var(--shadow);
-      min-height:38px;
+      min-height:95px;
     }
 
     .card h3{
-      margin:0 0 2px;
-      font-size:8px;
-      line-height:1;
+      margin:0 0 8px;
+      font-size:17px;
+      line-height:1.1;
     }
 
     .card .big{
-      font-size:11px;
+      font-size:24px;
       font-weight:900;
-      line-height:1;
+      line-height:1.1;
       margin:0;
     }
 
     .card .small{
       color:var(--muted);
-      font-size:7px;
+      font-size:13px;
       font-weight:700;
-      line-height:1;
+      line-height:1.1;
     }
 
     .table-wrap{
       overflow:auto;
-      margin-top:3px;
+      margin-top:12px;
       background:#fff;
       border:1px solid var(--line);
-      border-radius:8px;
+      border-radius:20px;
       box-shadow:var(--shadow);
     }
 
     table{
       width:100%;
-      min-width:460px;
+      min-width:760px;
       border-collapse:separate;
       border-spacing:0;
     }
@@ -209,18 +213,18 @@
       top:0;
       background:#fff;
       z-index:1;
-      font-size:7px;
-      padding:2px 1px;
-      line-height:1;
+      font-size:13px;
+      padding:8px 6px;
+      line-height:1.1;
     }
 
     th,td{
       border-bottom:1px solid var(--line);
-      padding:1px 1px;
+      padding:7px 6px;
       text-align:center;
       vertical-align:middle;
-      font-size:7px;
-      line-height:1;
+      font-size:13px;
+      line-height:1.1;
     }
 
     th:first-child,
@@ -230,7 +234,7 @@
       left:0;
       background:#fff;
       z-index:1;
-      min-width:62px;
+      min-width:170px;
     }
 
     thead th:first-child{z-index:2}
@@ -238,8 +242,8 @@
     .th-ind .w{
       display:block;
       color:var(--muted);
-      font-size:6px;
-      margin-top:0;
+      font-size:11px;
+      margin-top:1px;
       font-weight:700;
     }
 
@@ -247,15 +251,15 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      width:16px;
-      height:14px;
-      border-radius:4px;
+      width:38px;
+      height:32px;
+      border-radius:10px;
       border:1px solid var(--line);
       background:#fff;
       font-weight:800;
       cursor:pointer;
       user-select:none;
-      font-size:7px;
+      font-size:13px;
     }
 
     .score-0{background:#fff; color:#8a8f98}
@@ -266,8 +270,8 @@
 
     .student-name{
       font-weight:700;
-      font-size:7px;
-      line-height:1;
+      font-size:13px;
+      line-height:1.15;
     }
 
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
@@ -276,14 +280,14 @@
     .divider{
       height:1px;
       background:var(--line);
-      margin:3px 0 2px;
+      margin:14px 0 8px;
     }
 
     .pill-note{
       display:inline-block;
-      margin-top:2px;
-      padding:2px 5px;
-      font-size:7px;
+      margin-top:4px;
+      padding:4px 10px;
+      font-size:13px;
       border-radius:999px;
       background:#f3f4f6;
       color:#4b5563;
@@ -298,49 +302,49 @@
       align-items:center;
       justify-content:center;
       z-index:9999;
-      padding:8px;
+      padding:16px;
     }
 
     .modal{
       background:#fff;
-      border-radius:12px;
-      width:min(680px,100%);
+      border-radius:20px;
+      width:min(760px,100%);
       max-height:82vh;
       overflow:auto;
       box-shadow:0 18px 60px rgba(0,0,0,.2);
-      padding:10px;
+      padding:18px;
     }
 
     .modal h3{
-      margin:0 0 6px;
-      font-size:11px;
+      margin:0 0 10px;
+      font-size:18px;
     }
 
     .modal p{
-      line-height:1.15;
-      font-size:10px;
+      line-height:1.35;
+      font-size:15px;
     }
 
     .modal .close{
       float:right;
-      margin-top:-2px;
+      margin-top:-4px;
     }
 
     .undo-redo-fixed{
       position:fixed;
-      top:2px;
-      right:2px;
+      top:12px;
+      right:12px;
       z-index:10000;
       display:flex;
-      gap:2px;
+      gap:8px;
     }
 
     .small-btn{
-      width:22px;
-      height:22px;
+      width:48px;
+      height:48px;
       padding:0;
-      border-radius:6px;
-      font-size:11px;
+      border-radius:16px;
+      font-size:22px;
       line-height:1;
       display:flex;
       align-items:center;
@@ -348,47 +352,46 @@
     }
 
     #courseSelect{
-      max-width:88px !important;
+      max-width:110px !important;
     }
 
     #rubricSelect{
-      max-width:140px !important;
+      max-width:280px !important;
     }
 
     #newCourseInput,
     #newRubricInput{
-      max-width:95px !important;
-      flex:0 1 95px !important;
+      max-width:260px !important;
+      flex:0 1 260px !important;
     }
 
     #copyCourseSelect{
-      max-width:90px !important;
+      max-width:120px !important;
     }
 
     #copyRubricSelect{
-      max-width:140px !important;
-    }
-
-    #studentsInput,
-    #indicatorsInput,
-    #descriptionsInput{
-      min-height:30px !important;
+      max-width:300px !important;
     }
 
     @media (max-width:980px){
       .cards{
-        grid-template-columns:repeat(3, minmax(0,1fr));
+        grid-template-columns:1fr;
+      }
+
+      .small-btn{
+        width:42px;
+        height:42px;
+        font-size:20px;
+      }
+
+      .undo-redo-fixed{
+        top:10px;
+        right:10px;
       }
 
       th:first-child,
       td:first-child{
-        min-width:58px;
-      }
-
-      .small-btn{
-        width:20px;
-        height:20px;
-        font-size:10px;
+        min-width:150px;
       }
     }
   </style>
@@ -407,7 +410,7 @@
   <div class="panel">
     <div class="row">
       <div class="label">Curso</div>
-      <select id="courseSelect" class="grow" style="max-width:260px"></select>
+      <select id="courseSelect" class="grow"></select>
       <button class="btn blue" id="renameCourseBtn">Renombrar</button>
       <input id="newCourseInput" class="grow" type="text" placeholder="Nuevo curso" />
       <button class="btn green" id="addCourseBtn">Añadir</button>
@@ -418,7 +421,7 @@
   <div class="panel">
     <div class="row">
       <div class="label">Rúbrica</div>
-      <select id="rubricSelect" class="grow" style="max-width:410px"></select>
+      <select id="rubricSelect" class="grow"></select>
       <button class="btn blue" id="renameRubricBtn">Renombrar</button>
       <input id="newRubricInput" class="grow" type="text" placeholder="Nueva rúbrica" />
       <button class="btn green" id="addRubricBtn">Añadir</button>
@@ -447,15 +450,19 @@
 
   <div class="section-title">Alumnado</div>
   <textarea id="studentsInput" placeholder="Un alumno por línea"></textarea>
+  <div class="subhint">Puedes añadir, quitar o reordenar alumnado. Después pulsa Aplicar cambios.</div>
 
   <div class="section-title">Indicadores</div>
   <textarea id="indicatorsInput" placeholder="PARTICIPACIÓN, ESFUERZO, ATENCIÓN"></textarea>
+  <div class="subhint">Se conservan notas si coincide el nombre del indicador.</div>
 
   <div class="section-title">Pesos %</div>
   <input id="weightsInput" type="text" class="grow field" placeholder="20,20,20,20,20" />
+  <div class="subhint">Si no suman 100, se normalizan automáticamente.</div>
 
   <div class="section-title">Descripciones</div>
   <textarea id="descriptionsInput" placeholder="Indicador | 1: ... ; 2: ... ; 3: ... ; 4: ..."></textarea>
+  <div class="subhint">Una línea por indicador. Mantén pulsada una celda para ver la descripción.</div>
 
   <div class="actions">
     <button class="btn big" style="background:var(--blue);color:#fff" id="rebuildBtn">Rehacer</button>

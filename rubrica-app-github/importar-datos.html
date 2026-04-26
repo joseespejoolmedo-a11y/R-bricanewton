@@ -1,555 +1,169 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Importar datos rúbrica EF</title>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Importar datos de la rúbrica</title>
   <style>
-    :root{
-      --bg:#f6f7fb;
-      --card:#ffffff;
-      --ink:#1f2430;
-      --muted:#6b7280;
-      --line:#e5e7eb;
-      --blue:#4f7cff;
-      --green:#4caf50;
-      --red:#e96b6b;
-      --orange:#e7a63b;
-      --gray:#eef1f7;
-      --shadow:0 8px 28px rgba(0,0,0,.06);
-    }
-
-    *{box-sizing:border-box}
-
     body{
+      font-family: Arial, sans-serif;
+      background:#f5f6fa;
+      color:#111827;
       margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background:var(--bg);
-      color:var(--ink);
-    }
-
-    .app{
-      max-width:980px;
-      margin:0 auto;
-      padding:18px 12px 32px;
-    }
-
-    h1{
-      text-align:center;
-      font-size:24px;
-      margin:8px 0 14px;
-    }
-
-    .panel{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:22px;
-      box-shadow:var(--shadow);
       padding:18px;
-      margin:14px 0;
     }
-
-    .warning{
-      background:#fff7e6;
-      border:1px solid #ffd58a;
-      color:#5c3b00;
+    .box{
+      max-width:900px;
+      margin:auto;
+      background:white;
       border-radius:16px;
-      padding:12px 14px;
-      font-size:15px;
-      line-height:1.35;
-      font-weight:700;
+      padding:18px;
+      box-shadow:0 4px 18px rgba(0,0,0,.08);
     }
-
+    h1{
+      font-size:22px;
+      margin-top:0;
+    }
     textarea{
       width:100%;
-      min-height:360px;
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:14px;
+      min-height:380px;
+      border:1px solid #cbd5e1;
+      border-radius:12px;
+      padding:12px;
+      font-family:monospace;
       font-size:13px;
-      line-height:1.3;
-      resize:vertical;
-      outline:none;
-      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-      background:#fff;
-      color:var(--ink);
+      box-sizing:border-box;
+      white-space:pre;
     }
-
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:center;
-      margin-top:14px;
-    }
-
     button{
       border:none;
-      border-radius:18px;
-      padding:13px 18px;
-      font-size:15px;
-      font-weight:900;
+      border-radius:12px;
+      padding:12px 16px;
+      margin:8px 4px 10px 0;
+      font-weight:bold;
       cursor:pointer;
-      white-space:nowrap;
-    }
-
-    .blue{background:#e9efff;color:#304090}
-    .green{background:var(--green);color:white}
-    .red{background:#fdecec;color:#a93636}
-    .gray{background:var(--gray);color:#32405f}
-    .orange{background:var(--orange);color:#111}
-
-    .result{
-      margin-top:14px;
-      padding:12px 14px;
-      border-radius:16px;
-      background:#eef8f0;
-      border:1px solid #bde5c5;
-      color:#195c25;
+      background:#2563eb;
+      color:white;
       font-size:15px;
-      line-height:1.35;
-      font-weight:700;
+    }
+    button.danger{
+      background:#dc2626;
+    }
+    .info{
+      background:#eef2ff;
+      border:1px solid #c7d2fe;
+      padding:12px;
+      border-radius:12px;
+      margin:12px 0;
+      font-size:14px;
+      line-height:1.4;
+    }
+    .warn{
+      background:#fff7ed;
+      border:1px solid #fed7aa;
+      padding:12px;
+      border-radius:12px;
+      margin:12px 0;
+      font-size:14px;
+      line-height:1.4;
+    }
+    .ok{
+      background:#ecfdf5;
+      border:1px solid #bbf7d0;
+      padding:12px;
+      border-radius:12px;
+      margin:12px 0;
+      font-size:14px;
+      line-height:1.4;
       display:none;
-      white-space:pre-wrap;
     }
-
-    .error{
-      background:#fdecec;
-      border-color:#f4b6b6;
-      color:#8f2424;
-    }
-
     .small{
+      color:#64748b;
       font-size:13px;
-      color:var(--muted);
-      line-height:1.35;
-      margin-top:8px;
-    }
-
-    a{
-      color:#304090;
-      font-weight:900;
-    }
-
-    code{
-      background:#f1f3f7;
-      padding:2px 5px;
-      border-radius:6px;
     }
   </style>
 </head>
-
 <body>
-  <div class="app">
-    <h1>📥 Importar datos de la rúbrica EF</h1>
 
-    <div class="panel">
-      <div class="warning">
-        Pega aquí el JSON completo que exportaste. Antes de importar, esta página hará una copia de seguridad automática de los datos actuales en <code>backup_rubrica_...</code>.
-      </div>
+<div class="box">
+  <h1>Importar datos de la rúbrica</h1>
 
-      <p class="small">
-        Este importador sirve para pasar datos antiguos como <code>rubricaEF_db_v3</code> a la rúbrica nueva que usa <code>rubrica_ef_editable_db_v1</code>.
-      </p>
-    </div>
-
-    <div class="panel">
-      <textarea id="jsonInput" placeholder="Pega aquí el JSON exportado..."></textarea>
-
-      <div class="actions">
-        <button class="green" id="importBtn">Importar datos</button>
-        <button class="blue" id="convertBtn">Convertir v3 a nueva rúbrica</button>
-        <button class="gray" id="clearBtn">Limpiar cuadro</button>
-        <button class="orange" id="openAppBtn">Abrir rúbrica</button>
-      </div>
-
-      <div id="result" class="result"></div>
-    </div>
-
-    <div class="panel">
-      <h2>Uso rápido</h2>
-      <p>
-        1. Pega el JSON exportado.<br>
-        2. Pulsa <b>Importar datos</b>.<br>
-        3. Después pulsa <b>Abrir rúbrica</b>.
-      </p>
-      <p class="small">
-        Si solo quieres transformar la base antigua <code>rubricaEF_db_v3</code> en la nueva <code>rubrica_ef_editable_db_v1</code>, pulsa <b>Convertir v3 a nueva rúbrica</b>.
-      </p>
-    </div>
+  <div class="info">
+    Pega aquí el JSON completo que sacaste con la página de exportar datos.
+    Esta página restaurará las claves guardadas en <b>localStorage</b>.
   </div>
 
+  <div class="warn">
+    Antes de importar, asegúrate de que has copiado bien todo el JSON, desde la primera llave <b>{</b> hasta la última <b>}</b>.
+  </div>
+
+  <textarea id="input" placeholder="Pega aquí TODO el JSON exportado..."></textarea>
+
+  <br>
+
+  <button onclick="importData()">Importar datos</button>
+  <button onclick="clearBox()" class="danger">Vaciar cuadro</button>
+
+  <p class="small" id="status">Pega el JSON y pulsa “Importar datos”.</p>
+
+  <div class="ok" id="okBox"></div>
+</div>
+
 <script>
-(() => {
-  const NEW_KEY = "rubrica_ef_editable_db_v1";
-  const OLD_KEY = "rubricaEF_db_v3";
+function importData(){
+  const raw = document.getElementById("input").value.trim();
 
-  const jsonInput = document.getElementById("jsonInput");
-  const result = document.getElementById("result");
-  const importBtn = document.getElementById("importBtn");
-  const convertBtn = document.getElementById("convertBtn");
-  const clearBtn = document.getElementById("clearBtn");
-  const openAppBtn = document.getElementById("openAppBtn");
-
-  function show(message, isError = false) {
-    result.style.display = "block";
-    result.className = isError ? "result error" : "result";
-    result.textContent = message;
+  if(!raw){
+    alert("Primero pega el JSON en el cuadro grande.");
+    return;
   }
 
-  function backupCurrentData() {
-    const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const backup = {};
+  let data;
 
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      backup[key] = localStorage.getItem(key);
-    }
-
-    localStorage.setItem("backup_rubrica_" + stamp, JSON.stringify(backup));
-    return "backup_rubrica_" + stamp;
+  try{
+    data = JSON.parse(raw);
+  }catch(e){
+    alert("El texto pegado no es un JSON válido. Revisa que empiece por { y termine por }.");
+    return;
   }
 
-  function parseInput() {
-    const raw = jsonInput.value.trim();
-
-    if (!raw) {
-      throw new Error("No has pegado ningún JSON.");
-    }
-
-    try {
-      return JSON.parse(raw);
-    } catch (e) {
-      throw new Error("El texto pegado no es un JSON válido. Revisa que hayas copiado desde { hasta } completo.");
-    }
+  if(!data.localStorage){
+    alert("No encuentro la parte localStorage dentro del JSON.");
+    return;
   }
 
-  function extractLocalStorageObject(data) {
-    if (data && data.localStorage && typeof data.localStorage === "object") {
-      return data.localStorage;
-    }
+  const keys = Object.keys(data.localStorage);
 
-    if (data && typeof data === "object") {
-      return data;
-    }
-
-    throw new Error("No encuentro datos de localStorage dentro del JSON.");
+  if(!keys.length){
+    alert("El JSON no contiene claves de localStorage.");
+    return;
   }
 
-  function importAllData() {
-    try {
-      const data = parseInput();
-      const localData = extractLocalStorageObject(data);
+  keys.forEach(function(key){
+    const value = data.localStorage[key];
 
-      const backupName = backupCurrentData();
-
-      let imported = 0;
-
-      Object.keys(localData).forEach(key => {
-        const value = localData[key];
-
-        if (typeof value === "string") {
-          localStorage.setItem(key, value);
-        } else {
-          localStorage.setItem(key, JSON.stringify(value));
-        }
-
-        imported++;
-      });
-
-      let extra = "";
-
-      if (localData[OLD_KEY]) {
-        const oldDb = typeof localData[OLD_KEY] === "string"
-          ? JSON.parse(localData[OLD_KEY])
-          : localData[OLD_KEY];
-
-        const converted = convertOldV3ToNewEditable(oldDb);
-        localStorage.setItem(NEW_KEY, JSON.stringify(converted));
-        extra = "\n\nAdemás, he convertido rubricaEF_db_v3 a rubrica_ef_editable_db_v1.";
-      }
-
-      show(
-        "✅ Importación realizada correctamente.\n\n" +
-        "Claves importadas: " + imported + "\n" +
-        "Copia de seguridad creada: " + backupName + extra +
-        "\n\nAhora pulsa “Abrir rúbrica”."
-      );
-    } catch (err) {
-      show("❌ Error: " + err.message, true);
+    if(typeof value === "string"){
+      localStorage.setItem(key, value);
+    }else{
+      localStorage.setItem(key, JSON.stringify(value));
     }
-  }
-
-  function convertOnly() {
-    try {
-      const data = parseInput();
-      const localData = extractLocalStorageObject(data);
-
-      let oldDb = null;
-
-      if (localData[OLD_KEY]) {
-        oldDb = typeof localData[OLD_KEY] === "string"
-          ? JSON.parse(localData[OLD_KEY])
-          : localData[OLD_KEY];
-      } else if (data.courses && data.activeCourseId) {
-        oldDb = data;
-      } else {
-        throw new Error("No encuentro la base antigua rubricaEF_db_v3.");
-      }
-
-      const backupName = backupCurrentData();
-      const converted = convertOldV3ToNewEditable(oldDb);
-
-      localStorage.setItem(NEW_KEY, JSON.stringify(converted));
-
-      show(
-        "✅ Conversión realizada correctamente.\n\n" +
-        "Se ha creado la nueva base: " + NEW_KEY + "\n" +
-        "Copia de seguridad creada: " + backupName + "\n\n" +
-        "Ahora pulsa “Abrir rúbrica”."
-      );
-    } catch (err) {
-      show("❌ Error: " + err.message, true);
-    }
-  }
-
-  function convertOldV3ToNewEditable(oldDb) {
-    const newDb = {
-      currentCourse: "",
-      currentRubric: "",
-      courses: {}
-    };
-
-    const oldCourses = oldDb.courses || {};
-    const activeCourseId = oldDb.activeCourseId;
-    const activeRubricId = oldDb.activeRubricId;
-
-    Object.keys(oldCourses).forEach(courseId => {
-      const oldCourse = oldCourses[courseId];
-      const courseName = cleanName(oldCourse.name || "Curso");
-
-      if (!newDb.courses[courseName]) {
-        newDb.courses[courseName] = { rubrics: {} };
-      }
-
-      const oldRubrics = oldCourse.rubrics || {};
-
-      Object.keys(oldRubrics).forEach(rubricId => {
-        const oldRubric = oldRubrics[rubricId];
-        const rubricName = uniqueRubricName(
-          newDb.courses[courseName].rubrics,
-          cleanName(oldRubric.name || "Rúbrica")
-        );
-
-        const alumnos = getStudents(oldRubric);
-        const indicadores = getIndicators(oldRubric);
-        const weightsText = oldRubric.pesos || "";
-        const weights = parseWeights(weightsText, indicadores.length);
-        const descriptionsText = oldRubric.descripciones || "";
-        const descriptions = convertDescriptions(descriptionsText);
-
-        const scores = {};
-
-        alumnos.forEach((student, rowIndex) => {
-          scores[student] = {};
-
-          indicadores.forEach((indicator, colIndex) => {
-            const value =
-              oldRubric.tableState &&
-              oldRubric.tableState.rows &&
-              oldRubric.tableState.rows[rowIndex] &&
-              oldRubric.tableState.rows[rowIndex].cells
-                ? Number(oldRubric.tableState.rows[rowIndex].cells[colIndex] || 0)
-                : 0;
-
-            scores[student][indicator] = value;
-          });
-        });
-
-        newDb.courses[courseName].rubrics[rubricName] = {
-          texts: {
-            studentsText: alumnos.join("\n"),
-            indicatorsText: indicadores.join(", "),
-            weightsText: weightsText,
-            descriptionsText: descriptionsText
-          },
-          students: alumnos,
-          indicators: indicadores,
-          weights: weights,
-          descriptions: descriptions,
-          scores: scores
-        };
-
-        if (courseId === activeCourseId && rubricId === activeRubricId) {
-          newDb.currentCourse = courseName;
-          newDb.currentRubric = rubricName;
-        }
-      });
-    });
-
-    const courseNames = Object.keys(newDb.courses);
-
-    if (!newDb.currentCourse && courseNames.length) {
-      newDb.currentCourse = courseNames[0];
-    }
-
-    if (!newDb.currentRubric && newDb.currentCourse) {
-      const rubricNames = Object.keys(newDb.courses[newDb.currentCourse].rubrics);
-      newDb.currentRubric = rubricNames[0] || "Rúbrica";
-    }
-
-    if (!courseNames.length) {
-      newDb.currentCourse = "2C";
-      newDb.currentRubric = "COMBA 1";
-      newDb.courses["2C"] = {
-        rubrics: {
-          "COMBA 1": {
-            texts: {
-              studentsText: "",
-              indicatorsText: "PARTICIPACIÓN, ESFUERZO, ATENCIÓN, AUTONOMÍA, RENDIMIENTO",
-              weightsText: "20,20,20,20,20",
-              descriptionsText: ""
-            },
-            students: [],
-            indicators: ["PARTICIPACIÓN","ESFUERZO","ATENCIÓN","AUTONOMÍA","RENDIMIENTO"],
-            weights: [20,20,20,20,20],
-            descriptions: {},
-            scores: {}
-          }
-        }
-      };
-    }
-
-    return newDb;
-  }
-
-  function getStudents(oldRubric) {
-    if (
-      oldRubric.tableState &&
-      Array.isArray(oldRubric.tableState.alumnos) &&
-      oldRubric.tableState.alumnos.length
-    ) {
-      return oldRubric.tableState.alumnos.map(x => String(x).trim()).filter(Boolean);
-    }
-
-    return String(oldRubric.alumnos || "")
-      .split(/\n+/)
-      .map(x => x.trim())
-      .filter(Boolean);
-  }
-
-  function getIndicators(oldRubric) {
-    if (
-      oldRubric.tableState &&
-      Array.isArray(oldRubric.tableState.indicadores) &&
-      oldRubric.tableState.indicadores.length
-    ) {
-      return oldRubric.tableState.indicadores.map(x => String(x).trim()).filter(Boolean);
-    }
-
-    return String(oldRubric.indicadores || "")
-      .split(/\n|,/)
-      .map(x => x.trim())
-      .filter(Boolean);
-  }
-
-  function parseWeights(text, count) {
-    let arr = String(text || "")
-      .split(/,|\n/)
-      .map(x => x.trim())
-      .filter(Boolean)
-      .map(x => Number(String(x).replace(",", ".")))
-      .filter(x => !Number.isNaN(x) && x >= 0);
-
-    if (!count) return [];
-
-    if (!arr.length) arr = Array(count).fill(100 / count);
-
-    if (arr.length < count) {
-      while (arr.length < count) arr.push(arr[arr.length - 1] || 1);
-    }
-
-    if (arr.length > count) arr = arr.slice(0, count);
-
-    const sum = arr.reduce((a,b) => a + b, 0);
-
-    if (sum <= 0) return Array(count).fill(100 / count);
-
-    return arr.map(x => x / sum * 100);
-  }
-
-  function convertDescriptions(text) {
-    const out = {};
-    const lines = String(text || "")
-      .split(/\n+/)
-      .map(x => x.trim())
-      .filter(Boolean);
-
-    lines.forEach(line => {
-      if (line.includes("\t")) {
-        const parts = line.split("\t").map(x => x.trim());
-        if (parts.length >= 5 && parts[0].toLowerCase() !== "indicador") {
-          out[parts[0]] = {
-            1: parts[1] || "",
-            2: parts[2] || "",
-            3: parts[3] || "",
-            4: parts[4] || ""
-          };
-        }
-        return;
-      }
-
-      const nameMatch = line.match(/^([^:|]+)[:|]/);
-      if (!nameMatch) return;
-
-      const indicator = nameMatch[1].trim();
-      const levels = {1:"",2:"",3:"",4:""};
-      const regex = /([1-4])\s*:\s*([^;,.]+(?:[.,][^1-4:]*)?)/g;
-      let m;
-
-      while ((m = regex.exec(line)) !== null) {
-        levels[m[1]] = String(m[2] || "").trim();
-      }
-
-      if (indicator) out[indicator] = levels;
-    });
-
-    return out;
-  }
-
-  function cleanName(name) {
-    return String(name || "")
-      .trim()
-      .replace(/\s+/g, " ") || "Sin nombre";
-  }
-
-  function uniqueRubricName(rubrics, baseName) {
-    if (!rubrics[baseName]) return baseName;
-
-    let n = 2;
-    let candidate = baseName + " (" + n + ")";
-
-    while (rubrics[candidate]) {
-      n++;
-      candidate = baseName + " (" + n + ")";
-    }
-
-    return candidate;
-  }
-
-  importBtn.addEventListener("click", importAllData);
-  convertBtn.addEventListener("click", convertOnly);
-
-  clearBtn.addEventListener("click", () => {
-    jsonInput.value = "";
-    result.style.display = "none";
   });
 
-  openAppBtn.addEventListener("click", () => {
-    window.location.href = "./";
-  });
-})();
+  document.getElementById("status").textContent =
+    "Importación realizada. Claves importadas: " + keys.length;
+
+  document.getElementById("okBox").style.display = "block";
+  document.getElementById("okBox").innerHTML =
+    "<b>Datos importados correctamente.</b><br>" +
+    "Claves restauradas: " + keys.join(", ") + "<br><br>" +
+    "Ahora abre la app normal de la rúbrica y recarga la página.";
+}
+
+function clearBox(){
+  document.getElementById("input").value = "";
+  document.getElementById("status").textContent = "Cuadro vacío.";
+  document.getElementById("okBox").style.display = "none";
+}
 </script>
 
 </body>

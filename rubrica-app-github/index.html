@@ -277,7 +277,7 @@
 
     table{
       width:100%;
-      min-width:760px;
+      min-width:980px;
       border-collapse:separate;
       border-spacing:0;
     }
@@ -308,7 +308,8 @@
       left:0;
       background:#fff;
       z-index:1;
-      min-width:170px;
+      min-width:190px;
+      max-width:320px;
     }
 
     thead th:first-child{z-index:2}
@@ -325,27 +326,52 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      width:38px;
-      height:32px;
-      border-radius:10px;
+      width:44px;
+      height:36px;
+      border-radius:12px;
       border:1px solid var(--line);
       background:#fff;
-      font-weight:800;
+      font-weight:900;
       cursor:pointer;
       user-select:none;
-      font-size:13px;
+      font-size:15px;
     }
 
-    .score-0{background:#fff; color:#8a8f98}
+    .score-0{background:#eef0f4; color:#8a8f98}
     .score-1{background:#ffe3e3; color:#973535}
     .score-2{background:#fff2cc; color:#7a5b00}
     .score-3{background:#dcecff; color:#1e4f8f}
     .score-4{background:#dff5e3; color:#1f6a2d}
 
     .student-name{
-      font-weight:700;
-      font-size:13px;
-      line-height:1.15;
+      font-weight:800;
+      font-size:15px;
+      line-height:1.18;
+      display:block;
+      white-space:normal;
+    }
+
+    .comment-cell{
+      min-width:260px;
+      max-width:360px;
+    }
+
+    .comment-input{
+      width:100%;
+      min-height:54px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      font-size:14px;
+      line-height:1.2;
+      resize:vertical;
+      background:#fff;
+    }
+
+    .comment-input:focus{
+      outline:2px solid #bcd0ff;
+      border-color:var(--blue);
     }
 
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
@@ -435,12 +461,16 @@
 
       th:first-child,
       td:first-child{
-        min-width:150px;
+        min-width:175px;
       }
 
       #rubricSelect,
       #copyRubricSelect{
         min-width:180px;
+      }
+
+      .comment-cell{
+        min-width:230px;
       }
     }
   </style>
@@ -488,7 +518,7 @@
   </div>
 
   <div class="hint">
-    ✅ Edita y pulsa Aplicar cambios. ⚠️ Rehacer crea la tabla desde cero.
+    ✅ Edita y pulsa Aplicar cambios. ⚠️ Rehacer crea la tabla desde cero. Los comentarios se guardan automáticamente.
   </div>
 
   <div class="divider"></div>
@@ -631,7 +661,8 @@
               indicators: ["PARTICIPACIÓN","ESFUERZO","ATENCIÓN","AUTONOMÍA","RENDIMIENTO"],
               weights: [20,20,20,20,20],
               descriptions: {},
-              scores: {}
+              scores: {},
+              comments: {}
             }
           }
         }
@@ -672,6 +703,10 @@
     saveHistory();
   }
 
+  function saveDBWithoutHistory() {
+    localStorage.setItem(LS_KEY, JSON.stringify(db));
+  }
+
   function undoAction() {
     if (undoStack.length <= 1) return;
     restoringHistory = true;
@@ -694,6 +729,8 @@
   }
 
   function ensureCurrent() {
+    if (!db.courses) db = defaultData();
+
     if (!db.courses[db.currentCourse]) {
       const firstCourse = Object.keys(db.courses)[0];
       if (firstCourse) db.currentCourse = firstCourse;
@@ -704,12 +741,45 @@
     }
 
     const rubrics = db.courses[db.currentCourse].rubrics;
+
     if (!rubrics[db.currentRubric]) {
       const firstRubric = Object.keys(rubrics)[0];
       if (firstRubric) db.currentRubric = firstRubric;
       else {
         db.currentRubric = "COMBA 1";
         rubrics["COMBA 1"] = defaultData().courses["2C"].rubrics["COMBA 1"];
+      }
+    }
+
+    ensureRubricShape(db.courses[db.currentCourse].rubrics[db.currentRubric]);
+  }
+
+  function ensureRubricShape(r) {
+    if (!r.texts) {
+      r.texts = {
+        studentsText: r.studentsText || "",
+        indicatorsText: r.indicatorsText || "",
+        weightsText: r.weightsText || "",
+        descriptionsText: r.descriptionsText || ""
+      };
+    }
+
+    if (!Array.isArray(r.students)) r.students = [];
+    if (!Array.isArray(r.indicators)) r.indicators = [];
+    if (!Array.isArray(r.weights)) r.weights = [];
+    if (!r.descriptions) r.descriptions = {};
+    if (!r.scores) r.scores = {};
+    if (!r.comments) r.comments = {};
+
+    for (const student of r.students) {
+      if (!r.scores[student]) r.scores[student] = {};
+      for (const indicator of r.indicators) {
+        if (typeof r.scores[student][indicator] === "undefined") {
+          r.scores[student][indicator] = 0;
+        }
+      }
+      if (typeof r.comments[student] === "undefined") {
+        r.comments[student] = "";
       }
     }
   }
@@ -779,6 +849,7 @@
     target.indicators = parseIndicators(target.texts.indicatorsText);
     target.weights = parseWeights(target.texts.weightsText, target.indicators.length);
     target.descriptions = parseDescriptions(target.texts.descriptionsText);
+    ensureRubricShape(target);
   }
 
   function fillSelectors() {
@@ -832,9 +903,12 @@
     rubricTemplateFromTexts(r);
 
     r.scores = {};
+    r.comments = {};
 
     for (const student of r.students) {
       r.scores[student] = {};
+      r.comments[student] = "";
+
       for (const indicator of r.indicators) {
         r.scores[student][indicator] = 0;
       }
@@ -847,14 +921,17 @@
   function applyChangesKeepScores() {
     const r = currentRubricObj();
     const oldScores = structuredCloneSafe(r.scores || {});
+    const oldComments = structuredCloneSafe(r.comments || {});
 
     saveTextsIntoCurrentRubric();
     rubricTemplateFromTexts(r);
 
     const newScores = {};
+    const newComments = {};
 
     for (const student of r.students) {
       newScores[student] = {};
+      newComments[student] = oldComments[student] || "";
 
       for (const indicator of r.indicators) {
         if (oldScores[student] && typeof oldScores[student][indicator] !== "undefined") {
@@ -866,12 +943,15 @@
     }
 
     r.scores = newScores;
+    r.comments = newComments;
+
     saveDB();
     renderAll();
   }
 
   function renderTable() {
     const r = currentRubricObj();
+    ensureRubricShape(r);
 
     const head = `
       <tr>
@@ -884,6 +964,7 @@
         `).join("")}
         <th>Media<br><span class="w">0–4</span></th>
         <th>Nota<br><span class="w">/10</span></th>
+        <th>Comentario</th>
       </tr>
     `;
 
@@ -903,20 +984,25 @@
       }).join("");
 
       const stats = studentStats(student, r);
+      const comment = r.comments?.[student] || "";
 
       return `
         <tr>
           <td><span class="student-name">${escapeHtml(student)}</span></td>
           ${cells}
-          <td>${stats.avg04.toFixed(2)}</td>
-          <td>${stats.avg10.toFixed(2)}</td>
+          <td><b>${stats.avg04.toFixed(2)}</b></td>
+          <td><b>${stats.avg10.toFixed(2)}</b></td>
+          <td class="comment-cell">
+            <textarea class="comment-input" data-student="${escapeAttr(student)}" placeholder="Escribe comentario...">${escapeHtml(comment)}</textarea>
+          </td>
         </tr>
       `;
     }).join("");
 
-    els.tbody.innerHTML = body || `<tr><td colspan="${r.indicators.length + 3}" class="muted">No hay alumnado todavía.</td></tr>`;
+    els.tbody.innerHTML = body || `<tr><td colspan="${r.indicators.length + 4}" class="muted">No hay alumnado todavía.</td></tr>`;
 
     bindCellEvents();
+    bindCommentEvents();
     renderSummary();
   }
 
@@ -928,6 +1014,8 @@
         const student = cell.dataset.student;
         const indicator = cell.dataset.indicator;
         const r = currentRubricObj();
+
+        if (!r.scores[student]) r.scores[student] = {};
 
         const current = Number(r.scores[student][indicator] || 0);
         const next = (current + 1) % 5;
@@ -961,6 +1049,26 @@
       cell.addEventListener("contextmenu", e => {
         e.preventDefault();
         showTooltip(cell.dataset.indicator, cell.dataset.student);
+      });
+    });
+  }
+
+  function bindCommentEvents() {
+    const inputs = els.tbody.querySelectorAll(".comment-input");
+
+    inputs.forEach(input => {
+      input.addEventListener("input", () => {
+        const student = input.dataset.student;
+        const r = currentRubricObj();
+
+        if (!r.comments) r.comments = {};
+        r.comments[student] = input.value;
+
+        saveDBWithoutHistory();
+      });
+
+      input.addEventListener("change", () => {
+        saveHistory();
       });
     });
   }
@@ -1086,7 +1194,8 @@
       indicators: [],
       weights: [],
       descriptions: {},
-      scores: {}
+      scores: {},
+      comments: {}
     };
 
     els.newCourseInput.value = "";
@@ -1149,7 +1258,8 @@
       indicators: [],
       weights: [],
       descriptions: {},
-      scores: {}
+      scores: {},
+      comments: {}
     };
 
     db.currentRubric = name;
@@ -1171,6 +1281,7 @@
     if (rubrics[newName]) return alert("Ya existe una rúbrica con ese nombre.");
 
     rubrics[newName] = structuredCloneSafe(rubrics[base]);
+    ensureRubricShape(rubrics[newName]);
     db.currentRubric = newName;
 
     saveDB();
@@ -1203,12 +1314,15 @@
     if (!src) return alert("No se encuentra la rúbrica origen.");
 
     const clone = structuredCloneSafe(src);
+    ensureRubricShape(clone);
 
     if (!withScores) {
       clone.scores = {};
+      clone.comments = {};
 
       for (const student of clone.students || []) {
         clone.scores[student] = {};
+        clone.comments[student] = "";
 
         for (const ind of clone.indicators || []) {
           clone.scores[student][ind] = 0;
@@ -1230,18 +1344,20 @@
 
   function exportCSV() {
     const r = currentRubricObj();
-    const headers = ["Alumno/a", ...r.indicators, "Media_0_4", "Nota_0_10"];
+    const headers = ["Alumno/a", ...r.indicators, "Media_0_4", "Nota_0_10", "Comentario"];
     const rows = [headers];
 
     for (const student of r.students) {
       const vals = r.indicators.map(ind => Number(r.scores?.[student]?.[ind] ?? 0));
       const stats = studentStats(student, r);
+      const comment = r.comments?.[student] || "";
 
       rows.push([
         student,
         ...vals,
         stats.avg04.toFixed(2),
-        stats.avg10.toFixed(2)
+        stats.avg10.toFixed(2),
+        comment
       ]);
     }
 

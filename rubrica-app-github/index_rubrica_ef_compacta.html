@@ -15,9 +15,12 @@
       --blue:#4f7cff;
       --blue-soft:#e9efff;
       --green:#4caf50;
+      --green-soft:#dcfce7;
       --red:#e96b6b;
       --red-soft:#fdecec;
       --orange:#e7a63b;
+      --orange-soft:#ffedd5;
+      --yellow-soft:#fff9c4;
       --graybtn:#eef1f7;
       --shadow:0 6px 20px rgba(0,0,0,.055);
     }
@@ -34,7 +37,7 @@
     .app{
       max-width:1480px;
       margin:0 auto;
-      padding:14px 14px 28px;
+      padding:14px 14px 40px;
     }
 
     h1{
@@ -119,7 +122,7 @@
       line-height:1.1;
     }
 
-    .btn:hover{transform:none}
+    .btn:hover{filter:brightness(.98)}
     .btn.blue{background:var(--blue-soft); color:#304090}
     .btn.green{background:var(--green); color:#fff}
     .btn.red{background:var(--red-soft); color:#b03636}
@@ -128,10 +131,10 @@
     .btn.big{padding:13px 20px; font-size:16px}
 
     #courseSelect{max-width:100px !important}
-    #rubricSelect{min-width:260px;max-width:340px !important}
-    #newCourseInput,#newRubricInput{max-width:240px !important;flex:0 1 240px !important}
+    #rubricSelect{min-width:260px; max-width:340px !important}
+    #newCourseInput,#newRubricInput{max-width:240px !important; flex:0 1 240px !important}
     #copyCourseSelect{max-width:100px !important}
-    #copyRubricSelect{min-width:260px;max-width:340px !important}
+    #copyRubricSelect{min-width:260px; max-width:340px !important}
 
     .hint{
       text-align:center;
@@ -156,7 +159,9 @@
       margin-top:8px;
     }
 
-    .editor-card{
+    .editor-card,
+    .descriptions-wide,
+    .combine-panel{
       background:#fff;
       border:1px solid var(--line);
       border-radius:22px;
@@ -175,15 +180,7 @@
     .weights-under{margin-top:14px}
     .weights-under input{width:100%}
 
-    .descriptions-wide{
-      margin-top:16px;
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:22px;
-      box-shadow:var(--shadow);
-      padding:14px;
-    }
-
+    .descriptions-wide{margin-top:16px}
     .descriptions-wide textarea{min-height:105px}
 
     .subhint{
@@ -310,31 +307,11 @@
       font-size:15px;
     }
 
-    .score-0{
-      background:#eef0f4;
-      color:#8a8f98;
-    }
-
-    .score-1{
-      background:#fecaca;
-      color:#991b1b;
-    }
-
-    .score-2{
-      background:#fed7aa;
-      color:#9a3412;
-    }
-
-    .score-3{
-      background:#fffde7;
-      color:#6b5500;
-      border-color:#f4e58a;
-    }
-
-    .score-4{
-      background:#bbf7d0;
-      color:#166534;
-    }
+    .score-0{background:#eef0f4; color:#8a8f98}
+    .score-1{background:#fecaca; color:#991b1b}
+    .score-2{background:#fed7aa; color:#9a3412}
+    .score-3{background:#fff9c4; color:#7a5b00}
+    .score-4{background:#bbf7d0; color:#166534}
 
     .student-name{
       font-weight:800;
@@ -369,166 +346,117 @@
 
     .combine-panel{
       margin-top:22px;
-      background:linear-gradient(135deg,#ffffff 0%,#f1f5ff 100%);
-      border:1px solid #dbe4ff;
-      border-radius:26px;
-      box-shadow:0 10px 28px rgba(40,70,160,.10);
-      padding:18px;
+      background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
     }
 
-    .combine-header{
+    .combine-head{
       display:flex;
       justify-content:space-between;
-      gap:16px;
       align-items:flex-start;
+      gap:12px;
       flex-wrap:wrap;
-      margin-bottom:14px;
+      margin-bottom:12px;
     }
 
-    .combine-header h2{
+    .combine-title{
+      font-size:22px;
+      font-weight:950;
       margin:0;
-      font-size:23px;
-      line-height:1.1;
     }
 
-    .combine-header p{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-weight:650;
-      line-height:1.25;
-      max-width:920px;
-    }
-
-    .combine-controls{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:flex-end;
-    }
-
-    .zero-option{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:10px 14px;
-      font-weight:800;
-      color:#334155;
-      box-shadow:var(--shadow);
-    }
-
-    .combine-list{
+    .combine-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
       gap:10px;
-      margin:12px 0 16px;
+      margin-top:12px;
     }
 
-    .combine-item{
-      background:#fff;
+    .rubric-check-card{
       border:1px solid var(--line);
-      border-radius:18px;
+      background:#fff;
+      border-radius:16px;
       padding:12px;
       display:flex;
       gap:10px;
       align-items:flex-start;
-      box-shadow:0 3px 12px rgba(0,0,0,.035);
+      box-shadow:0 3px 10px rgba(0,0,0,.035);
     }
 
-    .combine-item input{
+    .rubric-check-card input{
       width:20px;
       height:20px;
-      margin-top:2px;
+      margin-top:1px;
     }
 
-    .combine-item-title{
-      font-weight:900;
+    .rubric-check-card b{
+      display:block;
       font-size:15px;
       line-height:1.15;
     }
 
-    .combine-item-sub{
+    .rubric-check-card span{
+      display:block;
       color:var(--muted);
-      font-weight:700;
       font-size:12px;
+      font-weight:700;
       margin-top:4px;
+      line-height:1.15;
     }
 
-    .combine-cards{
+    .combine-summary{
       display:grid;
       grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:12px;
-      margin-top:12px;
+      gap:10px;
+      margin-top:14px;
     }
 
-    .combine-card{
-      background:#fff;
+    .combine-stat{
+      border-radius:18px;
       border:1px solid var(--line);
-      border-radius:20px;
-      padding:14px;
-      box-shadow:var(--shadow);
+      background:#fff;
+      padding:12px;
+      box-shadow:0 3px 12px rgba(0,0,0,.035);
     }
 
-    .combine-card.strong{
-      background:#eef9f0;
-      border-color:#bbf7d0;
-    }
-
-    .combine-label{
-      color:var(--muted);
+    .combine-stat h4{
+      margin:0 0 5px;
       font-size:13px;
-      font-weight:850;
-      margin-bottom:6px;
+      color:var(--muted);
     }
 
-    .combine-value{
-      font-size:27px;
+    .combine-stat div{
+      font-size:24px;
       font-weight:950;
-      line-height:1;
     }
 
-    .combine-table-wrap{
+    .combined-table-wrap{
       overflow:auto;
       margin-top:14px;
-      background:#fff;
       border:1px solid var(--line);
-      border-radius:20px;
+      border-radius:18px;
+      background:white;
     }
 
-    .combine-table{
-      min-width:920px;
-      box-shadow:none;
+    .combined-table{
+      min-width:850px;
     }
 
-    .combine-table th:first-child,
-    .combine-table td:first-child{
-      position:static;
-      min-width:auto;
-      max-width:none;
-      background:transparent;
-    }
-
-    .status-ok,
-    .status-empty{
-      display:inline-block;
-      padding:7px 10px;
+    .note-pill{
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      min-width:72px;
+      height:34px;
       border-radius:999px;
-      font-weight:900;
-      font-size:12px;
+      font-weight:950;
+      font-size:15px;
+      border:1px solid var(--line);
     }
 
-    .status-ok{
-      background:#dcfce7;
-      color:#166534;
-    }
-
-    .status-empty{
-      background:#f1f5f9;
-      color:#64748b;
-    }
+    .pill-low{background:#fecaca;color:#991b1b}
+    .pill-mid{background:#fed7aa;color:#9a3412}
+    .pill-ok{background:#fff9c4;color:#7a5b00}
+    .pill-high{background:#bbf7d0;color:#166534}
 
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
     .muted{color:var(--muted)}
@@ -591,44 +519,14 @@
     }
 
     @media (max-width:980px){
-      .editor-dashboard{
-        grid-template-columns:1fr;
-      }
-
-      .top-line{
-        width:100%;
-        border-radius:26px;
-      }
-
-      .cards,
-      .combine-cards{
-        grid-template-columns:1fr;
-      }
-
-      .small-btn{
-        width:42px;
-        height:42px;
-        font-size:20px;
-      }
-
-      .undo-redo-fixed{
-        top:10px;
-        right:10px;
-      }
-
-      th:first-child,
-      td:first-child{
-        min-width:175px;
-      }
-
-      #rubricSelect,
-      #copyRubricSelect{
-        min-width:180px;
-      }
-
-      .comment-cell{
-        min-width:230px;
-      }
+      .editor-dashboard{grid-template-columns:1fr}
+      .top-line{width:100%; border-radius:26px}
+      .cards,.combine-summary{grid-template-columns:1fr}
+      .small-btn{width:42px; height:42px; font-size:20px}
+      .undo-redo-fixed{top:10px; right:10px}
+      th:first-child,td:first-child{min-width:175px}
+      #rubricSelect,#copyRubricSelect{min-width:180px}
+      .comment-cell{min-width:230px}
     }
   </style>
 </head>
@@ -644,7 +542,6 @@
   <h1><span class="emoji">📋</span>Rúbrica EF</h1>
 
   <div class="top-dashboard">
-
     <div class="top-line">
       <div class="label">Curso</div>
       <select id="courseSelect" class="grow"></select>
@@ -671,7 +568,6 @@
       <button class="btn blue" id="copyWithoutScoresBtn">Copiar SIN notas</button>
       <button class="btn orange" id="copyWithScoresBtn">Copiar CON notas</button>
     </div>
-
   </div>
 
   <div class="hint">
@@ -681,7 +577,6 @@
   <div class="divider"></div>
 
   <div class="editor-dashboard">
-
     <div class="editor-card">
       <div class="section-title">Alumnado</div>
       <textarea id="studentsInput" placeholder="Un alumno por línea"></textarea>
@@ -699,7 +594,6 @@
         <div class="subhint">Si no suman 100, se normalizan automáticamente.</div>
       </div>
     </div>
-
   </div>
 
   <div class="descriptions-wide">
@@ -740,7 +634,50 @@
     </table>
   </div>
 
-  <div id="combinePanel" class="combine-panel"></div>
+  <div class="combine-panel" id="combinePanel">
+    <div class="combine-head">
+      <div>
+        <h2 class="combine-title">📊 Combinación de rúbricas</h2>
+        <div class="subhint">
+          Marca varias rúbricas del curso actual y pulsa el botón. La nota combinada se calcula sobre el conjunto de todos los indicadores evaluados y se convierte a /10.
+        </div>
+      </div>
+      <div class="actions" style="margin-top:0">
+        <button class="btn blue" id="selectAllCombineBtn">Marcar todas</button>
+        <button class="btn gray" id="clearCombineBtn">Limpiar</button>
+        <button class="btn big green" id="combineRubricsBtn">Crear / actualizar combinación</button>
+        <button class="btn big orange" id="exportCombinedCsvBtn">Exportar combinación CSV</button>
+      </div>
+    </div>
+
+    <div id="combineRubricList" class="combine-grid"></div>
+
+    <div class="combine-summary">
+      <div class="combine-stat">
+        <h4>Rúbricas seleccionadas</h4>
+        <div id="combinedRubricsCount">0</div>
+      </div>
+      <div class="combine-stat">
+        <h4>Alumnos/as combinados</h4>
+        <div id="combinedStudentsCount">0</div>
+      </div>
+      <div class="combine-stat">
+        <h4>Media combinada /10</h4>
+        <div id="combinedClassAvg">0.00</div>
+      </div>
+      <div class="combine-stat">
+        <h4>Indicadores usados</h4>
+        <div id="combinedIndicatorsCount">0</div>
+      </div>
+    </div>
+
+    <div class="combined-table-wrap">
+      <table class="combined-table" id="combinedTable">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <div class="modal-backdrop" id="tooltipModalBackdrop">
@@ -793,7 +730,18 @@
     thead: $("#rubricTable thead"),
     tbody: $("#rubricTable tbody"),
 
-    combinePanel: $("#combinePanel"),
+    combineRubricList: $("#combineRubricList"),
+    combineRubricsBtn: $("#combineRubricsBtn"),
+    selectAllCombineBtn: $("#selectAllCombineBtn"),
+    clearCombineBtn: $("#clearCombineBtn"),
+    exportCombinedCsvBtn: $("#exportCombinedCsvBtn"),
+    combinedRubricsCount: $("#combinedRubricsCount"),
+    combinedStudentsCount: $("#combinedStudentsCount"),
+    combinedClassAvg: $("#combinedClassAvg"),
+    combinedIndicatorsCount: $("#combinedIndicatorsCount"),
+    combinedTable: $("#combinedTable"),
+    combinedThead: $("#combinedTable thead"),
+    combinedTbody: $("#combinedTable tbody"),
 
     tooltipModalBackdrop: $("#tooltipModalBackdrop"),
     closeTooltipBtn: $("#closeTooltipBtn"),
@@ -804,8 +752,7 @@
     redoBtn: $("#redoBtn"),
   };
 
-  let combineSelected = {};
-  let combineCountZeroAsGrade = false;
+  let lastCombinedRows = [];
 
   function defaultData() {
     return {
@@ -915,7 +862,9 @@
       }
     }
 
-    ensureRubricShape(db.courses[db.currentCourse].rubrics[db.currentRubric]);
+    Object.values(db.courses).forEach(course => {
+      Object.values(course.rubrics || {}).forEach(ensureRubricShape);
+    });
   }
 
   function ensureRubricShape(r) {
@@ -928,9 +877,17 @@
       };
     }
 
-    if (!Array.isArray(r.students)) r.students = [];
-    if (!Array.isArray(r.indicators)) r.indicators = [];
-    if (!Array.isArray(r.weights)) r.weights = [];
+    if (!Array.isArray(r.students)) {
+      if (r.texts.studentsText) r.students = parseStudents(r.texts.studentsText);
+      else r.students = [];
+    }
+
+    if (!Array.isArray(r.indicators)) {
+      if (r.texts.indicatorsText) r.indicators = parseIndicators(r.texts.indicatorsText);
+      else r.indicators = [];
+    }
+
+    if (!Array.isArray(r.weights)) r.weights = parseWeights(r.texts.weightsText || "", r.indicators.length);
     if (!r.descriptions) r.descriptions = {};
     if (!r.scores) r.scores = {};
     if (!r.comments) r.comments = {};
@@ -1034,6 +991,7 @@
     ).join("");
 
     fillCopyRubrics();
+    renderCombineRubricList();
   }
 
   function fillCopyRubrics() {
@@ -1147,15 +1105,15 @@
         `;
       }).join("");
 
-      const stats = studentStats(student, r, { countZeroAsGrade:true });
+      const stats = studentStats(student, r);
       const comment = r.comments?.[student] || "";
 
       return `
         <tr>
           <td><span class="student-name">${escapeHtml(student)}</span></td>
           ${cells}
-          <td><b>${stats.avg04 === null ? "—" : stats.avg04.toFixed(2)}</b></td>
-          <td><b>${stats.avg10 === null ? "—" : stats.avg10.toFixed(2)}</b></td>
+          <td><b>${stats.avg04.toFixed(2)}</b></td>
+          <td><b>${stats.avg10.toFixed(2)}</b></td>
           <td class="comment-cell">
             <textarea class="comment-input" data-student="${escapeAttr(student)}" placeholder="Escribe comentario...">${escapeHtml(comment)}</textarea>
           </td>
@@ -1168,7 +1126,6 @@
     bindCellEvents();
     bindCommentEvents();
     renderSummary();
-    renderCombinePanel();
   }
 
   function bindCellEvents() {
@@ -1264,327 +1221,250 @@
     }
   });
 
-  function studentStats(student, r, options = {}) {
-    const countZeroAsGrade = !!options.countZeroAsGrade;
-
+  function studentStats(student, r) {
     let sumWeighted = 0;
     let sumWeights = 0;
-    let evaluated = 0;
 
     r.indicators.forEach((ind, i) => {
       const w = Number(r.weights[i] || 0);
-      const raw = r.scores?.[student]?.[ind];
-
-      if (typeof raw === "undefined" || raw === null || raw === "") return;
-
-      const v = Number(raw);
-      if (Number.isNaN(v)) return;
-
-      if (!countZeroAsGrade && v === 0) return;
-      if (w <= 0) return;
+      const v = Number(r.scores?.[student]?.[ind] ?? 0);
 
       sumWeighted += v * w;
       sumWeights += w;
-      evaluated++;
     });
 
-    if (sumWeights <= 0) {
-      return { avg04:null, avg10:null, evaluated };
-    }
-
-    const avg04 = sumWeighted / sumWeights;
+    const avg04 = sumWeights ? sumWeighted / sumWeights : 0;
     const avg10 = avg04 * 2.5;
 
-    return { avg04, avg10, evaluated };
-  }
-
-  function getRubricEvaluatedStats(rubric, options = {}) {
-    const countZeroAsGrade = !!options.countZeroAsGrade;
-
-    if (!rubric || !Array.isArray(rubric.students) || !Array.isArray(rubric.indicators)) {
-      return {
-        avg04:null,
-        avg10:null,
-        evaluatedCells:0,
-        totalCells:0,
-        progress:0,
-        weightedSum:0,
-        weightSum:0
-      };
-    }
-
-    ensureRubricShape(rubric);
-
-    let weightedSum = 0;
-    let weightSum = 0;
-    let evaluatedCells = 0;
-    const totalCells = rubric.students.length * rubric.indicators.length;
-
-    for (const student of rubric.students) {
-      for (let i = 0; i < rubric.indicators.length; i++) {
-        const indicator = rubric.indicators[i];
-        const raw = rubric.scores?.[student]?.[indicator];
-
-        if (typeof raw === "undefined" || raw === null || raw === "") continue;
-
-        const value = Number(raw);
-        if (Number.isNaN(value)) continue;
-
-        if (!countZeroAsGrade && value === 0) continue;
-
-        const weight = Number(rubric.weights[i] || 0);
-        if (weight <= 0) continue;
-
-        weightedSum += value * weight;
-        weightSum += weight;
-        evaluatedCells++;
-      }
-    }
-
-    if (weightSum <= 0) {
-      return {
-        avg04:null,
-        avg10:null,
-        evaluatedCells,
-        totalCells,
-        progress:totalCells ? evaluatedCells / totalCells * 100 : 0,
-        weightedSum,
-        weightSum
-      };
-    }
-
-    const avg04 = weightedSum / weightSum;
-    const avg10 = avg04 * 2.5;
-
-    return {
-      avg04,
-      avg10,
-      evaluatedCells,
-      totalCells,
-      progress:totalCells ? evaluatedCells / totalCells * 100 : 0,
-      weightedSum,
-      weightSum
-    };
-  }
-
-  function getCombinedRubricsStats(selectedRubrics, options = {}) {
-    const countZeroAsGrade = !!options.countZeroAsGrade;
-
-    let globalWeightedSum = 0;
-    let globalWeightSum = 0;
-    let totalEvaluatedCells = 0;
-    let totalCells = 0;
-    let validRubrics = 0;
-
-    const details = [];
-
-    for (const item of selectedRubrics) {
-      const stats = getRubricEvaluatedStats(item.rubric, { countZeroAsGrade });
-
-      totalEvaluatedCells += stats.evaluatedCells;
-      totalCells += stats.totalCells;
-
-      if (stats.weightSum > 0) {
-        globalWeightedSum += stats.weightedSum;
-        globalWeightSum += stats.weightSum;
-        validRubrics++;
-      }
-
-      details.push({
-        courseName:item.courseName,
-        rubricName:item.rubricName,
-        avg04:stats.avg04,
-        avg10:stats.avg10,
-        evaluatedCells:stats.evaluatedCells,
-        totalCells:stats.totalCells,
-        progress:stats.progress,
-        valid:stats.weightSum > 0
-      });
-    }
-
-    const avg04 = globalWeightSum > 0 ? globalWeightedSum / globalWeightSum : null;
-    const avg10 = avg04 === null ? null : avg04 * 2.5;
-    const progress = totalCells ? totalEvaluatedCells / totalCells * 100 : 0;
-
-    return {
-      avg04,
-      avg10,
-      validRubrics,
-      totalRubrics:selectedRubrics.length,
-      evaluatedCells:totalEvaluatedCells,
-      totalCells,
-      progress,
-      details
-    };
+    return { avg04, avg10 };
   }
 
   function renderSummary() {
     const r = currentRubricObj();
-    const stats = getRubricEvaluatedStats(r, { countZeroAsGrade:true });
+    const totalStudents = r.students.length;
+    const totalIndicators = r.indicators.length;
+    const totalCells = totalStudents * totalIndicators;
 
-    els.avg04.textContent = stats.avg04 === null ? "0.00" : stats.avg04.toFixed(2);
-    els.avg10.textContent = stats.avg10 === null ? "0.00" : stats.avg10.toFixed(2);
-    els.progressPct.textContent = `${stats.progress.toFixed(0)}%`;
-  }
+    let classWeightedSum = 0;
+    let classCount = 0;
+    let filled = 0;
 
-  function renderCombinePanel() {
-    const courseName = db.currentCourse;
-    const course = db.courses[courseName];
-    const rubricNames = Object.keys(course?.rubrics || {});
+    for (const student of r.students) {
+      const stats = studentStats(student, r);
 
-    for (const name of rubricNames) {
-      if (typeof combineSelected[name] === "undefined") {
-        combineSelected[name] = name === db.currentRubric;
+      classWeightedSum += stats.avg04;
+      classCount++;
+
+      for (const ind of r.indicators) {
+        const v = Number(r.scores?.[student]?.[ind] ?? 0);
+        if (v > 0) filled++;
       }
     }
 
-    const selectedRubrics = rubricNames
-      .filter(name => combineSelected[name])
-      .map(name => ({
-        courseName,
-        rubricName:name,
-        rubric:course.rubrics[name]
-      }));
+    const avg04 = classCount ? classWeightedSum / classCount : 0;
+    const avg10 = avg04 * 2.5;
+    const pct = totalCells ? (filled / totalCells) * 100 : 0;
 
-    const stats = getCombinedRubricsStats(selectedRubrics, {
-      countZeroAsGrade:combineCountZeroAsGrade
-    });
+    els.avg04.textContent = avg04.toFixed(2);
+    els.avg10.textContent = avg10.toFixed(2);
+    els.progressPct.textContent = `${pct.toFixed(0)}%`;
+  }
 
-    const avg04Text = stats.avg04 === null ? "—" : stats.avg04.toFixed(2);
-    const avg10Text = stats.avg10 === null ? "—" : stats.avg10.toFixed(2);
+  function renderCombineRubricList() {
+    const course = db.courses[db.currentCourse];
+    const rubrics = Object.keys(course?.rubrics || {});
 
-    els.combinePanel.innerHTML = `
-      <div class="combine-header">
-        <div>
-          <h2>📊 Evaluación combinada del curso ${escapeHtml(courseName)}</h2>
-          <p>
-            Selecciona varias rúbricas del mismo curso. La nota combinada se calcula sobre el conjunto real
-            de todos los indicadores evaluados, no como una media simple entre rúbricas. El resultado se expresa sobre 10.
-          </p>
-        </div>
+    els.combineRubricList.innerHTML = rubrics.map(name => {
+      const r = course.rubrics[name];
+      ensureRubricShape(r);
 
-        <div class="combine-controls">
-          <button class="btn blue" id="selectAllCombineBtn">Seleccionar todas</button>
-          <button class="btn gray" id="clearCombineBtn">Quitar todas</button>
+      return `
+        <label class="rubric-check-card">
+          <input type="checkbox" class="combine-check" value="${escapeAttr(name)}">
+          <div>
+            <b>${escapeHtml(name)}</b>
+            <span>${r.students.length} alumnos · ${r.indicators.length} indicadores</span>
+          </div>
+        </label>
+      `;
+    }).join("");
 
-          <label class="zero-option">
-            <input type="checkbox" id="countZeroAsGradeCheckbox" ${combineCountZeroAsGrade ? "checked" : ""}>
-            Contar 0 como nota real
-          </label>
-        </div>
-      </div>
+    resetCombinedView();
+  }
 
-      <div class="combine-list">
-        ${rubricNames.map(name => {
-          const r = course.rubrics[name];
-          ensureRubricShape(r);
-          const s = getRubricEvaluatedStats(r, { countZeroAsGrade:combineCountZeroAsGrade });
+  function selectedRubricNames() {
+    return Array.from(document.querySelectorAll(".combine-check:checked")).map(x => x.value);
+  }
 
-          return `
-            <label class="combine-item">
-              <input type="checkbox" class="combine-check" data-rubric="${escapeAttr(name)}" ${combineSelected[name] ? "checked" : ""}>
-              <div>
-                <div class="combine-item-title">${escapeHtml(name)}</div>
-                <div class="combine-item-sub">
-                  ${r.students.length} filas · ${r.indicators.length} indicadores ·
-                  ${s.avg10 === null ? "sin nota" : "nota " + s.avg10.toFixed(2)}
-                </div>
-              </div>
-            </label>
-          `;
-        }).join("")}
-      </div>
+  function selectAllCombine() {
+    document.querySelectorAll(".combine-check").forEach(x => x.checked = true);
+  }
 
-      <div class="combine-cards">
-        <div class="combine-card">
-          <div class="combine-label">Media global 0–4</div>
-          <div class="combine-value">${avg04Text}</div>
-        </div>
+  function clearCombine() {
+    document.querySelectorAll(".combine-check").forEach(x => x.checked = false);
+    resetCombinedView();
+  }
 
-        <div class="combine-card strong">
-          <div class="combine-label">Nota global /10</div>
-          <div class="combine-value">${avg10Text}</div>
-        </div>
+  function resetCombinedView() {
+    lastCombinedRows = [];
+    els.combinedRubricsCount.textContent = "0";
+    els.combinedStudentsCount.textContent = "0";
+    els.combinedClassAvg.textContent = "0.00";
+    els.combinedIndicatorsCount.textContent = "0";
+    els.combinedThead.innerHTML = "";
+    els.combinedTbody.innerHTML = `<tr><td class="muted">Marca varias rúbricas y pulsa “Crear / actualizar combinación”.</td></tr>`;
+  }
 
-        <div class="combine-card">
-          <div class="combine-label">Celdas evaluadas</div>
-          <div class="combine-value">${stats.evaluatedCells}/${stats.totalCells}</div>
-        </div>
+  function combineSelectedRubrics() {
+    const names = selectedRubricNames();
 
-        <div class="combine-card">
-          <div class="combine-label">% evaluado combinado</div>
-          <div class="combine-value">${stats.progress.toFixed(0)}%</div>
-        </div>
-      </div>
+    if (!names.length) {
+      alert("Marca al menos una rúbrica para combinar.");
+      return;
+    }
 
-      <div class="combine-table-wrap">
-        <table class="combine-table">
-          <thead>
-            <tr>
-              <th>Curso</th>
-              <th>Rúbrica</th>
-              <th>Media 0–4</th>
-              <th>Nota /10</th>
-              <th>Celdas evaluadas</th>
-              <th>% evaluado</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${stats.details.length ? stats.details.map(d => `
-              <tr>
-                <td>${escapeHtml(d.courseName)}</td>
-                <td>${escapeHtml(d.rubricName)}</td>
-                <td>${d.avg04 === null ? "—" : d.avg04.toFixed(2)}</td>
-                <td><b>${d.avg10 === null ? "—" : d.avg10.toFixed(2)}</b></td>
-                <td>${d.evaluatedCells}/${d.totalCells}</td>
-                <td>${d.progress.toFixed(0)}%</td>
-                <td>
-                  <span class="${d.valid ? "status-ok" : "status-empty"}">
-                    ${d.valid ? "Cuenta en la nota global" : "Sin evaluar"}
-                  </span>
-                </td>
-              </tr>
-            `).join("") : `
-              <tr>
-                <td colspan="7" class="muted">Selecciona al menos una rúbrica para combinar.</td>
-              </tr>
-            `}
-          </tbody>
-        </table>
-      </div>
+    const course = db.courses[db.currentCourse];
+    const studentMap = {};
+
+    let totalIndicatorsUsed = 0;
+
+    for (const rubricName of names) {
+      const r = course.rubrics[rubricName];
+      ensureRubricShape(r);
+
+      for (const student of r.students) {
+        if (!studentMap[student]) {
+          studentMap[student] = {
+            student,
+            sumScores: 0,
+            countScores: 0,
+            rubricNames: new Set(),
+            comments: []
+          };
+        }
+
+        let thisRubricUsedForStudent = false;
+
+        for (const ind of r.indicators) {
+          const v = Number(r.scores?.[student]?.[ind] ?? 0);
+
+          /*
+            Cálculo corregido:
+            - Solo cuenta indicadores evaluados con valor mayor que 0.
+            - La media se hace sobre el conjunto real de indicadores evaluados.
+            - Luego se pasa a /10 multiplicando por 2.5.
+          */
+          if (v > 0) {
+            studentMap[student].sumScores += v;
+            studentMap[student].countScores += 1;
+            totalIndicatorsUsed += 1;
+            thisRubricUsedForStudent = true;
+          }
+        }
+
+        if (thisRubricUsedForStudent) {
+          studentMap[student].rubricNames.add(rubricName);
+        }
+
+        const comment = String(r.comments?.[student] || "").trim();
+        if (comment) {
+          studentMap[student].comments.push(`${rubricName}: ${comment}`);
+        }
+      }
+    }
+
+    const rows = Object.values(studentMap)
+      .map(item => {
+        const avg04 = item.countScores ? item.sumScores / item.countScores : 0;
+        const avg10 = avg04 * 2.5;
+
+        return {
+          student: item.student,
+          avg04,
+          avg10,
+          countIndicators: item.countScores,
+          rubrics: Array.from(item.rubricNames).join(", "),
+          comments: item.comments.join(" | ")
+        };
+      })
+      .sort((a,b) => a.student.localeCompare(b.student, "es"));
+
+    lastCombinedRows = rows;
+
+    renderCombinedTable(rows, names.length, totalIndicatorsUsed);
+  }
+
+  function renderCombinedTable(rows, rubricCount, totalIndicatorsUsed) {
+    const evaluatedRows = rows.filter(r => r.countIndicators > 0);
+    const classAvg = evaluatedRows.length
+      ? evaluatedRows.reduce((acc,r) => acc + r.avg10, 0) / evaluatedRows.length
+      : 0;
+
+    els.combinedRubricsCount.textContent = String(rubricCount);
+    els.combinedStudentsCount.textContent = String(rows.length);
+    els.combinedClassAvg.textContent = classAvg.toFixed(2);
+    els.combinedIndicatorsCount.textContent = String(totalIndicatorsUsed);
+
+    els.combinedThead.innerHTML = `
+      <tr>
+        <th>Alumno/a</th>
+        <th>Media 0–4</th>
+        <th>Nota combinada /10</th>
+        <th>Indicadores evaluados</th>
+        <th>Rúbricas que cuentan</th>
+        <th>Comentarios</th>
+      </tr>
     `;
 
-    els.combinePanel.querySelectorAll(".combine-check").forEach(chk => {
-      chk.addEventListener("change", () => {
-        combineSelected[chk.dataset.rubric] = chk.checked;
-        renderCombinePanel();
-      });
-    });
+    els.combinedTbody.innerHTML = rows.map(row => `
+      <tr>
+        <td><b>${escapeHtml(row.student)}</b></td>
+        <td>${row.avg04.toFixed(2)}</td>
+        <td><span class="note-pill ${pillClass(row.avg10)}">${row.avg10.toFixed(2)}</span></td>
+        <td>${row.countIndicators}</td>
+        <td>${escapeHtml(row.rubrics || "Sin evaluación")}</td>
+        <td style="text-align:left">${escapeHtml(row.comments || "")}</td>
+      </tr>
+    `).join("") || `<tr><td class="muted">No hay datos evaluados en las rúbricas seleccionadas.</td></tr>`;
+  }
 
-    const zero = $("#countZeroAsGradeCheckbox");
-    if (zero) {
-      zero.addEventListener("change", () => {
-        combineCountZeroAsGrade = zero.checked;
-        renderCombinePanel();
-      });
+  function pillClass(n) {
+    if (n < 5) return "pill-low";
+    if (n < 7) return "pill-mid";
+    if (n < 8.5) return "pill-ok";
+    return "pill-high";
+  }
+
+  function exportCombinedCSV() {
+    if (!lastCombinedRows.length) {
+      alert("Primero pulsa “Crear / actualizar combinación”.");
+      return;
     }
 
-    const selectAll = $("#selectAllCombineBtn");
-    if (selectAll) {
-      selectAll.addEventListener("click", () => {
-        rubricNames.forEach(name => combineSelected[name] = true);
-        renderCombinePanel();
-      });
+    const headers = ["Alumno/a", "Media_0_4", "Nota_combinada_0_10", "Indicadores_evaluados", "Rubricas_que_cuentan", "Comentarios"];
+    const rows = [headers];
+
+    for (const row of lastCombinedRows) {
+      rows.push([
+        row.student,
+        row.avg04.toFixed(2),
+        row.avg10.toFixed(2),
+        row.countIndicators,
+        row.rubrics,
+        row.comments
+      ]);
     }
 
-    const clearAll = $("#clearCombineBtn");
-    if (clearAll) {
-      clearAll.addEventListener("click", () => {
-        rubricNames.forEach(name => combineSelected[name] = false);
-        renderCombinePanel();
-      });
-    }
+    const csv = rows.map(row => row.map(csvSafe).join(";")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = `${db.currentCourse}__COMBINACION_RUBRICAS.csv`;
+    a.click();
+
+    URL.revokeObjectURL(url);
   }
 
   function renderAll() {
@@ -1607,7 +1487,6 @@
     db.courses[clean] = db.courses[oldName];
     delete db.courses[oldName];
     db.currentCourse = clean;
-    combineSelected = {};
 
     saveDB();
     renderAll();
@@ -1639,7 +1518,6 @@
     };
 
     els.newCourseInput.value = "";
-    combineSelected = {};
 
     saveDB();
     renderAll();
@@ -1655,7 +1533,6 @@
 
     db.currentCourse = Object.keys(db.courses)[0];
     db.currentRubric = Object.keys(db.courses[db.currentCourse].rubrics)[0];
-    combineSelected = {};
 
     saveDB();
     renderAll();
@@ -1675,11 +1552,6 @@
     course.rubrics[clean] = course.rubrics[oldName];
     delete course.rubrics[oldName];
     db.currentRubric = clean;
-
-    if (combineSelected[oldName]) {
-      combineSelected[clean] = true;
-      delete combineSelected[oldName];
-    }
 
     saveDB();
     renderAll();
@@ -1711,7 +1583,6 @@
 
     db.currentRubric = name;
     els.newRubricInput.value = "";
-    combineSelected[name] = true;
 
     saveDB();
     renderAll();
@@ -1731,7 +1602,6 @@
     rubrics[newName] = structuredCloneSafe(rubrics[base]);
     ensureRubricShape(rubrics[newName]);
     db.currentRubric = newName;
-    combineSelected[newName] = true;
 
     saveDB();
     renderAll();
@@ -1745,7 +1615,6 @@
     if (!confirm(`¿Eliminar la rúbrica "${db.currentRubric}"?`)) return;
 
     delete rubrics[db.currentRubric];
-    delete combineSelected[db.currentRubric];
 
     db.currentRubric = Object.keys(rubrics)[0];
 
@@ -1799,14 +1668,14 @@
 
     for (const student of r.students) {
       const vals = r.indicators.map(ind => Number(r.scores?.[student]?.[ind] ?? 0));
-      const stats = studentStats(student, r, { countZeroAsGrade:true });
+      const stats = studentStats(student, r);
       const comment = r.comments?.[student] || "";
 
       rows.push([
         student,
         ...vals,
-        stats.avg04 === null ? "" : stats.avg04.toFixed(2),
-        stats.avg10 === null ? "" : stats.avg10.toFixed(2),
+        stats.avg04.toFixed(2),
+        stats.avg10.toFixed(2),
         comment
       ]);
     }
@@ -1853,7 +1722,6 @@
     db.currentCourse = els.courseSelect.value;
     const rubrics = Object.keys(db.courses[db.currentCourse].rubrics);
     db.currentRubric = rubrics[0];
-    combineSelected = {};
     saveDB();
     renderAll();
   });
@@ -1885,6 +1753,11 @@
 
   els.undoBtn.addEventListener("click", undoAction);
   els.redoBtn.addEventListener("click", redoAction);
+
+  els.combineRubricsBtn.addEventListener("click", combineSelectedRubrics);
+  els.selectAllCombineBtn.addEventListener("click", selectAllCombine);
+  els.clearCombineBtn.addEventListener("click", clearCombine);
+  els.exportCombinedCsvBtn.addEventListener("click", exportCombinedCSV);
 
   ensureCurrent();
   renderAll();

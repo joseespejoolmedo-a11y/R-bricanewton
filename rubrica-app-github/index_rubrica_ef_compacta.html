@@ -4,94 +4,1893 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rúbrica EF compacta</title>
+
   <style>
-    :root{--bg:#f6f7fb;--card:#fff;--ink:#1f2430;--muted:#6b7280;--line:#e5e7eb;--blue:#4f7cff;--blue-soft:#e9efff;--green:#4caf50;--red:#e96b6b;--red-soft:#fdecec;--orange:#e7a63b;--graybtn:#eef1f7;--shadow:0 6px 20px rgba(0,0,0,.055)}
-    *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-    .app{max-width:1480px;margin:0 auto;padding:14px 14px 28px}h1{text-align:center;margin:8px 0 12px;font-size:24px;line-height:1.15}.emoji{margin-right:.35rem}
-    .top-dashboard{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:10px}.top-line{background:var(--card);border:1px solid var(--line);border-radius:999px;box-shadow:var(--shadow);padding:10px 14px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;width:fit-content;max-width:1180px}.label{font-size:18px;font-weight:800;min-width:max-content}
-    .field,select,input[type="text"],input[type="number"],textarea{border:1px solid var(--line);background:#fff;border-radius:22px;padding:10px 14px;font-size:15px;outline:none;color:var(--ink)}select,input[type="text"],input[type="number"]{height:46px}textarea{width:100%;resize:vertical;border-radius:20px;font-size:16px;line-height:1.25}.grow{flex:1 1 220px}
-    .btn{border:none;border-radius:20px;padding:11px 16px;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;line-height:1.1}.btn.blue{background:var(--blue-soft);color:#304090}.btn.green{background:var(--green);color:#fff}.btn.red{background:var(--red-soft);color:#b03636}.btn.orange{background:var(--orange);color:#171717}.btn.gray{background:var(--graybtn);color:#32405f}.btn.big{padding:13px 20px;font-size:16px}
-    #courseSelect,#copyCourseSelect{max-width:100px!important}#rubricSelect,#copyRubricSelect{min-width:260px;max-width:340px!important}#newCourseInput,#newRubricInput{max-width:240px!important;flex:0 1 240px!important}
-    .hint{text-align:center;color:var(--muted);font-size:16px;font-weight:700;margin:10px auto 12px;line-height:1.25}.divider{height:1px;background:var(--line);margin:14px 0}.editor-dashboard{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin-top:8px}.editor-card,.descriptions-wide,.combine-card{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:14px}.section-title{font-size:20px;font-weight:900;margin:0 0 8px}.editor-card textarea{min-height:118px}.weights-under{margin-top:14px}.weights-under input{width:100%}.descriptions-wide{margin-top:16px}.descriptions-wide textarea{min-height:105px}.subhint{display:block;color:var(--muted);font-size:15px;margin-top:6px;line-height:1.25}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;align-items:center;justify-content:center}
-    .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px 16px;box-shadow:var(--shadow);min-height:95px}.card h3{margin:0 0 8px;font-size:17px;line-height:1.1}.card .big{font-size:24px;font-weight:900;line-height:1.1;margin:0}.card .small{color:var(--muted);font-size:13px;font-weight:700;line-height:1.1}
-    .combine-card{margin-top:18px}.combine-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px}.combine-explanation{color:var(--muted);font-size:15px;line-height:1.3;font-weight:700;margin:0;max-width:850px}.combine-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.combine-controls input{flex:1 1 280px}.combine-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-top:10px}.combine-item{border:1px solid var(--line);background:#f9fafb;border-radius:18px;padding:12px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px}.combine-item-title{font-weight:900;line-height:1.15;font-size:15px}.combine-item-sub{color:var(--muted);font-size:12px;font-weight:700;margin-top:2px}.combine-item input[type="checkbox"]{width:22px;height:22px;accent-color:var(--blue)}.combine-item input[type="number"]{width:82px;height:40px;border-radius:14px;padding:8px;text-align:center;font-weight:900}.combine-preview{margin-top:14px;overflow:auto;border:1px solid var(--line);border-radius:18px;background:#fff;display:none}.combine-summary{display:none;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}.combine-stat{border:1px solid var(--line);background:#f9fafb;border-radius:18px;padding:12px}.combine-stat-title{color:var(--muted);font-size:13px;font-weight:800}.combine-stat-value{font-size:24px;font-weight:950;margin-top:4px}.final-pill{display:inline-flex;justify-content:center;align-items:center;min-width:76px;padding:8px 12px;border-radius:999px;font-weight:900}.final-high{background:#dcfce7;color:#166534}.final-mid{background:#fff9c4;color:#7a5b00}.final-low{background:#fee2e2;color:#991b1b}
-    .table-wrap{overflow:auto;margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}table{width:100%;min-width:980px;border-collapse:separate;border-spacing:0}thead th{position:sticky;top:0;background:#fff;z-index:1;font-size:13px;padding:8px 6px;line-height:1.1}th,td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:center;vertical-align:middle;font-size:13px;line-height:1.1}th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:#fff;z-index:1;min-width:190px;max-width:320px}thead th:first-child{z-index:2}.th-ind .w{display:block;color:var(--muted);font-size:11px;margin-top:1px;font-weight:700}.cell-score{display:inline-flex;align-items:center;justify-content:center;width:59px;height:36px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:900;cursor:pointer;user-select:none;font-size:15px}.score-0{background:#eef0f4;color:#8a8f98}.score-1{background:#fecaca;color:#991b1b}.score-2{background:#fed7aa;color:#9a3412}.score-3{background:#fff9c4;color:#7a5b00}.score-4{background:#bbf7d0;color:#166534}.student-name{font-weight:800;font-size:15px;line-height:1.18;display:block;white-space:normal}.comment-cell{min-width:260px;max-width:360px}.comment-input{width:100%;min-height:54px;border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:14px;line-height:1.2;resize:vertical;background:#fff}.comment-input:focus{outline:2px solid #bcd0ff;border-color:var(--blue)}.muted{color:var(--muted)}
-    .modal-backdrop{position:fixed;inset:0;background:rgba(20,24,35,.35);display:none;align-items:center;justify-content:center;z-index:9999;padding:16px}.modal{background:#fff;border-radius:20px;width:min(760px,100%);max-height:82vh;overflow:auto;box-shadow:0 18px 60px rgba(0,0,0,.2);padding:18px}.modal h3{margin:0 0 10px;font-size:18px}.modal p{line-height:1.35;font-size:15px}.modal .close{float:right;margin-top:-4px}.undo-redo-fixed{position:fixed;top:12px;right:12px;z-index:10000;display:flex;gap:8px}.small-btn{width:48px;height:48px;padding:0;border-radius:16px;font-size:22px;line-height:1;display:flex;align-items:center;justify-content:center}
-    @media(max-width:980px){.editor-dashboard{grid-template-columns:1fr}.top-line{width:100%;border-radius:26px}.cards,.combine-summary{grid-template-columns:1fr}.small-btn{width:42px;height:42px;font-size:20px}.undo-redo-fixed{top:10px;right:10px}th:first-child,td:first-child{min-width:175px}#rubricSelect,#copyRubricSelect{min-width:180px}.comment-cell{min-width:230px}}
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --ink:#1f2430;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --blue:#4f7cff;
+      --blue-soft:#e9efff;
+      --green:#4caf50;
+      --red:#e96b6b;
+      --red-soft:#fdecec;
+      --orange:#e7a63b;
+      --graybtn:#eef1f7;
+      --shadow:0 6px 20px rgba(0,0,0,.055);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+    }
+
+    .app{
+      max-width:1480px;
+      margin:0 auto;
+      padding:14px 14px 28px;
+    }
+
+    h1{
+      text-align:center;
+      margin:8px 0 12px;
+      font-size:24px;
+      line-height:1.15;
+    }
+
+    .emoji{margin-right:.35rem}
+
+    .top-dashboard{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+    }
+
+    .top-line{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:999px;
+      box-shadow:var(--shadow);
+      padding:10px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      width:fit-content;
+      max-width:1180px;
+    }
+
+    .label{
+      font-size:18px;
+      font-weight:800;
+      min-width:max-content;
+    }
+
+    .field,
+    select,
+    input[type="text"],
+    input[type="number"],
+    textarea{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:22px;
+      padding:10px 14px;
+      font-size:15px;
+      outline:none;
+      color:var(--ink);
+    }
+
+    select,
+    input[type="text"],
+    input[type="number"]{
+      height:46px;
+    }
+
+    textarea{
+      width:100%;
+      resize:vertical;
+      border-radius:20px;
+      font-size:16px;
+      line-height:1.25;
+    }
+
+    .field.grow,
+    .grow{
+      flex:1 1 220px;
+    }
+
+    .btn{
+      border:none;
+      border-radius:20px;
+      padding:11px 16px;
+      font-size:15px;
+      font-weight:800;
+      cursor:pointer;
+      white-space:nowrap;
+      line-height:1.1;
+    }
+
+    .btn:hover{transform:none}
+    .btn.blue{background:var(--blue-soft); color:#304090}
+    .btn.green{background:var(--green); color:#fff}
+    .btn.red{background:var(--red-soft); color:#b03636}
+    .btn.orange{background:var(--orange); color:#171717}
+    .btn.gray{background:var(--graybtn); color:#32405f}
+    .btn.big{padding:13px 20px; font-size:16px}
+
+    #courseSelect{max-width:100px !important}
+    #rubricSelect{min-width:260px;max-width:340px !important}
+    #newCourseInput,#newRubricInput{max-width:240px !important;flex:0 1 240px !important}
+    #copyCourseSelect{max-width:100px !important}
+    #copyRubricSelect{min-width:260px;max-width:340px !important}
+
+    .hint{
+      text-align:center;
+      color:var(--muted);
+      font-size:16px;
+      font-weight:700;
+      margin:10px auto 12px;
+      line-height:1.25;
+    }
+
+    .divider{
+      height:1px;
+      background:var(--line);
+      margin:14px 0 14px;
+    }
+
+    .editor-dashboard{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      align-items:start;
+      margin-top:8px;
+    }
+
+    .editor-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
+
+    .section-title{
+      font-size:20px;
+      font-weight:900;
+      margin:0 0 8px;
+    }
+
+    .editor-card textarea{min-height:118px}
+
+    .weights-under{margin-top:14px}
+    .weights-under input{width:100%}
+
+    .descriptions-wide{
+      margin-top:16px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
+
+    .descriptions-wide textarea{min-height:105px}
+
+    .subhint{
+      display:block;
+      color:var(--muted);
+      font-size:15px;
+      margin-top:6px;
+      line-height:1.25;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:16px;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:12px;
+      margin-top:16px;
+    }
+
+    .card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:14px 16px;
+      box-shadow:var(--shadow);
+      min-height:95px;
+    }
+
+    .card h3{
+      margin:0 0 8px;
+      font-size:17px;
+      line-height:1.1;
+    }
+
+    .card .big{
+      font-size:24px;
+      font-weight:900;
+      line-height:1.1;
+      margin:0;
+    }
+
+    .card .small{
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      line-height:1.1;
+    }
+
+    .table-wrap{
+      overflow:auto;
+      margin-top:14px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+    }
+
+    table{
+      width:100%;
+      min-width:980px;
+      border-collapse:separate;
+      border-spacing:0;
+    }
+
+    thead th{
+      position:sticky;
+      top:0;
+      background:#fff;
+      z-index:1;
+      font-size:13px;
+      padding:8px 6px;
+      line-height:1.1;
+    }
+
+    th,td{
+      border-bottom:1px solid var(--line);
+      padding:7px 6px;
+      text-align:center;
+      vertical-align:middle;
+      font-size:13px;
+      line-height:1.1;
+    }
+
+    th:first-child,
+    td:first-child{
+      text-align:left;
+      position:sticky;
+      left:0;
+      background:#fff;
+      z-index:1;
+      min-width:190px;
+      max-width:320px;
+    }
+
+    thead th:first-child{z-index:2}
+
+    .th-ind .w{
+      display:block;
+      color:var(--muted);
+      font-size:11px;
+      margin-top:1px;
+      font-weight:700;
+    }
+
+    .cell-score{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:59px;
+      height:36px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-weight:900;
+      cursor:pointer;
+      user-select:none;
+      font-size:15px;
+    }
+
+    .score-0{
+      background:#eef0f4;
+      color:#8a8f98;
+    }
+
+    .score-1{
+      background:#fecaca;
+      color:#991b1b;
+    }
+
+    .score-2{
+      background:#fed7aa;
+      color:#9a3412;
+    }
+
+    .score-3{
+      background:#fffde7;
+      color:#6b5500;
+      border-color:#f4e58a;
+    }
+
+    .score-4{
+      background:#bbf7d0;
+      color:#166534;
+    }
+
+    .student-name{
+      font-weight:800;
+      font-size:15px;
+      line-height:1.18;
+      display:block;
+      white-space:normal;
+    }
+
+    .comment-cell{
+      min-width:260px;
+      max-width:360px;
+    }
+
+    .comment-input{
+      width:100%;
+      min-height:54px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      font-size:14px;
+      line-height:1.2;
+      resize:vertical;
+      background:#fff;
+    }
+
+    .comment-input:focus{
+      outline:2px solid #bcd0ff;
+      border-color:var(--blue);
+    }
+
+    .combine-panel{
+      margin-top:22px;
+      background:linear-gradient(135deg,#ffffff 0%,#f1f5ff 100%);
+      border:1px solid #dbe4ff;
+      border-radius:26px;
+      box-shadow:0 10px 28px rgba(40,70,160,.10);
+      padding:18px;
+    }
+
+    .combine-header{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+
+    .combine-header h2{
+      margin:0;
+      font-size:23px;
+      line-height:1.1;
+    }
+
+    .combine-header p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-weight:650;
+      line-height:1.25;
+      max-width:920px;
+    }
+
+    .combine-controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+
+    .zero-option{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:800;
+      color:#334155;
+      box-shadow:var(--shadow);
+    }
+
+    .combine-list{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:10px;
+      margin:12px 0 16px;
+    }
+
+    .combine-item{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      box-shadow:0 3px 12px rgba(0,0,0,.035);
+    }
+
+    .combine-item input{
+      width:20px;
+      height:20px;
+      margin-top:2px;
+    }
+
+    .combine-item-title{
+      font-weight:900;
+      font-size:15px;
+      line-height:1.15;
+    }
+
+    .combine-item-sub{
+      color:var(--muted);
+      font-weight:700;
+      font-size:12px;
+      margin-top:4px;
+    }
+
+    .combine-cards{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .combine-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:14px;
+      box-shadow:var(--shadow);
+    }
+
+    .combine-card.strong{
+      background:#eef9f0;
+      border-color:#bbf7d0;
+    }
+
+    .combine-label{
+      color:var(--muted);
+      font-size:13px;
+      font-weight:850;
+      margin-bottom:6px;
+    }
+
+    .combine-value{
+      font-size:27px;
+      font-weight:950;
+      line-height:1;
+    }
+
+    .combine-table-wrap{
+      overflow:auto;
+      margin-top:14px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+    }
+
+    .combine-table{
+      min-width:920px;
+      box-shadow:none;
+    }
+
+    .combine-table th:first-child,
+    .combine-table td:first-child{
+      position:static;
+      min-width:auto;
+      max-width:none;
+      background:transparent;
+    }
+
+    .status-ok,
+    .status-empty{
+      display:inline-block;
+      padding:7px 10px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:12px;
+    }
+
+    .status-ok{
+      background:#dcfce7;
+      color:#166534;
+    }
+
+    .status-empty{
+      background:#f1f5f9;
+      color:#64748b;
+    }
+
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+    .muted{color:var(--muted)}
+
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(20,24,35,.35);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      padding:16px;
+    }
+
+    .modal{
+      background:#fff;
+      border-radius:20px;
+      width:min(760px,100%);
+      max-height:82vh;
+      overflow:auto;
+      box-shadow:0 18px 60px rgba(0,0,0,.2);
+      padding:18px;
+    }
+
+    .modal h3{
+      margin:0 0 10px;
+      font-size:18px;
+    }
+
+    .modal p{
+      line-height:1.35;
+      font-size:15px;
+    }
+
+    .modal .close{
+      float:right;
+      margin-top:-4px;
+    }
+
+    .undo-redo-fixed{
+      position:fixed;
+      top:12px;
+      right:12px;
+      z-index:10000;
+      display:flex;
+      gap:8px;
+    }
+
+    .small-btn{
+      width:48px;
+      height:48px;
+      padding:0;
+      border-radius:16px;
+      font-size:22px;
+      line-height:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    @media (max-width:980px){
+      .editor-dashboard{
+        grid-template-columns:1fr;
+      }
+
+      .top-line{
+        width:100%;
+        border-radius:26px;
+      }
+
+      .cards,
+      .combine-cards{
+        grid-template-columns:1fr;
+      }
+
+      .small-btn{
+        width:42px;
+        height:42px;
+        font-size:20px;
+      }
+
+      .undo-redo-fixed{
+        top:10px;
+        right:10px;
+      }
+
+      th:first-child,
+      td:first-child{
+        min-width:175px;
+      }
+
+      #rubricSelect,
+      #copyRubricSelect{
+        min-width:180px;
+      }
+
+      .comment-cell{
+        min-width:230px;
+      }
+    }
   </style>
 </head>
+
 <body>
-<div class="undo-redo-fixed"><button class="btn gray small-btn" id="undoBtn" type="button" title="Deshacer">↶</button><button class="btn gray small-btn" id="redoBtn" type="button" title="Rehacer">↷</button></div>
+
+<div class="undo-redo-fixed">
+  <button class="btn gray small-btn" id="undoBtn" type="button" title="Deshacer">↶</button>
+  <button class="btn gray small-btn" id="redoBtn" type="button" title="Rehacer">↷</button>
+</div>
+
 <div class="app">
   <h1><span class="emoji">📋</span>Rúbrica EF</h1>
+
   <div class="top-dashboard">
-    <div class="top-line"><div class="label">Curso</div><select id="courseSelect" class="grow"></select><button class="btn blue" id="renameCourseBtn">Renombrar</button><input id="newCourseInput" class="grow" type="text" placeholder="Nuevo curso" /><button class="btn green" id="addCourseBtn">Añadir</button><button class="btn red" id="deleteCourseBtn">Eliminar</button></div>
-    <div class="top-line"><div class="label">Rúbrica</div><select id="rubricSelect" class="grow"></select><button class="btn blue" id="renameRubricBtn">Renombrar</button><input id="newRubricInput" class="grow" type="text" placeholder="Nueva rúbrica" /><button class="btn green" id="addRubricBtn">Añadir</button><button class="btn orange" id="duplicateRubricBtn">Duplicar</button><button class="btn red" id="deleteRubricBtn">Eliminar</button></div>
-    <div class="top-line"><div class="label">Copiar rúbrica desde otro curso</div><select id="copyCourseSelect"></select><select id="copyRubricSelect" class="grow"></select><button class="btn blue" id="copyWithoutScoresBtn">Copiar SIN notas</button><button class="btn orange" id="copyWithScoresBtn">Copiar CON notas</button></div>
+
+    <div class="top-line">
+      <div class="label">Curso</div>
+      <select id="courseSelect" class="grow"></select>
+      <button class="btn blue" id="renameCourseBtn">Renombrar</button>
+      <input id="newCourseInput" class="grow" type="text" placeholder="Nuevo curso" />
+      <button class="btn green" id="addCourseBtn">Añadir</button>
+      <button class="btn red" id="deleteCourseBtn">Eliminar</button>
+    </div>
+
+    <div class="top-line">
+      <div class="label">Rúbrica</div>
+      <select id="rubricSelect" class="grow"></select>
+      <button class="btn blue" id="renameRubricBtn">Renombrar</button>
+      <input id="newRubricInput" class="grow" type="text" placeholder="Nueva rúbrica" />
+      <button class="btn green" id="addRubricBtn">Añadir</button>
+      <button class="btn orange" id="duplicateRubricBtn">Duplicar</button>
+      <button class="btn red" id="deleteRubricBtn">Eliminar</button>
+    </div>
+
+    <div class="top-line">
+      <div class="label">Copiar rúbrica desde otro curso</div>
+      <select id="copyCourseSelect"></select>
+      <select id="copyRubricSelect" class="grow"></select>
+      <button class="btn blue" id="copyWithoutScoresBtn">Copiar SIN notas</button>
+      <button class="btn orange" id="copyWithScoresBtn">Copiar CON notas</button>
+    </div>
+
   </div>
-  <div class="hint">✅ Edita y pulsa Aplicar cambios. ⚠️ Rehacer crea la tabla desde cero. Los comentarios se guardan automáticamente.</div>
+
+  <div class="hint">
+    ✅ Edita y pulsa Aplicar cambios. ⚠️ Rehacer crea la tabla desde cero. Los comentarios se guardan automáticamente.
+  </div>
+
   <div class="divider"></div>
-  <div class="editor-dashboard"><div class="editor-card"><div class="section-title">Alumnado</div><textarea id="studentsInput" placeholder="Un alumno por línea"></textarea><div class="subhint">Puedes añadir, quitar o reordenar alumnado. Después pulsa Aplicar cambios.</div></div><div class="editor-card"><div class="section-title">Indicadores</div><textarea id="indicatorsInput" placeholder="PARTICIPACIÓN, ESFUERZO, ATENCIÓN"></textarea><div class="subhint">Se conservan notas si coincide el nombre del indicador.</div><div class="weights-under"><div class="section-title">Pesos %</div><input id="weightsInput" type="text" class="grow field" placeholder="20,20,20,20,20" /><div class="subhint">Si no suman 100, se normalizan automáticamente.</div></div></div></div>
-  <div class="descriptions-wide"><div class="section-title">Descripciones</div><textarea id="descriptionsInput" placeholder="Indicador | 1: ... ; 2: ... ; 3: ... ; 4: ..."></textarea><div class="subhint">Una línea por indicador. Mantén pulsada una celda para ver la descripción.</div></div>
-  <div class="actions"><button class="btn big" style="background:var(--blue);color:#fff" id="rebuildBtn">Rehacer</button><button class="btn big" style="background:var(--orange);color:#111" id="applyBtn">Aplicar cambios</button><button class="btn big gray" id="saveTextsBtn">Guardar textos</button><button class="btn big green" id="exportCsvBtn">Exportar CSV</button></div>
-  <div class="combine-card"><div class="combine-head"><div><div class="section-title">📊 Combinar rúbricas del curso</div><p class="combine-explanation">Selecciona varias rúbricas del curso actual, asigna un peso a cada una y calcula una media final. Puedes ver una vista previa y crear una nueva rúbrica resumen sin borrar las anteriores.</p></div></div><div class="combine-controls"><input id="combinedRubricNameInput" type="text" placeholder="Nombre nueva rúbrica combinada, por ejemplo: MEDIA COMBA FINAL" /><button class="btn blue" id="previewCombinedBtn">Vista previa</button><button class="btn green" id="createCombinedBtn">Crear rúbrica combinada</button></div><div id="combineRubricsList" class="combine-list"></div><div id="combineSummary" class="combine-summary"><div class="combine-stat"><div class="combine-stat-title">Rúbricas seleccionadas</div><div class="combine-stat-value" id="combineSelectedCount">0</div></div><div class="combine-stat"><div class="combine-stat-title">Alumnos/as detectados</div><div class="combine-stat-value" id="combineStudentsCount">0</div></div><div class="combine-stat"><div class="combine-stat-title">Media final grupo</div><div class="combine-stat-value" id="combineClassAvg">0.00</div></div></div><div id="combinePreview" class="combine-preview"></div></div>
-  <div class="cards"><div class="card"><h3>Media 0–4</h3><div class="big" id="avg04">0.00</div><div class="small">ponderada</div></div><div class="card"><h3>Nota /10</h3><div class="big" id="avg10">0.00</div><div class="small">media clase</div></div><div class="card"><h3>% evaluado</h3><div class="big" id="progressPct">0%</div><div class="small">progreso</div></div></div>
-  <div class="table-wrap"><table id="rubricTable"><thead></thead><tbody></tbody></table></div>
+
+  <div class="editor-dashboard">
+
+    <div class="editor-card">
+      <div class="section-title">Alumnado</div>
+      <textarea id="studentsInput" placeholder="Un alumno por línea"></textarea>
+      <div class="subhint">Puedes añadir, quitar o reordenar alumnado. Después pulsa Aplicar cambios.</div>
+    </div>
+
+    <div class="editor-card">
+      <div class="section-title">Indicadores</div>
+      <textarea id="indicatorsInput" placeholder="PARTICIPACIÓN, ESFUERZO, ATENCIÓN"></textarea>
+      <div class="subhint">Se conservan notas si coincide el nombre del indicador.</div>
+
+      <div class="weights-under">
+        <div class="section-title">Pesos %</div>
+        <input id="weightsInput" type="text" class="grow field" placeholder="20,20,20,20,20" />
+        <div class="subhint">Si no suman 100, se normalizan automáticamente.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="descriptions-wide">
+    <div class="section-title">Descripciones</div>
+    <textarea id="descriptionsInput" placeholder="Indicador | 1: ... ; 2: ... ; 3: ... ; 4: ..."></textarea>
+    <div class="subhint">Una línea por indicador. Mantén pulsada una celda para ver la descripción.</div>
+  </div>
+
+  <div class="actions">
+    <button class="btn big" style="background:var(--blue);color:#fff" id="rebuildBtn">Rehacer</button>
+    <button class="btn big" style="background:var(--orange);color:#111" id="applyBtn">Aplicar cambios</button>
+    <button class="btn big gray" id="saveTextsBtn">Guardar textos</button>
+    <button class="btn big green" id="exportCsvBtn">Exportar CSV</button>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h3>Media 0–4</h3>
+      <div class="big" id="avg04">0.00</div>
+      <div class="small">ponderada</div>
+    </div>
+    <div class="card">
+      <h3>Nota /10</h3>
+      <div class="big" id="avg10">0.00</div>
+      <div class="small">media clase</div>
+    </div>
+    <div class="card">
+      <h3>% evaluado</h3>
+      <div class="big" id="progressPct">0%</div>
+      <div class="small">progreso</div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table id="rubricTable">
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div id="combinePanel" class="combine-panel"></div>
 </div>
-<div class="modal-backdrop" id="tooltipModalBackdrop"><div class="modal"><button class="btn gray close" id="closeTooltipBtn">Cerrar</button><h3 id="tooltipTitle">Descripción</h3><p id="tooltipBody"></p></div></div>
+
+<div class="modal-backdrop" id="tooltipModalBackdrop">
+  <div class="modal">
+    <button class="btn gray close" id="closeTooltipBtn">Cerrar</button>
+    <h3 id="tooltipTitle">Descripción</h3>
+    <p id="tooltipBody"></p>
+  </div>
+</div>
+
 <script>
 (() => {
-  const LS_KEY="rubrica_ef_editable_db_v1";
-  const $=s=>document.querySelector(s);
-  const els={courseSelect:$("#courseSelect"),renameCourseBtn:$("#renameCourseBtn"),newCourseInput:$("#newCourseInput"),addCourseBtn:$("#addCourseBtn"),deleteCourseBtn:$("#deleteCourseBtn"),rubricSelect:$("#rubricSelect"),renameRubricBtn:$("#renameRubricBtn"),newRubricInput:$("#newRubricInput"),addRubricBtn:$("#addRubricBtn"),duplicateRubricBtn:$("#duplicateRubricBtn"),deleteRubricBtn:$("#deleteRubricBtn"),copyCourseSelect:$("#copyCourseSelect"),copyRubricSelect:$("#copyRubricSelect"),copyWithoutScoresBtn:$("#copyWithoutScoresBtn"),copyWithScoresBtn:$("#copyWithScoresBtn"),studentsInput:$("#studentsInput"),indicatorsInput:$("#indicatorsInput"),weightsInput:$("#weightsInput"),descriptionsInput:$("#descriptionsInput"),rebuildBtn:$("#rebuildBtn"),applyBtn:$("#applyBtn"),saveTextsBtn:$("#saveTextsBtn"),exportCsvBtn:$("#exportCsvBtn"),avg04:$("#avg04"),avg10:$("#avg10"),progressPct:$("#progressPct"),thead:$("#rubricTable thead"),tbody:$("#rubricTable tbody"),combinedRubricNameInput:$("#combinedRubricNameInput"),previewCombinedBtn:$("#previewCombinedBtn"),createCombinedBtn:$("#createCombinedBtn"),combineRubricsList:$("#combineRubricsList"),combinePreview:$("#combinePreview"),combineSummary:$("#combineSummary"),combineSelectedCount:$("#combineSelectedCount"),combineStudentsCount:$("#combineStudentsCount"),combineClassAvg:$("#combineClassAvg"),tooltipModalBackdrop:$("#tooltipModalBackdrop"),closeTooltipBtn:$("#closeTooltipBtn"),tooltipTitle:$("#tooltipTitle"),tooltipBody:$("#tooltipBody"),undoBtn:$("#undoBtn"),redoBtn:$("#redoBtn")};
-  let lastPreviewRows=[],lastSelectedRubrics=[],lastRubricWeights={};
-  function defaultData(){return{currentCourse:"2C",currentRubric:"COMBA 1",courses:{"2C":{rubrics:{"COMBA 1":{texts:{studentsText:"",indicatorsText:"PARTICIPACIÓN, ESFUERZO, ATENCIÓN, AUTONOMÍA, RENDIMIENTO",weightsText:"20,20,20,20,20",descriptionsText:""},students:[],indicators:["PARTICIPACIÓN","ESFUERZO","ATENCIÓN","AUTONOMÍA","RENDIMIENTO"],weights:[20,20,20,20,20],descriptions:{},scores:{},comments:{}}}}}}}
-  function loadDB(){try{const raw=localStorage.getItem(LS_KEY);return raw?JSON.parse(raw):defaultData()}catch{return defaultData()}}
-  let db=loadDB(),undoStack=[],redoStack=[],restoringHistory=false;
-  function saveHistory(){if(restoringHistory)return;const snap=JSON.stringify(db);if(undoStack.length&&undoStack[undoStack.length-1]===snap)return;undoStack.push(snap);if(undoStack.length>100)undoStack.shift();redoStack=[]}
-  function saveDB(){localStorage.setItem(LS_KEY,JSON.stringify(db));saveHistory()}function saveDBWithoutHistory(){localStorage.setItem(LS_KEY,JSON.stringify(db))}
-  function undoAction(){if(undoStack.length<=1)return;restoringHistory=true;const cur=undoStack.pop();redoStack.push(cur);db=JSON.parse(undoStack[undoStack.length-1]);renderAll();restoringHistory=false}
-  function redoAction(){if(!redoStack.length)return;restoringHistory=true;const next=redoStack.pop();undoStack.push(next);db=JSON.parse(next);renderAll();restoringHistory=false}
-  function ensureCurrent(){if(!db.courses)db=defaultData();if(!db.courses[db.currentCourse])db.currentCourse=Object.keys(db.courses)[0]||"2C";if(!db.courses[db.currentCourse])db.courses[db.currentCourse]={rubrics:{}};const rubrics=db.courses[db.currentCourse].rubrics;if(!rubrics[db.currentRubric])db.currentRubric=Object.keys(rubrics)[0]||"COMBA 1";if(!rubrics[db.currentRubric])rubrics[db.currentRubric]=defaultData().courses["2C"].rubrics["COMBA 1"];ensureRubricShape(rubrics[db.currentRubric])}
-  function ensureRubricShape(r){if(!r.texts)r.texts={studentsText:r.studentsText||"",indicatorsText:r.indicatorsText||"",weightsText:r.weightsText||"",descriptionsText:r.descriptionsText||""};if(!Array.isArray(r.students))r.students=[];if(!Array.isArray(r.indicators))r.indicators=[];if(!Array.isArray(r.weights))r.weights=[];if(!r.descriptions)r.descriptions={};if(!r.scores)r.scores={};if(!r.comments)r.comments={};for(const student of r.students){if(!r.scores[student])r.scores[student]={};for(const ind of r.indicators)if(typeof r.scores[student][ind]==="undefined")r.scores[student][ind]=0;if(typeof r.comments[student]==="undefined")r.comments[student]=""}}
-  function currentRubricObj(){ensureCurrent();return db.courses[db.currentCourse].rubrics[db.currentRubric]}
-  const parseStudents=t=>String(t||"").split(/\n+/).map(s=>s.trim()).filter(Boolean);const parseIndicators=t=>String(t||"").split(/\n|,/).map(s=>s.trim()).filter(Boolean);
-  function parseWeights(text,count){let arr=String(text||"").split(/,|\n/).map(s=>s.trim()).filter(Boolean).map(n=>Number(String(n).replace(",","."))).filter(n=>!Number.isNaN(n)&&n>=0);if(!arr.length)arr=Array(count).fill(1);while(arr.length<count)arr.push(arr[arr.length-1]||1);if(arr.length>count)arr=arr.slice(0,count);const sum=arr.reduce((a,b)=>a+b,0);return sum<=0?Array(count).fill(100/count):arr.map(v=>v/sum*100)}
-  function parseDescriptions(text){const out={};for(const line of String(text||"").split(/\n+/).map(s=>s.trim()).filter(Boolean)){const parts=line.split("|");if(parts.length<2)continue;const indicator=parts[0].trim(),rest=parts.slice(1).join("|");const levels={1:"",2:"",3:"",4:""};let m,regex=/([1-4])\s*:\s*([^;]+)(?:;|$)/g;while((m=regex.exec(rest))!==null)levels[m[1]]=m[2].trim();out[indicator]=levels}return out}
-  function rubricTemplateFromTexts(r){r.students=parseStudents(r.texts.studentsText);r.indicators=parseIndicators(r.texts.indicatorsText);r.weights=parseWeights(r.texts.weightsText,r.indicators.length);r.descriptions=parseDescriptions(r.texts.descriptionsText);ensureRubricShape(r)}
-  function fillSelectors(){const courses=Object.keys(db.courses);els.courseSelect.innerHTML=courses.map(c=>`<option value="${escapeHtml(c)}" ${c===db.currentCourse?"selected":""}>${escapeHtml(c)}</option>`).join("");const rubrics=Object.keys(db.courses[db.currentCourse].rubrics);els.rubricSelect.innerHTML=rubrics.map(r=>`<option value="${escapeHtml(r)}" ${r===db.currentRubric?"selected":""}>${escapeHtml(r)}</option>`).join("");els.copyCourseSelect.innerHTML=courses.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");fillCopyRubrics()}
-  function fillCopyRubrics(){const c=els.copyCourseSelect.value||db.currentCourse;const rubrics=Object.keys(db.courses[c]?.rubrics||{});els.copyRubricSelect.innerHTML=rubrics.map(r=>`<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`).join("")}
-  function fillTexts(){const r=currentRubricObj();els.studentsInput.value=r.texts.studentsText||"";els.indicatorsInput.value=r.texts.indicatorsText||"";els.weightsInput.value=r.texts.weightsText||"";els.descriptionsInput.value=r.texts.descriptionsText||""}
-  function saveTextsIntoCurrentRubric(){const r=currentRubricObj();r.texts.studentsText=els.studentsInput.value.trim();r.texts.indicatorsText=els.indicatorsInput.value.trim();r.texts.weightsText=els.weightsInput.value.trim();r.texts.descriptionsText=els.descriptionsInput.value.trim()}
-  function rebuildFromScratch(){const r=currentRubricObj();saveTextsIntoCurrentRubric();rubricTemplateFromTexts(r);r.scores={};r.comments={};for(const student of r.students){r.scores[student]={};r.comments[student]="";for(const ind of r.indicators)r.scores[student][ind]=0}saveDB();renderAll()}
-  function applyChangesKeepScores(){const r=currentRubricObj(),oldScores=structuredCloneSafe(r.scores||{}),oldComments=structuredCloneSafe(r.comments||{});saveTextsIntoCurrentRubric();rubricTemplateFromTexts(r);const ns={},nc={};for(const student of r.students){ns[student]={};nc[student]=oldComments[student]||"";for(const ind of r.indicators)ns[student][ind]=(oldScores[student]&&typeof oldScores[student][ind]!=="undefined")?oldScores[student][ind]:0}r.scores=ns;r.comments=nc;saveDB();renderAll()}
-  function renderTable(){const r=currentRubricObj();ensureRubricShape(r);els.thead.innerHTML=`<tr><th>Alumno/a</th>${r.indicators.map((ind,i)=>`<th class="th-ind">${escapeHtml(ind)}<span class="w">${formatPct(r.weights[i]||0)}</span></th>`).join("")}<th>Media<br><span class="w">0–4</span></th><th>Nota<br><span class="w">/10</span></th><th>Comentario</th></tr>`;els.tbody.innerHTML=r.students.map(student=>{const cells=r.indicators.map(ind=>{const score=Number(r.scores?.[student]?.[ind]??0);return`<td><div class="cell-score score-${score}" data-student="${escapeAttr(student)}" data-indicator="${escapeAttr(ind)}">${score}</div></td>`}).join("");const stats=studentStats(student,r),comment=r.comments?.[student]||"";return`<tr><td><span class="student-name">${escapeHtml(student)}</span></td>${cells}<td><b>${stats.avg04.toFixed(2)}</b></td><td><b>${stats.avg10.toFixed(2)}</b></td><td class="comment-cell"><textarea class="comment-input" data-student="${escapeAttr(student)}" placeholder="Escribe comentario...">${escapeHtml(comment)}</textarea></td></tr>`}).join("")||`<tr><td colspan="${r.indicators.length+4}" class="muted">No hay alumnado todavía.</td></tr>`;bindCellEvents();bindCommentEvents();renderSummary()}
-  function bindCellEvents(){els.tbody.querySelectorAll(".cell-score").forEach(cell=>{cell.addEventListener("click",()=>{const student=cell.dataset.student,ind=cell.dataset.indicator,r=currentRubricObj();if(!r.scores[student])r.scores[student]={};r.scores[student][ind]=(Number(r.scores[student][ind]||0)+1)%5;saveDB();renderTable()});let t=null;const start=()=>{t=setTimeout(()=>showTooltip(cell.dataset.indicator,cell.dataset.student),450)},clear=()=>{if(t)clearTimeout(t);t=null};cell.addEventListener("pointerdown",start);cell.addEventListener("pointerup",clear);cell.addEventListener("pointerleave",clear);cell.addEventListener("pointercancel",clear);cell.addEventListener("contextmenu",e=>{e.preventDefault();showTooltip(cell.dataset.indicator,cell.dataset.student)})})}
-  function bindCommentEvents(){els.tbody.querySelectorAll(".comment-input").forEach(input=>{input.addEventListener("input",()=>{const student=input.dataset.student,r=currentRubricObj();if(!r.comments)r.comments={};r.comments[student]=input.value;saveDBWithoutHistory()});input.addEventListener("change",saveHistory)})}
-  function showTooltip(indicator,student){const r=currentRubricObj(),score=Number(r.scores?.[student]?.[indicator]??0),txt=score>=1?(r.descriptions[indicator]?.[String(score)]||"Sin descripción para este nivel."):"Esta celda aún no tiene nivel asignado.";els.tooltipTitle.textContent=`${indicator} — ${student}`;els.tooltipBody.innerHTML=`<p><b>Nivel actual:</b> ${score}</p><p>${escapeHtml(txt)}</p>`;els.tooltipModalBackdrop.style.display="flex"}
-  function studentStats(student,r){let sw=0,tw=0;r.indicators.forEach((ind,i)=>{const w=Number(r.weights[i]||0),v=Number(r.scores?.[student]?.[ind]??0);sw+=v*w;tw+=w});const avg04=tw?sw/tw:0;return{avg04,avg10:avg04*2.5}}
-  function renderSummary(){const r=currentRubricObj();let sum=0,count=0,filled=0,total=r.students.length*r.indicators.length;for(const s of r.students){const st=studentStats(s,r);sum+=st.avg04;count++;for(const ind of r.indicators)if(Number(r.scores?.[s]?.[ind]??0)>0)filled++}const avg04=count?sum/count:0;els.avg04.textContent=avg04.toFixed(2);els.avg10.textContent=(avg04*2.5).toFixed(2);els.progressPct.textContent=`${total?(filled/total*100).toFixed(0):0}%`}
-  function renderCombineList(){const course=db.courses[db.currentCourse],names=Object.keys(course?.rubrics||{});if(!names.length){els.combineRubricsList.innerHTML=`<div class="muted">No hay rúbricas para combinar en este curso.</div>`;els.combinePreview.style.display="none";els.combineSummary.style.display="none";return}els.combineRubricsList.innerHTML=names.map(name=>{const r=course.rubrics[name];ensureRubricShape(r);return`<label class="combine-item"><input class="combine-check" type="checkbox" value="${escapeAttr(name)}"><div><div class="combine-item-title">${escapeHtml(name)}</div><div class="combine-item-sub">${r.students.length} filas · ${r.indicators.length} indicadores</div></div><input class="combine-weight" type="number" min="0" max="100" step="1" value="100" data-rubric="${escapeAttr(name)}" title="Peso"></label>`}).join("");els.combinePreview.style.display="none";els.combineSummary.style.display="none";lastPreviewRows=[];lastSelectedRubrics=[];lastRubricWeights={}}
-  function getSelectedCombineConfig(){const selectedRubrics=Array.from(document.querySelectorAll(".combine-check")).filter(ch=>ch.checked).map(ch=>ch.value),weights={};selectedRubrics.forEach(name=>{const input=document.querySelector(`.combine-weight[data-rubric="${cssEscape(name)}"]`);const v=Number(input?.value||0);weights[name]=Number.isFinite(v)&&v>=0?v:0});return{selectedRubrics,weights}}
-  function calculateCombinedRubric(selectedRubrics,weights){const course=db.courses[db.currentCourse],set=new Set();selectedRubrics.forEach(name=>{const r=course.rubrics[name];if(!r)return;ensureRubricShape(r);r.students.forEach(s=>set.add(s))});return Array.from(set).map(student=>{let sum=0,used=0,rubricNotes={};selectedRubrics.forEach(name=>{const r=course.rubrics[name];if(!r||!r.students.includes(student)){rubricNotes[name]="";return}const note=studentStats(student,r).avg10,w=Number(weights[name]||0);rubricNotes[name]=note.toFixed(2);if(w>0){sum+=note*w;used+=w}});return{student,rubricNotes,finalNote:used?sum/used:0}})}
-  function previewCombinedRubric(){const cfg=getSelectedCombineConfig();if(cfg.selectedRubrics.length<2)return alert("Selecciona al menos dos rúbricas para combinar.");if(cfg.selectedRubrics.reduce((s,n)=>s+Number(cfg.weights[n]||0),0)<=0)return alert("La suma de pesos debe ser mayor que 0.");lastSelectedRubrics=cfg.selectedRubrics;lastRubricWeights=cfg.weights;lastPreviewRows=calculateCombinedRubric(cfg.selectedRubrics,cfg.weights);renderCombinedPreview(lastPreviewRows,cfg.selectedRubrics)}
-  function renderCombinedPreview(rows,names){if(!rows.length){els.combinePreview.innerHTML=`<div style="padding:14px" class="muted">No hay alumnado para mostrar.</div>`;els.combinePreview.style.display="block";els.combineSummary.style.display="none";return}const avg=rows.reduce((s,r)=>s+r.finalNote,0)/rows.length;els.combineSelectedCount.textContent=names.length;els.combineStudentsCount.textContent=rows.length;els.combineClassAvg.textContent=avg.toFixed(2);els.combineSummary.style.display="grid";els.combinePreview.innerHTML=`<table><thead><tr><th>Alumno/a</th>${names.map(n=>`<th>${escapeHtml(n)}</th>`).join("")}<th>Nota final</th></tr></thead><tbody>${rows.map(row=>`<tr><td><span class="student-name">${escapeHtml(row.student)}</span></td>${names.map(n=>`<td>${escapeHtml(row.rubricNotes[n]||"—")}</td>`).join("")}<td><span class="final-pill ${finalClass(row.finalNote)}">${row.finalNote.toFixed(2)}</span></td></tr>`).join("")}</tbody></table>`;els.combinePreview.style.display="block"}
-  const finalClass=n=>n>=8?"final-high":n>=5?"final-mid":"final-low";const note10ToScore04=n=>n<=0?0:n<5?1:n<7?2:n<8.5?3:4;
-  function createCombinedRubricFromPreview(){if(!lastPreviewRows.length)previewCombinedRubric();if(!lastPreviewRows.length)return;const name=els.combinedRubricNameInput.value.trim();if(!name)return alert("Pon un nombre para la nueva rúbrica combinada.");const rubrics=db.courses[db.currentCourse].rubrics;if(rubrics[name])return alert("Ya existe una rúbrica con ese nombre.");const source=lastSelectedRubrics.map(n=>`${n} (${Number(lastRubricWeights[n]||0)}%)`).join(" + ");rubrics[name]={texts:{studentsText:lastPreviewRows.map(r=>r.student).join("\n"),indicatorsText:"NOTA FINAL COMBINADA",weightsText:"100",descriptionsText:"NOTA FINAL COMBINADA | 1: Nivel bajo; 2: Nivel medio-bajo; 3: Nivel adecuado; 4: Nivel alto;"},students:lastPreviewRows.map(r=>r.student),indicators:["NOTA FINAL COMBINADA"],weights:[100],descriptions:{"NOTA FINAL COMBINADA":{1:"Nivel bajo",2:"Nivel medio-bajo",3:"Nivel adecuado",4:"Nivel alto"}},scores:{},comments:{}};lastPreviewRows.forEach(row=>{rubrics[name].scores[row.student]={"NOTA FINAL COMBINADA":note10ToScore04(row.finalNote)};const detail=lastSelectedRubrics.map(n=>`${n}: ${row.rubricNotes[n]||"sin dato"}`).join(" | ");rubrics[name].comments[row.student]=`Nota final combinada: ${row.finalNote.toFixed(2)} / 10. Rúbricas: ${source}. Detalle: ${detail}`});db.currentRubric=name;saveDB();renderAll();alert(`Rúbrica combinada creada: ${name}`)}
-  function renderAll(){ensureCurrent();fillSelectors();fillTexts();renderTable();renderCombineList()}
-  function renameCourse(){const old=db.currentCourse,n=prompt("Nuevo nombre del curso:",old);if(!n||!n.trim()||n.trim()===old)return;const clean=n.trim();if(db.courses[clean])return alert("Ya existe un curso con ese nombre.");db.courses[clean]=db.courses[old];delete db.courses[old];db.currentCourse=clean;saveDB();renderAll()}
-  function addCourse(){const name=els.newCourseInput.value.trim();if(!name)return;if(db.courses[name])return alert("Ese curso ya existe.");db.courses[name]={rubrics:{}};db.currentCourse=name;db.currentRubric="Nueva rúbrica";db.courses[name].rubrics[db.currentRubric]={texts:{studentsText:"",indicatorsText:"",weightsText:"",descriptionsText:""},students:[],indicators:[],weights:[],descriptions:{},scores:{},comments:{}};els.newCourseInput.value="";saveDB();renderAll()}
-  function deleteCourse(){if(Object.keys(db.courses).length<=1)return alert("Debe quedar al menos un curso.");if(!confirm(`¿Eliminar el curso "${db.currentCourse}"?`))return;delete db.courses[db.currentCourse];db.currentCourse=Object.keys(db.courses)[0];db.currentRubric=Object.keys(db.courses[db.currentCourse].rubrics)[0];saveDB();renderAll()}
-  function renameRubric(){const course=db.courses[db.currentCourse],old=db.currentRubric,n=prompt("Nuevo nombre de la rúbrica:",old);if(!n||!n.trim()||n.trim()===old)return;const clean=n.trim();if(course.rubrics[clean])return alert("Ya existe una rúbrica con ese nombre.");course.rubrics[clean]=course.rubrics[old];delete course.rubrics[old];db.currentRubric=clean;saveDB();renderAll()}
-  function addRubric(){const name=els.newRubricInput.value.trim();if(!name)return;const rubrics=db.courses[db.currentCourse].rubrics;if(rubrics[name])return alert("Esa rúbrica ya existe.");rubrics[name]={texts:{studentsText:"",indicatorsText:"",weightsText:"",descriptionsText:""},students:[],indicators:[],weights:[],descriptions:{},scores:{},comments:{}};db.currentRubric=name;els.newRubricInput.value="";saveDB();renderAll()}
-  function duplicateRubric(){const rubrics=db.courses[db.currentCourse].rubrics,base=db.currentRubric;let name=prompt("Nombre de la copia:",`${base} copia`);if(!name||!name.trim())return;name=name.trim();if(rubrics[name])return alert("Ya existe una rúbrica con ese nombre.");rubrics[name]=structuredCloneSafe(rubrics[base]);ensureRubricShape(rubrics[name]);db.currentRubric=name;saveDB();renderAll()}
-  function deleteRubric(){const rubrics=db.courses[db.currentCourse].rubrics;if(Object.keys(rubrics).length<=1)return alert("Debe quedar al menos una rúbrica.");if(!confirm(`¿Eliminar la rúbrica "${db.currentRubric}"?`))return;delete rubrics[db.currentRubric];db.currentRubric=Object.keys(rubrics)[0];saveDB();renderAll()}
-  function copyRubric(withScores){const fc=els.copyCourseSelect.value,fr=els.copyRubricSelect.value,src=db.courses[fc]?.rubrics[fr];if(!src)return alert("No se encuentra la rúbrica origen.");const clone=structuredCloneSafe(src);ensureRubricShape(clone);if(!withScores){clone.scores={};clone.comments={};for(const s of clone.students||[]){clone.scores[s]={};clone.comments[s]="";for(const ind of clone.indicators||[])clone.scores[s][ind]=0}}db.courses[db.currentCourse].rubrics[db.currentRubric]=clone;saveDB();renderAll()}
-  function saveTextsOnly(){saveTextsIntoCurrentRubric();saveDB();alert("Textos guardados.")}
-  function exportCSV(){const r=currentRubricObj(),rows=[["Alumno/a",...r.indicators,"Media_0_4","Nota_0_10","Comentario"]];for(const s of r.students){const vals=r.indicators.map(ind=>Number(r.scores?.[s]?.[ind]??0)),st=studentStats(s,r);rows.push([s,...vals,st.avg04.toFixed(2),st.avg10.toFixed(2),r.comments?.[s]||""])}const csv=rows.map(row=>row.map(csvSafe).join(";")).join("\n"),blob=new Blob([csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=`${db.currentCourse}__${db.currentRubric}.csv`;a.click();URL.revokeObjectURL(url)}
-  const csvSafe=v=>/[;"\n]/.test(String(v??""))?`"${String(v??"").replace(/"/g,'""')}"`:String(v??"");const structuredCloneSafe=o=>JSON.parse(JSON.stringify(o));const formatPct=n=>`${Number(n).toFixed(1)}%`;function escapeHtml(s){return String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}const escapeAttr=escapeHtml;function cssEscape(v){return window.CSS&&CSS.escape?CSS.escape(v):String(v).replace(/["\\]/g,"\\$&")}
-  els.courseSelect.addEventListener("change",()=>{db.currentCourse=els.courseSelect.value;db.currentRubric=Object.keys(db.courses[db.currentCourse].rubrics)[0];saveDB();renderAll()});els.rubricSelect.addEventListener("change",()=>{db.currentRubric=els.rubricSelect.value;saveDB();renderAll()});els.copyCourseSelect.addEventListener("change",fillCopyRubrics);els.renameCourseBtn.addEventListener("click",renameCourse);els.addCourseBtn.addEventListener("click",addCourse);els.deleteCourseBtn.addEventListener("click",deleteCourse);els.renameRubricBtn.addEventListener("click",renameRubric);els.addRubricBtn.addEventListener("click",addRubric);els.duplicateRubricBtn.addEventListener("click",duplicateRubric);els.deleteRubricBtn.addEventListener("click",deleteRubric);els.copyWithoutScoresBtn.addEventListener("click",()=>copyRubric(false));els.copyWithScoresBtn.addEventListener("click",()=>copyRubric(true));els.rebuildBtn.addEventListener("click",rebuildFromScratch);els.applyBtn.addEventListener("click",applyChangesKeepScores);els.saveTextsBtn.addEventListener("click",saveTextsOnly);els.exportCsvBtn.addEventListener("click",exportCSV);els.previewCombinedBtn.addEventListener("click",previewCombinedRubric);els.createCombinedBtn.addEventListener("click",createCombinedRubricFromPreview);els.undoBtn.addEventListener("click",undoAction);els.redoBtn.addEventListener("click",redoAction);els.closeTooltipBtn.addEventListener("click",()=>els.tooltipModalBackdrop.style.display="none");els.tooltipModalBackdrop.addEventListener("click",e=>{if(e.target===els.tooltipModalBackdrop)els.tooltipModalBackdrop.style.display="none"});ensureCurrent();renderAll();saveHistory();
+  const LS_KEY = "rubrica_ef_editable_db_v1";
+  const $ = sel => document.querySelector(sel);
+
+  const els = {
+    courseSelect: $("#courseSelect"),
+    renameCourseBtn: $("#renameCourseBtn"),
+    newCourseInput: $("#newCourseInput"),
+    addCourseBtn: $("#addCourseBtn"),
+    deleteCourseBtn: $("#deleteCourseBtn"),
+
+    rubricSelect: $("#rubricSelect"),
+    renameRubricBtn: $("#renameRubricBtn"),
+    newRubricInput: $("#newRubricInput"),
+    addRubricBtn: $("#addRubricBtn"),
+    duplicateRubricBtn: $("#duplicateRubricBtn"),
+    deleteRubricBtn: $("#deleteRubricBtn"),
+
+    copyCourseSelect: $("#copyCourseSelect"),
+    copyRubricSelect: $("#copyRubricSelect"),
+    copyWithoutScoresBtn: $("#copyWithoutScoresBtn"),
+    copyWithScoresBtn: $("#copyWithScoresBtn"),
+
+    studentsInput: $("#studentsInput"),
+    indicatorsInput: $("#indicatorsInput"),
+    weightsInput: $("#weightsInput"),
+    descriptionsInput: $("#descriptionsInput"),
+
+    rebuildBtn: $("#rebuildBtn"),
+    applyBtn: $("#applyBtn"),
+    saveTextsBtn: $("#saveTextsBtn"),
+    exportCsvBtn: $("#exportCsvBtn"),
+
+    avg04: $("#avg04"),
+    avg10: $("#avg10"),
+    progressPct: $("#progressPct"),
+
+    table: $("#rubricTable"),
+    thead: $("#rubricTable thead"),
+    tbody: $("#rubricTable tbody"),
+
+    combinePanel: $("#combinePanel"),
+
+    tooltipModalBackdrop: $("#tooltipModalBackdrop"),
+    closeTooltipBtn: $("#closeTooltipBtn"),
+    tooltipTitle: $("#tooltipTitle"),
+    tooltipBody: $("#tooltipBody"),
+
+    undoBtn: $("#undoBtn"),
+    redoBtn: $("#redoBtn"),
+  };
+
+  let combineSelected = {};
+  let combineCountZeroAsGrade = false;
+
+  function defaultData() {
+    return {
+      currentCourse: "2C",
+      currentRubric: "COMBA 1",
+      courses: {
+        "2C": {
+          rubrics: {
+            "COMBA 1": {
+              texts: {
+                studentsText: "",
+                indicatorsText: "PARTICIPACIÓN, ESFUERZO, ATENCIÓN, AUTONOMÍA, RENDIMIENTO",
+                weightsText: "20,20,20,20,20",
+                descriptionsText: ""
+              },
+              students: [],
+              indicators: ["PARTICIPACIÓN","ESFUERZO","ATENCIÓN","AUTONOMÍA","RENDIMIENTO"],
+              weights: [20,20,20,20,20],
+              descriptions: {},
+              scores: {},
+              comments: {}
+            }
+          }
+        }
+      }
+    };
+  }
+
+  function loadDB() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (!raw) return defaultData();
+      return JSON.parse(raw);
+    } catch {
+      return defaultData();
+    }
+  }
+
+  let db = loadDB();
+  let undoStack = [];
+  let redoStack = [];
+  let restoringHistory = false;
+
+  function snapshotState() {
+    return JSON.stringify(db);
+  }
+
+  function saveHistory() {
+    if (restoringHistory) return;
+    const snap = snapshotState();
+    if (undoStack.length && undoStack[undoStack.length - 1] === snap) return;
+    undoStack.push(snap);
+    if (undoStack.length > 100) undoStack.shift();
+    redoStack = [];
+  }
+
+  function saveDB() {
+    localStorage.setItem(LS_KEY, JSON.stringify(db));
+    saveHistory();
+  }
+
+  function saveDBWithoutHistory() {
+    localStorage.setItem(LS_KEY, JSON.stringify(db));
+  }
+
+  function undoAction() {
+    if (undoStack.length <= 1) return;
+    restoringHistory = true;
+    const current = undoStack.pop();
+    redoStack.push(current);
+    const previous = undoStack[undoStack.length - 1];
+    db = JSON.parse(previous);
+    renderAll();
+    restoringHistory = false;
+  }
+
+  function redoAction() {
+    if (!redoStack.length) return;
+    restoringHistory = true;
+    const next = redoStack.pop();
+    undoStack.push(next);
+    db = JSON.parse(next);
+    renderAll();
+    restoringHistory = false;
+  }
+
+  function ensureCurrent() {
+    if (!db.courses) db = defaultData();
+
+    if (!db.courses[db.currentCourse]) {
+      const firstCourse = Object.keys(db.courses)[0];
+      if (firstCourse) db.currentCourse = firstCourse;
+      else {
+        db.currentCourse = "2C";
+        db.courses["2C"] = { rubrics: {} };
+      }
+    }
+
+    const rubrics = db.courses[db.currentCourse].rubrics;
+
+    if (!rubrics[db.currentRubric]) {
+      const firstRubric = Object.keys(rubrics)[0];
+      if (firstRubric) db.currentRubric = firstRubric;
+      else {
+        db.currentRubric = "COMBA 1";
+        rubrics["COMBA 1"] = defaultData().courses["2C"].rubrics["COMBA 1"];
+      }
+    }
+
+    ensureRubricShape(db.courses[db.currentCourse].rubrics[db.currentRubric]);
+  }
+
+  function ensureRubricShape(r) {
+    if (!r.texts) {
+      r.texts = {
+        studentsText: r.studentsText || "",
+        indicatorsText: r.indicatorsText || "",
+        weightsText: r.weightsText || "",
+        descriptionsText: r.descriptionsText || ""
+      };
+    }
+
+    if (!Array.isArray(r.students)) r.students = [];
+    if (!Array.isArray(r.indicators)) r.indicators = [];
+    if (!Array.isArray(r.weights)) r.weights = [];
+    if (!r.descriptions) r.descriptions = {};
+    if (!r.scores) r.scores = {};
+    if (!r.comments) r.comments = {};
+
+    for (const student of r.students) {
+      if (!r.scores[student]) r.scores[student] = {};
+      for (const indicator of r.indicators) {
+        if (typeof r.scores[student][indicator] === "undefined") {
+          r.scores[student][indicator] = 0;
+        }
+      }
+      if (typeof r.comments[student] === "undefined") {
+        r.comments[student] = "";
+      }
+    }
+  }
+
+  function currentRubricObj() {
+    ensureCurrent();
+    return db.courses[db.currentCourse].rubrics[db.currentRubric];
+  }
+
+  function parseStudents(text) {
+    return String(text || "").split(/\n+/).map(s => s.trim()).filter(Boolean);
+  }
+
+  function parseIndicators(text) {
+    return String(text || "").split(/\n|,/).map(s => s.trim()).filter(Boolean);
+  }
+
+  function parseWeights(text, count) {
+    let arr = String(text || "")
+      .split(/,|\n/)
+      .map(s => s.trim())
+      .filter(Boolean)
+      .map(n => Number(String(n).replace(",", ".")))
+      .filter(n => !Number.isNaN(n) && n >= 0);
+
+    if (!arr.length) arr = Array(count).fill(1);
+
+    if (arr.length < count) {
+      while (arr.length < count) arr.push(arr[arr.length - 1] || 1);
+    }
+
+    if (arr.length > count) arr = arr.slice(0, count);
+
+    const sum = arr.reduce((a,b) => a+b, 0);
+    if (sum <= 0) return Array(count).fill(1 / count * 100);
+
+    return arr.map(v => v / sum * 100);
+  }
+
+  function parseDescriptions(text) {
+    const out = {};
+    const lines = String(text || "").split(/\n+/).map(s => s.trim()).filter(Boolean);
+
+    for (const line of lines) {
+      const parts = line.split("|");
+      if (parts.length < 2) continue;
+
+      const indicator = parts[0].trim();
+      const rest = parts.slice(1).join("|");
+
+      const levels = {1:"",2:"",3:"",4:""};
+      const regex = /([1-4])\s*:\s*([^;]+)(?:;|$)/g;
+      let m;
+
+      while ((m = regex.exec(rest)) !== null) {
+        levels[m[1]] = m[2].trim();
+      }
+
+      out[indicator] = levels;
+    }
+
+    return out;
+  }
+
+  function rubricTemplateFromTexts(target) {
+    target.students = parseStudents(target.texts.studentsText);
+    target.indicators = parseIndicators(target.texts.indicatorsText);
+    target.weights = parseWeights(target.texts.weightsText, target.indicators.length);
+    target.descriptions = parseDescriptions(target.texts.descriptionsText);
+    ensureRubricShape(target);
+  }
+
+  function fillSelectors() {
+    const courses = Object.keys(db.courses);
+
+    els.courseSelect.innerHTML = courses.map(c =>
+      `<option value="${escapeHtml(c)}" ${c === db.currentCourse ? "selected" : ""}>${escapeHtml(c)}</option>`
+    ).join("");
+
+    const rubrics = Object.keys(db.courses[db.currentCourse].rubrics);
+
+    els.rubricSelect.innerHTML = rubrics.map(r =>
+      `<option value="${escapeHtml(r)}" ${r === db.currentRubric ? "selected" : ""}>${escapeHtml(r)}</option>`
+    ).join("");
+
+    els.copyCourseSelect.innerHTML = courses.map(c =>
+      `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`
+    ).join("");
+
+    fillCopyRubrics();
+  }
+
+  function fillCopyRubrics() {
+    const c = els.copyCourseSelect.value || db.currentCourse;
+    const rubrics = Object.keys(db.courses[c]?.rubrics || {});
+
+    els.copyRubricSelect.innerHTML = rubrics.map(r =>
+      `<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`
+    ).join("");
+  }
+
+  function fillTexts() {
+    const r = currentRubricObj();
+    els.studentsInput.value = r.texts.studentsText || "";
+    els.indicatorsInput.value = r.texts.indicatorsText || "";
+    els.weightsInput.value = r.texts.weightsText || "";
+    els.descriptionsInput.value = r.texts.descriptionsText || "";
+  }
+
+  function saveTextsIntoCurrentRubric() {
+    const r = currentRubricObj();
+    r.texts.studentsText = els.studentsInput.value.trim();
+    r.texts.indicatorsText = els.indicatorsInput.value.trim();
+    r.texts.weightsText = els.weightsInput.value.trim();
+    r.texts.descriptionsText = els.descriptionsInput.value.trim();
+  }
+
+  function rebuildFromScratch() {
+    const r = currentRubricObj();
+    saveTextsIntoCurrentRubric();
+    rubricTemplateFromTexts(r);
+
+    r.scores = {};
+    r.comments = {};
+
+    for (const student of r.students) {
+      r.scores[student] = {};
+      r.comments[student] = "";
+
+      for (const indicator of r.indicators) {
+        r.scores[student][indicator] = 0;
+      }
+    }
+
+    saveDB();
+    renderAll();
+  }
+
+  function applyChangesKeepScores() {
+    const r = currentRubricObj();
+    const oldScores = structuredCloneSafe(r.scores || {});
+    const oldComments = structuredCloneSafe(r.comments || {});
+
+    saveTextsIntoCurrentRubric();
+    rubricTemplateFromTexts(r);
+
+    const newScores = {};
+    const newComments = {};
+
+    for (const student of r.students) {
+      newScores[student] = {};
+      newComments[student] = oldComments[student] || "";
+
+      for (const indicator of r.indicators) {
+        if (oldScores[student] && typeof oldScores[student][indicator] !== "undefined") {
+          newScores[student][indicator] = oldScores[student][indicator];
+        } else {
+          newScores[student][indicator] = 0;
+        }
+      }
+    }
+
+    r.scores = newScores;
+    r.comments = newComments;
+
+    saveDB();
+    renderAll();
+  }
+
+  function renderTable() {
+    const r = currentRubricObj();
+    ensureRubricShape(r);
+
+    const head = `
+      <tr>
+        <th>Alumno/a</th>
+        ${r.indicators.map((ind, i) => `
+          <th class="th-ind">
+            ${escapeHtml(ind)}
+            <span class="w">${formatPct(r.weights[i] || 0)}</span>
+          </th>
+        `).join("")}
+        <th>Media<br><span class="w">0–4</span></th>
+        <th>Nota<br><span class="w">/10</span></th>
+        <th>Comentario</th>
+      </tr>
+    `;
+
+    els.thead.innerHTML = head;
+
+    const body = r.students.map(student => {
+      const cells = r.indicators.map(ind => {
+        const score = Number(r.scores?.[student]?.[ind] ?? 0);
+
+        return `
+          <td>
+            <div class="cell-score score-${score}" data-student="${escapeAttr(student)}" data-indicator="${escapeAttr(ind)}" data-score="${score}">
+              ${score}
+            </div>
+          </td>
+        `;
+      }).join("");
+
+      const stats = studentStats(student, r, { countZeroAsGrade:true });
+      const comment = r.comments?.[student] || "";
+
+      return `
+        <tr>
+          <td><span class="student-name">${escapeHtml(student)}</span></td>
+          ${cells}
+          <td><b>${stats.avg04 === null ? "—" : stats.avg04.toFixed(2)}</b></td>
+          <td><b>${stats.avg10 === null ? "—" : stats.avg10.toFixed(2)}</b></td>
+          <td class="comment-cell">
+            <textarea class="comment-input" data-student="${escapeAttr(student)}" placeholder="Escribe comentario...">${escapeHtml(comment)}</textarea>
+          </td>
+        </tr>
+      `;
+    }).join("");
+
+    els.tbody.innerHTML = body || `<tr><td colspan="${r.indicators.length + 4}" class="muted">No hay alumnado todavía.</td></tr>`;
+
+    bindCellEvents();
+    bindCommentEvents();
+    renderSummary();
+    renderCombinePanel();
+  }
+
+  function bindCellEvents() {
+    const cells = els.tbody.querySelectorAll(".cell-score");
+
+    cells.forEach(cell => {
+      cell.addEventListener("click", () => {
+        const student = cell.dataset.student;
+        const indicator = cell.dataset.indicator;
+        const r = currentRubricObj();
+
+        if (!r.scores[student]) r.scores[student] = {};
+
+        const current = Number(r.scores[student][indicator] || 0);
+        const next = (current + 1) % 5;
+
+        r.scores[student][indicator] = next;
+
+        saveDB();
+        renderTable();
+      });
+
+      let pressTimer = null;
+
+      const start = () => {
+        pressTimer = setTimeout(() => {
+          const student = cell.dataset.student;
+          const indicator = cell.dataset.indicator;
+          showTooltip(indicator, student);
+        }, 450);
+      };
+
+      const clear = () => {
+        if (pressTimer) clearTimeout(pressTimer);
+        pressTimer = null;
+      };
+
+      cell.addEventListener("pointerdown", start);
+      cell.addEventListener("pointerup", clear);
+      cell.addEventListener("pointerleave", clear);
+      cell.addEventListener("pointercancel", clear);
+
+      cell.addEventListener("contextmenu", e => {
+        e.preventDefault();
+        showTooltip(cell.dataset.indicator, cell.dataset.student);
+      });
+    });
+  }
+
+  function bindCommentEvents() {
+    const inputs = els.tbody.querySelectorAll(".comment-input");
+
+    inputs.forEach(input => {
+      input.addEventListener("input", () => {
+        const student = input.dataset.student;
+        const r = currentRubricObj();
+
+        if (!r.comments) r.comments = {};
+        r.comments[student] = input.value;
+
+        saveDBWithoutHistory();
+      });
+
+      input.addEventListener("change", () => {
+        saveHistory();
+      });
+    });
+  }
+
+  function showTooltip(indicator, student) {
+    const r = currentRubricObj();
+    const score = Number(r.scores?.[student]?.[indicator] ?? 0);
+    const descMap = r.descriptions[indicator] || {};
+    const txt = score >= 1 ? (descMap[String(score)] || "Sin descripción para este nivel.") : "Esta celda aún no tiene nivel asignado.";
+
+    els.tooltipTitle.textContent = `${indicator} — ${student}`;
+
+    els.tooltipBody.innerHTML = `
+      <p><b>Nivel actual:</b> ${score}</p>
+      <p>${escapeHtml(txt)}</p>
+    `;
+
+    els.tooltipModalBackdrop.style.display = "flex";
+  }
+
+  els.closeTooltipBtn.addEventListener("click", () => {
+    els.tooltipModalBackdrop.style.display = "none";
+  });
+
+  els.tooltipModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === els.tooltipModalBackdrop) {
+      els.tooltipModalBackdrop.style.display = "none";
+    }
+  });
+
+  function studentStats(student, r, options = {}) {
+    const countZeroAsGrade = !!options.countZeroAsGrade;
+
+    let sumWeighted = 0;
+    let sumWeights = 0;
+    let evaluated = 0;
+
+    r.indicators.forEach((ind, i) => {
+      const w = Number(r.weights[i] || 0);
+      const raw = r.scores?.[student]?.[ind];
+
+      if (typeof raw === "undefined" || raw === null || raw === "") return;
+
+      const v = Number(raw);
+      if (Number.isNaN(v)) return;
+
+      if (!countZeroAsGrade && v === 0) return;
+      if (w <= 0) return;
+
+      sumWeighted += v * w;
+      sumWeights += w;
+      evaluated++;
+    });
+
+    if (sumWeights <= 0) {
+      return { avg04:null, avg10:null, evaluated };
+    }
+
+    const avg04 = sumWeighted / sumWeights;
+    const avg10 = avg04 * 2.5;
+
+    return { avg04, avg10, evaluated };
+  }
+
+  function getRubricEvaluatedStats(rubric, options = {}) {
+    const countZeroAsGrade = !!options.countZeroAsGrade;
+
+    if (!rubric || !Array.isArray(rubric.students) || !Array.isArray(rubric.indicators)) {
+      return {
+        avg04:null,
+        avg10:null,
+        evaluatedCells:0,
+        totalCells:0,
+        progress:0,
+        weightedSum:0,
+        weightSum:0
+      };
+    }
+
+    ensureRubricShape(rubric);
+
+    let weightedSum = 0;
+    let weightSum = 0;
+    let evaluatedCells = 0;
+    const totalCells = rubric.students.length * rubric.indicators.length;
+
+    for (const student of rubric.students) {
+      for (let i = 0; i < rubric.indicators.length; i++) {
+        const indicator = rubric.indicators[i];
+        const raw = rubric.scores?.[student]?.[indicator];
+
+        if (typeof raw === "undefined" || raw === null || raw === "") continue;
+
+        const value = Number(raw);
+        if (Number.isNaN(value)) continue;
+
+        if (!countZeroAsGrade && value === 0) continue;
+
+        const weight = Number(rubric.weights[i] || 0);
+        if (weight <= 0) continue;
+
+        weightedSum += value * weight;
+        weightSum += weight;
+        evaluatedCells++;
+      }
+    }
+
+    if (weightSum <= 0) {
+      return {
+        avg04:null,
+        avg10:null,
+        evaluatedCells,
+        totalCells,
+        progress:totalCells ? evaluatedCells / totalCells * 100 : 0,
+        weightedSum,
+        weightSum
+      };
+    }
+
+    const avg04 = weightedSum / weightSum;
+    const avg10 = avg04 * 2.5;
+
+    return {
+      avg04,
+      avg10,
+      evaluatedCells,
+      totalCells,
+      progress:totalCells ? evaluatedCells / totalCells * 100 : 0,
+      weightedSum,
+      weightSum
+    };
+  }
+
+  function getCombinedRubricsStats(selectedRubrics, options = {}) {
+    const countZeroAsGrade = !!options.countZeroAsGrade;
+
+    let globalWeightedSum = 0;
+    let globalWeightSum = 0;
+    let totalEvaluatedCells = 0;
+    let totalCells = 0;
+    let validRubrics = 0;
+
+    const details = [];
+
+    for (const item of selectedRubrics) {
+      const stats = getRubricEvaluatedStats(item.rubric, { countZeroAsGrade });
+
+      totalEvaluatedCells += stats.evaluatedCells;
+      totalCells += stats.totalCells;
+
+      if (stats.weightSum > 0) {
+        globalWeightedSum += stats.weightedSum;
+        globalWeightSum += stats.weightSum;
+        validRubrics++;
+      }
+
+      details.push({
+        courseName:item.courseName,
+        rubricName:item.rubricName,
+        avg04:stats.avg04,
+        avg10:stats.avg10,
+        evaluatedCells:stats.evaluatedCells,
+        totalCells:stats.totalCells,
+        progress:stats.progress,
+        valid:stats.weightSum > 0
+      });
+    }
+
+    const avg04 = globalWeightSum > 0 ? globalWeightedSum / globalWeightSum : null;
+    const avg10 = avg04 === null ? null : avg04 * 2.5;
+    const progress = totalCells ? totalEvaluatedCells / totalCells * 100 : 0;
+
+    return {
+      avg04,
+      avg10,
+      validRubrics,
+      totalRubrics:selectedRubrics.length,
+      evaluatedCells:totalEvaluatedCells,
+      totalCells,
+      progress,
+      details
+    };
+  }
+
+  function renderSummary() {
+    const r = currentRubricObj();
+    const stats = getRubricEvaluatedStats(r, { countZeroAsGrade:true });
+
+    els.avg04.textContent = stats.avg04 === null ? "0.00" : stats.avg04.toFixed(2);
+    els.avg10.textContent = stats.avg10 === null ? "0.00" : stats.avg10.toFixed(2);
+    els.progressPct.textContent = `${stats.progress.toFixed(0)}%`;
+  }
+
+  function renderCombinePanel() {
+    const courseName = db.currentCourse;
+    const course = db.courses[courseName];
+    const rubricNames = Object.keys(course?.rubrics || {});
+
+    for (const name of rubricNames) {
+      if (typeof combineSelected[name] === "undefined") {
+        combineSelected[name] = name === db.currentRubric;
+      }
+    }
+
+    const selectedRubrics = rubricNames
+      .filter(name => combineSelected[name])
+      .map(name => ({
+        courseName,
+        rubricName:name,
+        rubric:course.rubrics[name]
+      }));
+
+    const stats = getCombinedRubricsStats(selectedRubrics, {
+      countZeroAsGrade:combineCountZeroAsGrade
+    });
+
+    const avg04Text = stats.avg04 === null ? "—" : stats.avg04.toFixed(2);
+    const avg10Text = stats.avg10 === null ? "—" : stats.avg10.toFixed(2);
+
+    els.combinePanel.innerHTML = `
+      <div class="combine-header">
+        <div>
+          <h2>📊 Evaluación combinada del curso ${escapeHtml(courseName)}</h2>
+          <p>
+            Selecciona varias rúbricas del mismo curso. La nota combinada se calcula sobre el conjunto real
+            de todos los indicadores evaluados, no como una media simple entre rúbricas. El resultado se expresa sobre 10.
+          </p>
+        </div>
+
+        <div class="combine-controls">
+          <button class="btn blue" id="selectAllCombineBtn">Seleccionar todas</button>
+          <button class="btn gray" id="clearCombineBtn">Quitar todas</button>
+
+          <label class="zero-option">
+            <input type="checkbox" id="countZeroAsGradeCheckbox" ${combineCountZeroAsGrade ? "checked" : ""}>
+            Contar 0 como nota real
+          </label>
+        </div>
+      </div>
+
+      <div class="combine-list">
+        ${rubricNames.map(name => {
+          const r = course.rubrics[name];
+          ensureRubricShape(r);
+          const s = getRubricEvaluatedStats(r, { countZeroAsGrade:combineCountZeroAsGrade });
+
+          return `
+            <label class="combine-item">
+              <input type="checkbox" class="combine-check" data-rubric="${escapeAttr(name)}" ${combineSelected[name] ? "checked" : ""}>
+              <div>
+                <div class="combine-item-title">${escapeHtml(name)}</div>
+                <div class="combine-item-sub">
+                  ${r.students.length} filas · ${r.indicators.length} indicadores ·
+                  ${s.avg10 === null ? "sin nota" : "nota " + s.avg10.toFixed(2)}
+                </div>
+              </div>
+            </label>
+          `;
+        }).join("")}
+      </div>
+
+      <div class="combine-cards">
+        <div class="combine-card">
+          <div class="combine-label">Media global 0–4</div>
+          <div class="combine-value">${avg04Text}</div>
+        </div>
+
+        <div class="combine-card strong">
+          <div class="combine-label">Nota global /10</div>
+          <div class="combine-value">${avg10Text}</div>
+        </div>
+
+        <div class="combine-card">
+          <div class="combine-label">Celdas evaluadas</div>
+          <div class="combine-value">${stats.evaluatedCells}/${stats.totalCells}</div>
+        </div>
+
+        <div class="combine-card">
+          <div class="combine-label">% evaluado combinado</div>
+          <div class="combine-value">${stats.progress.toFixed(0)}%</div>
+        </div>
+      </div>
+
+      <div class="combine-table-wrap">
+        <table class="combine-table">
+          <thead>
+            <tr>
+              <th>Curso</th>
+              <th>Rúbrica</th>
+              <th>Media 0–4</th>
+              <th>Nota /10</th>
+              <th>Celdas evaluadas</th>
+              <th>% evaluado</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${stats.details.length ? stats.details.map(d => `
+              <tr>
+                <td>${escapeHtml(d.courseName)}</td>
+                <td>${escapeHtml(d.rubricName)}</td>
+                <td>${d.avg04 === null ? "—" : d.avg04.toFixed(2)}</td>
+                <td><b>${d.avg10 === null ? "—" : d.avg10.toFixed(2)}</b></td>
+                <td>${d.evaluatedCells}/${d.totalCells}</td>
+                <td>${d.progress.toFixed(0)}%</td>
+                <td>
+                  <span class="${d.valid ? "status-ok" : "status-empty"}">
+                    ${d.valid ? "Cuenta en la nota global" : "Sin evaluar"}
+                  </span>
+                </td>
+              </tr>
+            `).join("") : `
+              <tr>
+                <td colspan="7" class="muted">Selecciona al menos una rúbrica para combinar.</td>
+              </tr>
+            `}
+          </tbody>
+        </table>
+      </div>
+    `;
+
+    els.combinePanel.querySelectorAll(".combine-check").forEach(chk => {
+      chk.addEventListener("change", () => {
+        combineSelected[chk.dataset.rubric] = chk.checked;
+        renderCombinePanel();
+      });
+    });
+
+    const zero = $("#countZeroAsGradeCheckbox");
+    if (zero) {
+      zero.addEventListener("change", () => {
+        combineCountZeroAsGrade = zero.checked;
+        renderCombinePanel();
+      });
+    }
+
+    const selectAll = $("#selectAllCombineBtn");
+    if (selectAll) {
+      selectAll.addEventListener("click", () => {
+        rubricNames.forEach(name => combineSelected[name] = true);
+        renderCombinePanel();
+      });
+    }
+
+    const clearAll = $("#clearCombineBtn");
+    if (clearAll) {
+      clearAll.addEventListener("click", () => {
+        rubricNames.forEach(name => combineSelected[name] = false);
+        renderCombinePanel();
+      });
+    }
+  }
+
+  function renderAll() {
+    ensureCurrent();
+    fillSelectors();
+    fillTexts();
+    renderTable();
+  }
+
+  function renameCourse() {
+    const oldName = db.currentCourse;
+    const newName = prompt("Nuevo nombre del curso:", oldName);
+
+    if (!newName || newName.trim() === "" || newName.trim() === oldName) return;
+
+    const clean = newName.trim();
+
+    if (db.courses[clean]) return alert("Ya existe un curso con ese nombre.");
+
+    db.courses[clean] = db.courses[oldName];
+    delete db.courses[oldName];
+    db.currentCourse = clean;
+    combineSelected = {};
+
+    saveDB();
+    renderAll();
+  }
+
+  function addCourse() {
+    const name = els.newCourseInput.value.trim();
+
+    if (!name) return;
+    if (db.courses[name]) return alert("Ese curso ya existe.");
+
+    db.courses[name] = { rubrics: {} };
+    db.currentCourse = name;
+    db.currentRubric = "Nueva rúbrica";
+
+    db.courses[name].rubrics[db.currentRubric] = {
+      texts: {
+        studentsText:"",
+        indicatorsText:"",
+        weightsText:"",
+        descriptionsText:""
+      },
+      students: [],
+      indicators: [],
+      weights: [],
+      descriptions: {},
+      scores: {},
+      comments: {}
+    };
+
+    els.newCourseInput.value = "";
+    combineSelected = {};
+
+    saveDB();
+    renderAll();
+  }
+
+  function deleteCourse() {
+    const keys = Object.keys(db.courses);
+
+    if (keys.length <= 1) return alert("Debe quedar al menos un curso.");
+    if (!confirm(`¿Eliminar el curso "${db.currentCourse}"?`)) return;
+
+    delete db.courses[db.currentCourse];
+
+    db.currentCourse = Object.keys(db.courses)[0];
+    db.currentRubric = Object.keys(db.courses[db.currentCourse].rubrics)[0];
+    combineSelected = {};
+
+    saveDB();
+    renderAll();
+  }
+
+  function renameRubric() {
+    const course = db.courses[db.currentCourse];
+    const oldName = db.currentRubric;
+    const newName = prompt("Nuevo nombre de la rúbrica:", oldName);
+
+    if (!newName || newName.trim() === "" || newName.trim() === oldName) return;
+
+    const clean = newName.trim();
+
+    if (course.rubrics[clean]) return alert("Ya existe una rúbrica con ese nombre.");
+
+    course.rubrics[clean] = course.rubrics[oldName];
+    delete course.rubrics[oldName];
+    db.currentRubric = clean;
+
+    if (combineSelected[oldName]) {
+      combineSelected[clean] = true;
+      delete combineSelected[oldName];
+    }
+
+    saveDB();
+    renderAll();
+  }
+
+  function addRubric() {
+    const name = els.newRubricInput.value.trim();
+
+    if (!name) return;
+
+    const rubrics = db.courses[db.currentCourse].rubrics;
+
+    if (rubrics[name]) return alert("Esa rúbrica ya existe.");
+
+    rubrics[name] = {
+      texts: {
+        studentsText:"",
+        indicatorsText:"",
+        weightsText:"",
+        descriptionsText:""
+      },
+      students: [],
+      indicators: [],
+      weights: [],
+      descriptions: {},
+      scores: {},
+      comments: {}
+    };
+
+    db.currentRubric = name;
+    els.newRubricInput.value = "";
+    combineSelected[name] = true;
+
+    saveDB();
+    renderAll();
+  }
+
+  function duplicateRubric() {
+    const rubrics = db.courses[db.currentCourse].rubrics;
+    const base = db.currentRubric;
+    let newName = prompt("Nombre de la copia:", `${base} copia`);
+
+    if (!newName || !newName.trim()) return;
+
+    newName = newName.trim();
+
+    if (rubrics[newName]) return alert("Ya existe una rúbrica con ese nombre.");
+
+    rubrics[newName] = structuredCloneSafe(rubrics[base]);
+    ensureRubricShape(rubrics[newName]);
+    db.currentRubric = newName;
+    combineSelected[newName] = true;
+
+    saveDB();
+    renderAll();
+  }
+
+  function deleteRubric() {
+    const rubrics = db.courses[db.currentCourse].rubrics;
+    const keys = Object.keys(rubrics);
+
+    if (keys.length <= 1) return alert("Debe quedar al menos una rúbrica.");
+    if (!confirm(`¿Eliminar la rúbrica "${db.currentRubric}"?`)) return;
+
+    delete rubrics[db.currentRubric];
+    delete combineSelected[db.currentRubric];
+
+    db.currentRubric = Object.keys(rubrics)[0];
+
+    saveDB();
+    renderAll();
+  }
+
+  function copyRubric(withScores) {
+    const fromCourse = els.copyCourseSelect.value;
+    const fromRubric = els.copyRubricSelect.value;
+
+    if (!fromCourse || !fromRubric) return;
+
+    const src = db.courses[fromCourse]?.rubrics[fromRubric];
+
+    if (!src) return alert("No se encuentra la rúbrica origen.");
+
+    const clone = structuredCloneSafe(src);
+    ensureRubricShape(clone);
+
+    if (!withScores) {
+      clone.scores = {};
+      clone.comments = {};
+
+      for (const student of clone.students || []) {
+        clone.scores[student] = {};
+        clone.comments[student] = "";
+
+        for (const ind of clone.indicators || []) {
+          clone.scores[student][ind] = 0;
+        }
+      }
+    }
+
+    db.courses[db.currentCourse].rubrics[db.currentRubric] = clone;
+
+    saveDB();
+    renderAll();
+  }
+
+  function saveTextsOnly() {
+    saveTextsIntoCurrentRubric();
+    saveDB();
+    alert("Textos guardados.");
+  }
+
+  function exportCSV() {
+    const r = currentRubricObj();
+    const headers = ["Alumno/a", ...r.indicators, "Media_0_4", "Nota_0_10", "Comentario"];
+    const rows = [headers];
+
+    for (const student of r.students) {
+      const vals = r.indicators.map(ind => Number(r.scores?.[student]?.[ind] ?? 0));
+      const stats = studentStats(student, r, { countZeroAsGrade:true });
+      const comment = r.comments?.[student] || "";
+
+      rows.push([
+        student,
+        ...vals,
+        stats.avg04 === null ? "" : stats.avg04.toFixed(2),
+        stats.avg10 === null ? "" : stats.avg10.toFixed(2),
+        comment
+      ]);
+    }
+
+    const csv = rows.map(row => row.map(csvSafe).join(";")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = `${db.currentCourse}__${db.currentRubric}.csv`;
+    a.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+  function csvSafe(v) {
+    const s = String(v ?? "");
+    return /[;"\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  }
+
+  function structuredCloneSafe(obj) {
+    return JSON.parse(JSON.stringify(obj));
+  }
+
+  function formatPct(n) {
+    return `${Number(n).toFixed(1)}%`;
+  }
+
+  function escapeHtml(s) {
+    return String(s ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function escapeAttr(s) {
+    return escapeHtml(s);
+  }
+
+  els.courseSelect.addEventListener("change", () => {
+    db.currentCourse = els.courseSelect.value;
+    const rubrics = Object.keys(db.courses[db.currentCourse].rubrics);
+    db.currentRubric = rubrics[0];
+    combineSelected = {};
+    saveDB();
+    renderAll();
+  });
+
+  els.rubricSelect.addEventListener("change", () => {
+    db.currentRubric = els.rubricSelect.value;
+    saveDB();
+    renderAll();
+  });
+
+  els.copyCourseSelect.addEventListener("change", fillCopyRubrics);
+
+  els.renameCourseBtn.addEventListener("click", renameCourse);
+  els.addCourseBtn.addEventListener("click", addCourse);
+  els.deleteCourseBtn.addEventListener("click", deleteCourse);
+
+  els.renameRubricBtn.addEventListener("click", renameRubric);
+  els.addRubricBtn.addEventListener("click", addRubric);
+  els.duplicateRubricBtn.addEventListener("click", duplicateRubric);
+  els.deleteRubricBtn.addEventListener("click", deleteRubric);
+
+  els.copyWithoutScoresBtn.addEventListener("click", () => copyRubric(false));
+  els.copyWithScoresBtn.addEventListener("click", () => copyRubric(true));
+
+  els.rebuildBtn.addEventListener("click", rebuildFromScratch);
+  els.applyBtn.addEventListener("click", applyChangesKeepScores);
+  els.saveTextsBtn.addEventListener("click", saveTextsOnly);
+  els.exportCsvBtn.addEventListener("click", exportCSV);
+
+  els.undoBtn.addEventListener("click", undoAction);
+  els.redoBtn.addEventListener("click", redoAction);
+
+  ensureCurrent();
+  renderAll();
+  saveHistory();
 })();
 </script>
+
 </body>
 </html>

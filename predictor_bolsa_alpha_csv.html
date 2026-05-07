@@ -315,6 +315,28 @@ function setupCsvDownloadButtons(){
   }
 }
 
+
+async function fetchAlphaCompactOnly(ticker){
+  const key=$("apiKey").value.trim();
+  if(!key) throw new Error("Falta API key de Alpha Vantage.");
+  const url=`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${encodeURIComponent(ticker)}&outputsize=compact&apikey=${encodeURIComponent(key)}`;
+  const res=await fetch(url);
+  const json=await res.json();
+  if(json["Note"]) throw new Error("Límite gratuito o demasiadas peticiones seguidas: " + json["Note"]);
+  if(json["Information"]) throw new Error("Alpha Vantage informa: " + json["Information"]);
+  if(json["Error Message"]) throw new Error("Alpha Vantage no reconoce la petición o el símbolo: " + json["Error Message"]);
+  const series=json["Time Series (Daily)"];
+  if(!series) throw new Error("Alpha Vantage no devolvió Time Series (Daily). Respuesta: " + JSON.stringify(json).slice(0,260));
+  return Object.entries(series).map(([date,r])=>({
+    date:new Date(date),
+    open:toNum(r["1. open"]),
+    high:toNum(r["2. high"]),
+    low:toNum(r["3. low"]),
+    close:toNum(r["4. close"]),
+    volume:toNum(r["5. volume"])
+  })).filter(r=>r.date instanceof Date && !isNaN(r.date) && isFinite(r.close)).sort((a,b)=>a.date-b.date);
+}
+
 function setupAlphaTestButton(){
   const testBtn = $("testAlphaBtn");
   if(!testBtn) return;
@@ -323,6 +345,7 @@ function setupAlphaTestButton(){
       $("source").value = "alpha";
       $("alphaBox").style.display = "block";
       $("ticker").value = "AAPL";
+      if($("years")) $("years").value = "5";
       $("peers").value = "";
       $("sectorTicker").value = "";
       if($("expectedClose")) $("expectedClose").value = "";
@@ -331,9 +354,9 @@ function setupAlphaTestButton(){
         return;
       }
       setStatus("Probando Alpha Vantage con AAPL...");
-      const raw = await fetchAlpha("AAPL");
+      const raw = await fetchAlphaCompactOnly("AAPL");
       const limited = limitYears(raw, $("years").value || 15);
-      if(limited.length < 220) throw new Error("Alpha devolvió pocos datos para AAPL.");
+      if(limited.length < 50) throw new Error("Alpha devolvió pocos datos para AAPL.");
       const res = analyzeSeries("AAPL", limited);
       const sig = scoreResult(res, []);
       allResults = {"AAPL": res};
@@ -346,7 +369,7 @@ function setupAlphaTestButton(){
       renderDataCheck(res);
       lastCleanCsvData = res.data;
       lastCleanCsvTicker = "AAPL";
-      setStatus("Alpha Vantage funciona correctamente con AAPL. Si SAN.MC falla, el problema es el símbolo de Santander en Alpha Vantage.");
+      setStatus("Alpha Vantage funciona correctamente con AAPL en modo gratuito compact, unas 100 sesiones. Para 15 años, Alpha Vantage puede exigir plan premium o usar otra fuente.");
     }catch(e){
       setStatus("Prueba Alpha con AAPL fallida: " + e.message);
       alert("Prueba Alpha con AAPL fallida: " + e.message);
@@ -668,6 +691,28 @@ function setupCsvDownloadButtons(){
   }
 }
 
+
+async function fetchAlphaCompactOnly(ticker){
+  const key=$("apiKey").value.trim();
+  if(!key) throw new Error("Falta API key de Alpha Vantage.");
+  const url=`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${encodeURIComponent(ticker)}&outputsize=compact&apikey=${encodeURIComponent(key)}`;
+  const res=await fetch(url);
+  const json=await res.json();
+  if(json["Note"]) throw new Error("Límite gratuito o demasiadas peticiones seguidas: " + json["Note"]);
+  if(json["Information"]) throw new Error("Alpha Vantage informa: " + json["Information"]);
+  if(json["Error Message"]) throw new Error("Alpha Vantage no reconoce la petición o el símbolo: " + json["Error Message"]);
+  const series=json["Time Series (Daily)"];
+  if(!series) throw new Error("Alpha Vantage no devolvió Time Series (Daily). Respuesta: " + JSON.stringify(json).slice(0,260));
+  return Object.entries(series).map(([date,r])=>({
+    date:new Date(date),
+    open:toNum(r["1. open"]),
+    high:toNum(r["2. high"]),
+    low:toNum(r["3. low"]),
+    close:toNum(r["4. close"]),
+    volume:toNum(r["5. volume"])
+  })).filter(r=>r.date instanceof Date && !isNaN(r.date) && isFinite(r.close)).sort((a,b)=>a.date-b.date);
+}
+
 function setupAlphaTestButton(){
   const testBtn = $("testAlphaBtn");
   if(!testBtn) return;
@@ -676,6 +721,7 @@ function setupAlphaTestButton(){
       $("source").value = "alpha";
       $("alphaBox").style.display = "block";
       $("ticker").value = "AAPL";
+      if($("years")) $("years").value = "5";
       $("peers").value = "";
       $("sectorTicker").value = "";
       if($("expectedClose")) $("expectedClose").value = "";
@@ -684,9 +730,9 @@ function setupAlphaTestButton(){
         return;
       }
       setStatus("Probando Alpha Vantage con AAPL...");
-      const raw = await fetchAlpha("AAPL");
+      const raw = await fetchAlphaCompactOnly("AAPL");
       const limited = limitYears(raw, $("years").value || 15);
-      if(limited.length < 220) throw new Error("Alpha devolvió pocos datos para AAPL.");
+      if(limited.length < 50) throw new Error("Alpha devolvió pocos datos para AAPL.");
       const res = analyzeSeries("AAPL", limited);
       const sig = scoreResult(res, []);
       allResults = {"AAPL": res};
@@ -699,7 +745,7 @@ function setupAlphaTestButton(){
       renderDataCheck(res);
       lastCleanCsvData = res.data;
       lastCleanCsvTicker = "AAPL";
-      setStatus("Alpha Vantage funciona correctamente con AAPL. Si SAN.MC falla, el problema es el símbolo de Santander en Alpha Vantage.");
+      setStatus("Alpha Vantage funciona correctamente con AAPL en modo gratuito compact, unas 100 sesiones. Para 15 años, Alpha Vantage puede exigir plan premium o usar otra fuente.");
     }catch(e){
       setStatus("Prueba Alpha con AAPL fallida: " + e.message);
       alert("Prueba Alpha con AAPL fallida: " + e.message);
@@ -1024,12 +1070,12 @@ setupCsvDownloadButtons();
 
       <button id="analyzeBtn">Analizar título y comparables</button>
       <button id="downloadCleanCsvBtn" class="secondary">Descargar CSV histórico limpio</button>
-      <button id="testAlphaBtn" class="secondary">Probar Alpha con AAPL</button>
+      <button id="testAlphaBtn" class="secondary">Probar Alpha gratis con AAPL, 100 días</button>
       <button id="downloadAlphaSanBtn" class="secondary">Descargar SAN.MC desde Alpha Vantage</button>
       <button id="demoBtn" class="secondary">Cargar demo interna</button>
       <p class="small">
         Primero analiza el título con Alpha Vantage. Después podrás descargar el CSV limpio con las columnas:
-        Date, Open, High, Low, Close, Volume.
+        Date, Open, High, Low, Close, Volume. Nota importante: con clave gratuita Alpha Vantage puede limitar el histórico largo; la prueba gratuita fiable suele ser de unas 100 sesiones.
       </p>
 
       <h3>CSV manual</h3>
@@ -1153,16 +1199,22 @@ async function fetchAlpha(ticker){
   const key=$("apiKey").value.trim();
   if(!key) throw new Error("Falta API key de Alpha Vantage. Pega la clave en el campo API key.");
 
-  async function callAlpha(functionName){
-    const url=`https://www.alphavantage.co/query?function=${functionName}&symbol=${encodeURIComponent(ticker)}&outputsize=full&apikey=${encodeURIComponent(key)}`;
+  const yearsWanted = Number($("years") ? $("years").value : 15);
+  const needsLongHistory = yearsWanted > 1;
+
+  async function sleep(ms){ return new Promise(resolve=>setTimeout(resolve, ms)); }
+
+  async function callAlpha(functionName, outputsize){
+    const url=`https://www.alphavantage.co/query?function=${functionName}&symbol=${encodeURIComponent(ticker)}&outputsize=${outputsize}&apikey=${encodeURIComponent(key)}`;
     const res=await fetch(url);
     if(!res.ok){
       throw new Error(`Alpha Vantage respondió con error HTTP ${res.status}.`);
     }
+
     const json=await res.json();
 
     if(json["Note"]){
-      throw new Error("Alpha Vantage indica límite de uso o demasiadas peticiones: " + json["Note"]);
+      throw new Error("Límite gratuito o demasiadas peticiones seguidas: " + json["Note"]);
     }
     if(json["Information"]){
       throw new Error("Alpha Vantage informa: " + json["Information"]);
@@ -1173,7 +1225,7 @@ async function fetchAlpha(ticker){
 
     const series=json["Time Series (Daily)"];
     if(!series){
-      const shortJson = JSON.stringify(json).slice(0,280);
+      const shortJson = JSON.stringify(json).slice(0,320);
       throw new Error(`Alpha Vantage no devolvió serie diaria para ${ticker}. Respuesta: ${shortJson}`);
     }
 
@@ -1182,23 +1234,36 @@ async function fetchAlpha(ticker){
       open:toNum(r["1. open"]),
       high:toNum(r["2. high"]),
       low:toNum(r["3. low"]),
-      close:toNum(r["4. close"]),
-      volume:toNum(r["5. volume"] || r["6. volume"])
+      close:toNum(r["5. adjusted close"] || r["4. close"]),
+      volume:toNum(r["6. volume"] || r["5. volume"])
     })).filter(r=>r.date instanceof Date && !isNaN(r.date) && isFinite(r.close))
       .sort((a,b)=>a.date-b.date);
   }
 
-  // Primero usa la serie diaria normal, que es la opción más compatible.
-  try{
-    return await callAlpha("TIME_SERIES_DAILY");
-  }catch(e1){
-    // Si falla, intenta la serie ajustada.
+  // Para claves gratuitas, TIME_SERIES_DAILY con outputsize=full puede ser premium.
+  // Primero probamos compact para confirmar que la clave funciona.
+  if(needsLongHistory){
     try{
-      const data = await callAlpha("TIME_SERIES_DAILY_ADJUSTED");
-      return data;
-    }catch(e2){
-      throw new Error(`No se pudo cargar ${ticker} desde Alpha Vantage. Primer intento: ${e1.message} | Segundo intento: ${e2.message}`);
+      // Intento de histórico largo ajustado. Puede funcionar según plan/fuente.
+      return await callAlpha("TIME_SERIES_DAILY_ADJUSTED", "full");
+    }catch(e1){
+      await sleep(1400);
+      try{
+        const compact = await callAlpha("TIME_SERIES_DAILY", "compact");
+        throw new Error(
+          `Tu clave sí parece responder, pero Alpha Vantage no permite descargar 15 años con tu plan gratuito. ` +
+          `La prueba compact devuelve solo unas 100 sesiones. Detalle del histórico largo: ${e1.message}`
+        );
+      }catch(e2){
+        throw new Error(
+          `No se pudo cargar ${ticker} desde Alpha Vantage. ` +
+          `Para 15 años, Alpha puede requerir plan premium o estar limitado por 25 peticiones/día. ` +
+          `Detalle: ${e1.message} | Prueba compact: ${e2.message}`
+        );
+      }
     }
+  } else {
+    return await callAlpha("TIME_SERIES_DAILY", "compact");
   }
 }
 async function fetchStooq(ticker){
@@ -1711,6 +1776,28 @@ function setupCsvDownloadButtons(){
   }
 }
 
+
+async function fetchAlphaCompactOnly(ticker){
+  const key=$("apiKey").value.trim();
+  if(!key) throw new Error("Falta API key de Alpha Vantage.");
+  const url=`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${encodeURIComponent(ticker)}&outputsize=compact&apikey=${encodeURIComponent(key)}`;
+  const res=await fetch(url);
+  const json=await res.json();
+  if(json["Note"]) throw new Error("Límite gratuito o demasiadas peticiones seguidas: " + json["Note"]);
+  if(json["Information"]) throw new Error("Alpha Vantage informa: " + json["Information"]);
+  if(json["Error Message"]) throw new Error("Alpha Vantage no reconoce la petición o el símbolo: " + json["Error Message"]);
+  const series=json["Time Series (Daily)"];
+  if(!series) throw new Error("Alpha Vantage no devolvió Time Series (Daily). Respuesta: " + JSON.stringify(json).slice(0,260));
+  return Object.entries(series).map(([date,r])=>({
+    date:new Date(date),
+    open:toNum(r["1. open"]),
+    high:toNum(r["2. high"]),
+    low:toNum(r["3. low"]),
+    close:toNum(r["4. close"]),
+    volume:toNum(r["5. volume"])
+  })).filter(r=>r.date instanceof Date && !isNaN(r.date) && isFinite(r.close)).sort((a,b)=>a.date-b.date);
+}
+
 function setupAlphaTestButton(){
   const testBtn = $("testAlphaBtn");
   if(!testBtn) return;
@@ -1719,6 +1806,7 @@ function setupAlphaTestButton(){
       $("source").value = "alpha";
       $("alphaBox").style.display = "block";
       $("ticker").value = "AAPL";
+      if($("years")) $("years").value = "5";
       $("peers").value = "";
       $("sectorTicker").value = "";
       if($("expectedClose")) $("expectedClose").value = "";
@@ -1727,9 +1815,9 @@ function setupAlphaTestButton(){
         return;
       }
       setStatus("Probando Alpha Vantage con AAPL...");
-      const raw = await fetchAlpha("AAPL");
+      const raw = await fetchAlphaCompactOnly("AAPL");
       const limited = limitYears(raw, $("years").value || 15);
-      if(limited.length < 220) throw new Error("Alpha devolvió pocos datos para AAPL.");
+      if(limited.length < 50) throw new Error("Alpha devolvió pocos datos para AAPL.");
       const res = analyzeSeries("AAPL", limited);
       const sig = scoreResult(res, []);
       allResults = {"AAPL": res};
@@ -1742,7 +1830,7 @@ function setupAlphaTestButton(){
       renderDataCheck(res);
       lastCleanCsvData = res.data;
       lastCleanCsvTicker = "AAPL";
-      setStatus("Alpha Vantage funciona correctamente con AAPL. Si SAN.MC falla, el problema es el símbolo de Santander en Alpha Vantage.");
+      setStatus("Alpha Vantage funciona correctamente con AAPL en modo gratuito compact, unas 100 sesiones. Para 15 años, Alpha Vantage puede exigir plan premium o usar otra fuente.");
     }catch(e){
       setStatus("Prueba Alpha con AAPL fallida: " + e.message);
       alert("Prueba Alpha con AAPL fallida: " + e.message);

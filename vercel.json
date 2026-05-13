@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/index_rubrica_ef_compacta.html"
+      "destination": "/rubrica-app-github/index_rubrica_ef_compacta.html"
     }
   ]
 }

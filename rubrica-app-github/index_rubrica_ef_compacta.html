@@ -22,6 +22,8 @@
       --orange-soft:#ffedd5;
       --yellow-soft:#fff9c4;
       --graybtn:#eef1f7;
+      --purple:#6557f5;
+      --purple-soft:#ede9fe;
       --shadow:0 6px 20px rgba(0,0,0,.055);
     }
 
@@ -123,11 +125,18 @@
     }
 
     .btn:hover{filter:brightness(.98)}
+    .btn:disabled{
+      opacity:.65;
+      cursor:not-allowed;
+      filter:none;
+    }
+
     .btn.blue{background:var(--blue-soft); color:#304090}
     .btn.green{background:var(--green); color:#fff}
     .btn.red{background:var(--red-soft); color:#b03636}
     .btn.orange{background:var(--orange); color:#171717}
     .btn.gray{background:var(--graybtn); color:#32405f}
+    .btn.ai{background:var(--purple); color:#fff}
     .btn.big{padding:13px 20px; font-size:16px}
 
     #courseSelect{max-width:100px !important}
@@ -161,7 +170,8 @@
 
     .editor-card,
     .descriptions-wide,
-    .combine-panel{
+    .combine-panel,
+    .ai-panel{
       background:#fff;
       border:1px solid var(--line);
       border-radius:22px;
@@ -234,6 +244,86 @@
       font-size:13px;
       font-weight:700;
       line-height:1.1;
+    }
+
+    .ai-panel{
+      margin-top:16px;
+      background:linear-gradient(180deg,#ffffff 0%,#f5f3ff 100%);
+    }
+
+    .ai-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+
+    .ai-title{
+      font-size:22px;
+      font-weight:950;
+      margin:0;
+    }
+
+    .ai-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-start;
+      align-items:center;
+      margin-top:12px;
+    }
+
+    .ai-status{
+      margin-top:12px;
+      border-radius:16px;
+      padding:11px 13px;
+      font-size:15px;
+      font-weight:800;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--muted);
+      display:none;
+    }
+
+    .ai-status.loading{
+      display:block;
+      background:var(--blue-soft);
+      color:#304090;
+      border-color:#cad8ff;
+    }
+
+    .ai-status.ok{
+      display:block;
+      background:var(--green-soft);
+      color:#166534;
+      border-color:#b7efc5;
+    }
+
+    .ai-status.error{
+      display:block;
+      background:var(--red-soft);
+      color:#991b1b;
+      border-color:#f4bcbc;
+    }
+
+    .ai-result{
+      margin-top:12px;
+      min-height:120px;
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:#fff;
+      padding:16px;
+      font-size:16px;
+      line-height:1.45;
+      white-space:pre-wrap;
+      box-shadow:0 3px 12px rgba(0,0,0,.03);
+    }
+
+    .ai-result.empty{
+      color:var(--muted);
+      font-style:italic;
     }
 
     .table-wrap{
@@ -627,6 +717,28 @@
     </div>
   </div>
 
+  <div class="ai-panel" id="aiPanel">
+    <div class="ai-head">
+      <div>
+        <h2 class="ai-title">🤖 Análisis con IA</h2>
+        <div class="subhint">
+          Analiza la rúbrica que tienes abierta en este momento: resultados, comentarios y progreso de evaluación.
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-actions">
+      <button class="btn big ai" id="analyzeAiBtn">Analizar rúbrica actual con IA</button>
+      <button class="btn big gray" id="clearAiBtn">Limpiar análisis</button>
+    </div>
+
+    <div class="ai-status" id="aiStatus"></div>
+
+    <div class="ai-result empty" id="aiResult">
+      Aquí aparecerá el análisis generado por la IA.
+    </div>
+  </div>
+
   <div class="table-wrap">
     <table id="rubricTable">
       <thead></thead>
@@ -725,6 +837,11 @@
     avg04: $("#avg04"),
     avg10: $("#avg10"),
     progressPct: $("#progressPct"),
+
+    analyzeAiBtn: $("#analyzeAiBtn"),
+    clearAiBtn: $("#clearAiBtn"),
+    aiStatus: $("#aiStatus"),
+    aiResult: $("#aiResult"),
 
     table: $("#rubricTable"),
     thead: $("#rubricTable thead"),
@@ -1239,8 +1356,7 @@
     return { avg04, avg10 };
   }
 
-  function renderSummary() {
-    const r = currentRubricObj();
+  function currentRubricSummary(r) {
     const totalStudents = r.students.length;
     const totalIndicators = r.indicators.length;
     const totalCells = totalStudents * totalIndicators;
@@ -1263,11 +1379,139 @@
 
     const avg04 = classCount ? classWeightedSum / classCount : 0;
     const avg10 = avg04 * 2.5;
-    const pct = totalCells ? (filled / totalCells) * 100 : 0;
+    const progressPct = totalCells ? (filled / totalCells) * 100 : 0;
 
-    els.avg04.textContent = avg04.toFixed(2);
-    els.avg10.textContent = avg10.toFixed(2);
-    els.progressPct.textContent = `${pct.toFixed(0)}%`;
+    return {
+      totalStudents,
+      totalIndicators,
+      totalCells,
+      evaluatedCells: filled,
+      avg04,
+      avg10,
+      progressPct
+    };
+  }
+
+  function renderSummary() {
+    const r = currentRubricObj();
+    const summary = currentRubricSummary(r);
+
+    els.avg04.textContent = summary.avg04.toFixed(2);
+    els.avg10.textContent = summary.avg10.toFixed(2);
+    els.progressPct.textContent = `${summary.progressPct.toFixed(0)}%`;
+  }
+
+  function buildAiPayload() {
+    const r = currentRubricObj();
+    ensureRubricShape(r);
+
+    const summary = currentRubricSummary(r);
+
+    return {
+      curso: db.currentCourse,
+      rubrica: db.currentRubric,
+      resumen_general: {
+        alumnos_total: summary.totalStudents,
+        indicadores_total: summary.totalIndicators,
+        celdas_totales: summary.totalCells,
+        celdas_evaluadas: summary.evaluatedCells,
+        porcentaje_evaluado: Number(summary.progressPct.toFixed(1)),
+        media_0_4: Number(summary.avg04.toFixed(2)),
+        media_0_10: Number(summary.avg10.toFixed(2))
+      },
+      indicadores: r.indicators.map((indicator, i) => ({
+        nombre: indicator,
+        peso_porcentaje: Number((r.weights[i] || 0).toFixed(2))
+      })),
+      alumnado: r.students.map(student => {
+        const stats = studentStats(student, r);
+
+        return {
+          alumno: student,
+          media_0_4: Number(stats.avg04.toFixed(2)),
+          nota_0_10: Number(stats.avg10.toFixed(2)),
+          puntuaciones: r.indicators.map(indicator => ({
+            indicador,
+            valor_0_4: Number(r.scores?.[student]?.[indicator] ?? 0)
+          })),
+          comentario_docente: String(r.comments?.[student] || "").trim()
+        };
+      })
+    };
+  }
+
+  function setAiStatus(type, text) {
+    els.aiStatus.className = `ai-status ${type || ""}`.trim();
+    els.aiStatus.textContent = text || "";
+  }
+
+  function clearAiAnalysis() {
+    els.aiStatus.className = "ai-status";
+    els.aiStatus.textContent = "";
+    els.aiResult.classList.add("empty");
+    els.aiResult.textContent = "Aquí aparecerá el análisis generado por la IA.";
+  }
+
+  async function analyzeCurrentRubricWithAI() {
+    const r = currentRubricObj();
+    ensureRubricShape(r);
+
+    if (!r.students.length) {
+      alert("No hay alumnado en la rúbrica actual.");
+      return;
+    }
+
+    if (!r.indicators.length) {
+      alert("No hay indicadores en la rúbrica actual.");
+      return;
+    }
+
+    const payload = buildAiPayload();
+    const originalText = els.analyzeAiBtn.textContent;
+
+    els.analyzeAiBtn.disabled = true;
+    els.analyzeAiBtn.textContent = "Analizando...";
+    els.aiResult.classList.remove("empty");
+    els.aiResult.textContent = "";
+    setAiStatus("loading", "Enviando los datos de la rúbrica actual para generar el análisis...");
+
+    try {
+      const response = await fetch("/api/analizar-grupo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        const message =
+          data?.detalle?.error?.message ||
+          data?.detalle?.message ||
+          data?.error ||
+          "No se ha podido generar el análisis.";
+
+        throw new Error(message);
+      }
+
+      const analysis = String(data?.analisis || "").trim();
+
+      if (!analysis) {
+        throw new Error("La IA no ha devuelto ningún texto.");
+      }
+
+      els.aiResult.textContent = analysis;
+      setAiStatus("ok", "Análisis generado correctamente.");
+    } catch (error) {
+      els.aiResult.classList.add("empty");
+      els.aiResult.textContent = "No se ha podido mostrar el análisis.";
+      setAiStatus("error", `Error: ${error.message}`);
+    } finally {
+      els.analyzeAiBtn.disabled = false;
+      els.analyzeAiBtn.textContent = originalText;
+    }
   }
 
   function renderCombineRubricList() {
@@ -1348,12 +1592,6 @@
         for (const ind of r.indicators) {
           const v = Number(r.scores?.[student]?.[ind] ?? 0);
 
-          /*
-            Cálculo corregido:
-            - Solo cuenta indicadores evaluados con valor mayor que 0.
-            - La media se hace sobre el conjunto real de indicadores evaluados.
-            - Luego se pasa a /10 multiplicando por 2.5.
-          */
           if (v > 0) {
             studentMap[student].sumScores += v;
             studentMap[student].countScores += 1;
@@ -1472,6 +1710,7 @@
     fillSelectors();
     fillTexts();
     renderTable();
+    clearAiAnalysis();
   }
 
   function renameCourse() {
@@ -1750,6 +1989,9 @@
   els.applyBtn.addEventListener("click", applyChangesKeepScores);
   els.saveTextsBtn.addEventListener("click", saveTextsOnly);
   els.exportCsvBtn.addEventListener("click", exportCSV);
+
+  els.analyzeAiBtn.addEventListener("click", analyzeCurrentRubricWithAI);
+  els.clearAiBtn.addEventListener("click", clearAiAnalysis);
 
   els.undoBtn.addEventListener("click", undoAction);
   els.redoBtn.addEventListener("click", redoAction);

@@ -49,7 +49,7 @@ ${JSON.stringify(datos, null, 2)}
         "Authorization": `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: "gpt-4.1",
+        model: "gpt-4.1-mini",
         input: prompt
       })
     });

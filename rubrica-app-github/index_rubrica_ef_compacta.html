@@ -1990,9 +1990,9 @@
   els.saveTextsBtn.addEventListener("click", saveTextsOnly);
   els.exportCsvBtn.addEventListener("click", exportCSV);
 
-  els.analyzeAiBtn.addEventListener("click", analyzeCurrentRubricWithAI);
-  els.clearAiBtn.addEventListener("click", clearAiAnalysis);
-
+window.analizarRubricaIA = analyzeCurrentRubricWithAI;
+els.analyzeAiBtn.addEventListener("click", analyzeCurrentRubricWithAI);
+els.clearAiBtn.addEventListener("click", clearAiAnalysis);
   els.undoBtn.addEventListener("click", undoAction);
   els.redoBtn.addEventListener("click", redoAction);
 

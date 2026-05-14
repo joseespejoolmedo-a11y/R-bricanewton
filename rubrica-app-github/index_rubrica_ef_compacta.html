@@ -728,8 +728,8 @@
     </div>
 
     <div class="ai-actions">
-      <button class="btn big ai" id="analyzeAiBtn" type="button" onclick="window.analizarRubricaIA()">Analizar rúbrica actual con IA</button>
-      <button class="btn big gray" id="clearAiBtn" type="button">Limpiar análisis</button>
+      <button class="btn big ai" id="analyzeAiBtn">Analizar rúbrica actual con IA</button>
+      <button class="btn big gray" id="clearAiBtn">Limpiar análisis</button>
     </div>
 
     <div class="ai-status" id="aiStatus"></div>
@@ -1990,7 +1990,6 @@
   els.saveTextsBtn.addEventListener("click", saveTextsOnly);
   els.exportCsvBtn.addEventListener("click", exportCSV);
 
-  window.analizarRubricaIA = analyzeCurrentRubricWithAI;
   els.analyzeAiBtn.addEventListener("click", analyzeCurrentRubricWithAI);
   els.clearAiBtn.addEventListener("click", clearAiAnalysis);
 

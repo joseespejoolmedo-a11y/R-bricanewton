@@ -1421,7 +1421,7 @@
       },
       indicadores: r.indicators.map((indicator, i) => ({
         nombre: indicator,
-        peso_porcentaje: Number((r.weights[i] || 0).toFixed(2))
+        peso_porcentaje: Number(Number(r.weights[i] || 0).toFixed(2))
       })),
       alumnado: r.students.map(student => {
         const stats = studentStats(student, r);

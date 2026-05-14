@@ -1467,7 +1467,15 @@
       return;
     }
 
-const payload = buildAiPayload();
+let payload;
+
+try {
+  payload = buildAiPayload();
+} catch (error) {
+  alert("Error al preparar los datos de la rúbrica: " + error.message);
+  console.error(error);
+  return;
+}
     
     const originalText = els.analyzeAiBtn.textContent;
 

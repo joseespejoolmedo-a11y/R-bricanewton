@@ -1431,7 +1431,7 @@
           media_0_4: Number(stats.avg04.toFixed(2)),
           nota_0_10: Number(stats.avg10.toFixed(2)),
           puntuaciones: r.indicators.map(indicator => ({
-            indicador,
+            indicador: indicator,
             valor_0_4: Number(r.scores?.[student]?.[indicator] ?? 0)
           })),
           comentario_docente: String(r.comments?.[student] || "").trim()

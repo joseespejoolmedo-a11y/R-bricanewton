@@ -1870,18 +1870,39 @@ try {
     saveDB();
     renderAll();
   }
+  function makeUniqueRubricName(baseName, rubrics) {
+    let cleanBase = String(baseName || "Rúbrica copiada").trim();
+    let name = cleanBase;
+
+    if (!rubrics[name]) return name;
+
+    let n = 2;
+    while (rubrics[`${cleanBase} copia ${n}`]) {
+      n++;
+    }
+
+    return `${cleanBase} copia ${n}`;
+  }
 
   function copyRubric(withScores) {
     const fromCourse = els.copyCourseSelect.value;
     const fromRubric = els.copyRubricSelect.value;
 
-    if (!fromCourse || !fromRubric) return;
+    if (!fromCourse || !fromRubric) {
+      alert("Primero elige el curso y la rúbrica que quieres copiar.");
+      return;
+    }
 
     const src = db.courses[fromCourse]?.rubrics[fromRubric];
 
-    if (!src) return alert("No se encuentra la rúbrica origen.");
+    if (!src) {
+      alert("No se encuentra la rúbrica origen.");
+      return;
+    }
 
+    const targetRubrics = db.courses[db.currentCourse].rubrics;
     const clone = structuredCloneSafe(src);
+
     ensureRubricShape(clone);
 
     if (!withScores) {
@@ -1898,12 +1919,18 @@ try {
       }
     }
 
-    db.courses[db.currentCourse].rubrics[db.currentRubric] = clone;
+    const suffix = withScores ? "CON notas" : "SIN notas";
+    const newName = makeUniqueRubricName(`${fromRubric} (${suffix})`, targetRubrics);
+
+    targetRubrics[newName] = clone;
+    db.currentRubric = newName;
 
     saveDB();
     renderAll();
-  }
 
+    alert(`Rúbrica copiada correctamente como: ${newName}`);
+  }
+  
   function saveTextsOnly() {
     saveTextsIntoCurrentRubric();
     saveDB();

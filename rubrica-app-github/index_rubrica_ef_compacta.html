@@ -2039,8 +2039,9 @@ try {
     renderAll();
   });
 
-  els.copyCourseSelect.addEventListener("change", fillCopyRubrics);
-
+    els.copyCourseSelect.addEventListener("change", () => {
+    fillCopyRubrics();
+  });
   els.renameCourseBtn.addEventListener("click", renameCourse);
   els.addCourseBtn.addEventListener("click", addCourse);
   els.deleteCourseBtn.addEventListener("click", deleteCourse);

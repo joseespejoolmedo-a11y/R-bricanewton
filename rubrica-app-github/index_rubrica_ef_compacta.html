@@ -1111,12 +1111,19 @@
     renderCombineRubricList();
   }
 
-  function fillCopyRubrics() {
-    const c = els.copyCourseSelect.value || db.currentCourse;
-    const rubrics = Object.keys(db.courses[c]?.rubrics || {});
+    function fillCopyRubrics() {
+    const selectedCourse = els.copyCourseSelect.value || db.currentCourse;
+    const course = db.courses[selectedCourse];
+
+    if (!course || !course.rubrics) {
+      els.copyRubricSelect.innerHTML = "";
+      return;
+    }
+
+    const rubrics = Object.keys(course.rubrics);
 
     els.copyRubricSelect.innerHTML = rubrics.map(r =>
-      `<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`
+      `<option value="${escapeAttr(r)}">${escapeHtml(r)}</option>`
     ).join("");
   }
 
